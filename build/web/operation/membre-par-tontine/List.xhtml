@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition template="/SystemTemplate/MembreTemplate.xhtml">
+
+        <ui:define name="title">
+            <h:outputText value="Membres"></h:outputText>
+        </ui:define>
+
+        <ui:define name="content">
+
+            <h:form id="PrivilegeListForm">
+                <p:messages id="msgErreur" closable="true"/>
+                <p:growl id="growl" showDetail="true"/>
+
+                <p:dataTable id="datalist" value="#{membreParTontineController.membretontines}" var="item"
+                             selectionMode="single" selection="#{membreParTontineController.membretontine}"
+                             paginator="true"
+                             rowKey="#{item.idmembretontine}"
+                             rows="10"
+                             rowsPerPageTemplate="10,20,30,40,50"
+                             style="margin-top:1% !important; text-align:left; margin-left:10%; margin-right: 10%; font-weight: bold; font-style: oblique;"
+                             rowIndexVar="index"
+                             emptyMessage="#{msg.Vide}"
+                             widgetVar="fonctionTable"
+                             draggableColumns="true"
+                             resizableColumns="true">
+
+                    <p:ajax event="rowSelect" update=":PrivilegeListForm:createButton :PrivilegeListForm:deleteButton :PrivilegeListForm:editButton" listener="#{membreParTontineController.activeButton()}"/>
+                    <p:ajax event="rowUnselect" update=":PrivilegeListForm:createButton :PrivilegeListForm:deleteButton :PrivilegeListForm:editButton" listener="#{membreParTontineController.deactiveButton()}"/>
+
+                    <f:facet name="header"> 
+                        <h:outputText value="Liste des membres de (#{membreParTontineController.cycletontine.idtontine.nom})"/>
+                    </f:facet> 
+
+                    <p:column style="width: 15%" filterBy="#{item.idmembre.code}">
+                        <f:facet name="header">
+                            <h:outputText value="#{langues.code}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.idmembre.code}"/>
+                    </p:column>
+
+                    <p:column style="width: 30%" filterBy="#{item.idmembre.nom}">
+                        <f:facet name="header">
+                            <h:outputText value="#{langues.nom}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.idmembre.nom}"/>
+                    </p:column>
+
+                    <p:column style="width: 35%" filterBy="#{item.idmembre.prenom}">
+                        <f:facet name="header">
+                            <h:outputText value="#{langues.prenom}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.idmembre.prenom}"/>
+                    </p:column>
+
+                    <p:column style="width: 13%;">
+                        <f:facet name="header">
+                            <h:outputText value="#{langues.contact}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.idmembre.contact}"/>
+                    </p:column>
+
+                    <p:column style="width: 7%;text-align: center">
+                        <f:facet name="header">
+                            <h:outputText value="etat"/>
+                        </f:facet>
+                        <h:selectBooleanCheckbox value="#{item.etat}" disabled="true"/>
+                    </p:column> 
+
+                </p:dataTable>
+
+                <p:separator/>
+
+                <center>
+                    <p:commandButton id="createButton" 
+                                     disabled="false" 
+                                     icon="ui-icon-plus" 
+                                     value="#{langues.ajouter}" 
+                                     actionListener="#{membreParTontineController.prepareCreate()}" 
+                                     update=":PrivilegeCreateForm,:PrivilegeCreateForm:access" 
+                                     oncomplete="PF('PrivilegeCreateDialog').show()"/>
+                    
+                    <p:commandButton id="editButton" icon="ui-icon-pencil" 
+                                     disabled="#{membreParTontineController.detail}" 
+                                     value="#{langues.modifier}" 
+                                     actionListener="#{membreParTontineController.prepareEdit()}" 
+                                     update=":PrivilegeEditForm,:PrivilegeCreateForm:access" 
+                                     oncomplete="PF('PrivilegeEditDialog').show()"/>                                                                                                                                       
+
+                    <p:commandButton id="deleteButton" icon="ui-icon-trash"  value="#{langues.Delete}" actionListener="#{membreParTontineController.delete()}" update="datalist,growl,msgErreur" disabled="#{membreParTontineController.detail}"> 
+                        <p:confirm header="#{langues.ConfirmationHeader}" message="#{langues.ConfirmDeleteMessage}" icon="ui-icon-alert"/>
+                    </p:commandButton>
+                </center>
+
+                <ui:include src="/confirmation.xhtml"/>
+
+            </h:form>
+
+            <ui:include src="Create.xhtml"/>
+            <ui:include src="Edit.xhtml"/>
+            <ui:include src="Delete.xhtml"/>
+
+        </ui:define>
+
+        <ui:define name="scriptCollapse">
+            <script>
+                var el = document.getElementById("membre_");
+                el.setAttribute("class", "sub-menu active");
+            </script>
+        </ui:define>
+
+    </ui:composition>
+
+</html>

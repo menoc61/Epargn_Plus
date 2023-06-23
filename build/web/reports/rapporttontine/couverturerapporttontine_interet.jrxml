@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="couverturerapporttontine_interet" language="groovy" pageWidth="802" pageHeight="555" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="802" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="25b92dc1-969d-4b92-8694-2e2b64bccaf1">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="membrecycle" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+     Sum(calcul_interet."montant_initial_emprunt") AS calcul_interet_montant_initial_emprunt,
+     Sum(calcul_interet."montant_interet") AS calcul_interet_montant_interet,
+     rencontre."nomfr" AS rencontre_nomfr,
+     rencontre."daterencontre" AS rencontre_daterencontre,
+     membrecycle."idmembrecycle" AS membrecycle_idmembrecycle
+FROM
+     "public"."rencontre" rencontre INNER JOIN "public"."calcul_interet" calcul_interet ON rencontre."idrencontre" = calcul_interet."idrencontre"
+     INNER JOIN "public"."membrecycle" membrecycle ON calcul_interet."idmembre" = membrecycle."idmembrecycle"
+WHERE
+     membrecycle.idmembrecycle = $P{membrecycle}
+GROUP BY
+     rencontre."nomfr",
+     rencontre."daterencontre",
+     membrecycle."idmembrecycle"
+ORDER BY
+     rencontre_daterencontre ASC]]>
+	</queryString>
+	<field name="calcul_interet_montant_initial_emprunt" class="java.lang.Double"/>
+	<field name="calcul_interet_montant_interet" class="java.lang.Double"/>
+	<field name="rencontre_nomfr" class="java.lang.String"/>
+	<field name="rencontre_daterencontre" class="java.sql.Date"/>
+	<field name="membrecycle_idmembrecycle" class="java.lang.Integer"/>
+	<variable name="TotalInteret" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{calcul_interet_montant_interet}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="68" splitType="Stretch">
+			<staticText>
+				<reportElement mode="Opaque" x="9" y="31" width="786" height="37" backcolor="#F9F3F3" uuid="3d5061f5-b754-4124-b648-9c6898aa4480"/>
+				<box>
+					<pen lineWidth="0.5" lineStyle="Dashed"/>
+					<topPen lineWidth="0.5" lineStyle="Dashed"/>
+					<leftPen lineWidth="0.5" lineStyle="Dashed"/>
+					<bottomPen lineWidth="0.5" lineStyle="Dashed"/>
+					<rightPen lineWidth="0.5" lineStyle="Dashed"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="SansSerif" size="18" isBold="true" isItalic="false" isUnderline="false"/>
+				</textElement>
+				<text><![CDATA[         II.2. EVOLUTION DES INTERETS]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="30" splitType="Stretch">
+			<staticText>
+				<reportElement mode="Opaque" x="10" y="0" width="634" height="30" forecolor="#FFFFFF" backcolor="#0099FF" uuid="4d3b6cd8-7f04-409c-b8ed-45e76ef36d73"/>
+				<box>
+					<pen lineWidth="0.5" lineColor="#000000"/>
+					<topPen lineWidth="0.5" lineColor="#000000"/>
+					<leftPen lineWidth="0.5" lineColor="#000000"/>
+					<bottomPen lineWidth="0.5" lineColor="#000000"/>
+					<rightPen lineWidth="0.5" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="14" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[Rencontre]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="644" y="0" width="151" height="30" forecolor="#FFFFFF" backcolor="#0099FF" uuid="34842ea7-c04c-4121-9c0a-36082fe3134a"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="15" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[Interet Généré]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="30" splitType="Stretch">
+			<textField pattern="#,##0">
+				<reportElement x="644" y="0" width="150" height="30" uuid="534e9a44-58da-4e5a-b299-514b9ab7a174"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="12" isItalic="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{calcul_interet_montant_interet}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="10" y="0" width="341" height="30" uuid="992f0ee9-9bf6-405d-87b6-447d6d6779f6"/>
+				<box>
+					<leftPen lineWidth="1.0"/>
+				</box>
+				<textElement>
+					<font fontName="SansSerif" size="14" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="10" y="0" width="634" height="30" uuid="1ad93f80-c7ee-42df-8606-9fb516a22405"/>
+				<box leftPadding="3">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Justified" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="12" isBold="true" isItalic="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{rencontre_nomfr}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+</jasperReport>

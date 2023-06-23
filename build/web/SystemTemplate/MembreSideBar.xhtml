@@ -1,0 +1,52 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <f:metadata>
+        <f:event type="preRenderView" listener="#{loginController.watcher()}" />
+    </f:metadata> 
+
+    <!-- BEGIN SIDEBAR -->
+    <div class="sidebar-scroll">
+        <div id="sidebar" class="nav-collapse collapse">
+
+            <!-- BEGIN RESPONSIVE QUICK SEARCH FORM -->
+            <div class="navbar-inverse">
+                <form class="navbar-search visible-phone">
+                    <input type="text" class="search-query" placeholder="Search" />
+                </form>
+            </div>
+            <!-- END RESPONSIVE QUICK SEARCH FORM -->
+            <!-- BEGIN SIDEBAR MENU -->
+            <ul class="sidebar-menu">
+
+                <!--Accueil-->
+                <li class="sub-menu" id="menuIndex">
+                    <a class="" href="#{request.contextPath}/acceuil.html">
+                        <i class="icon-home"></i>
+                        <span>#{langues.accueil}</span>
+                    </a>
+                </li>
+
+                <!--Securité-->
+                <li class="sub-menu" id="membre_">
+                    <a href="javascript:;" class="">
+                        <i class="icon-legal"></i>
+                        <span>#{langues.membre}</span>
+                        <span class="arrow"></span>
+                    </a>
+                    <ul class="sub">
+                        <li><a class="" href="#{request.contextPath}/operation/membre/List.html">#{langues.enregistrement}</a></li>
+                        <li><a class="" href="#{request.contextPath}/operation/membre-par-tontine/List.html">#{langues.membre_par_tontine}</a></li>
+                        <li><a class="" href="#{request.contextPath}/operation/membre-par-cycle/List.html">#{langues.inscription}</a></li>
+                        <li><a class="" href="#{request.contextPath}/operation/situation_financiere_membre/index.html">#{langues.situation_financiere}</a></li>
+                    </ul>
+                </li>
+
+            </ul>
+            <!-- END SIDEBAR MENU -->
+        </div>
+    </div>
+    <!-- END SIDEBAR -->
+
+</ui:composition>

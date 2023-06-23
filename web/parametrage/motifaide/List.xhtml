@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+
+    <p:messages id="growl" closable="true" />
+
+    <h:form id="InstitutionListForm">
+
+        <p:contextMenu id="InstitutionDataTableContextMenu" for="datalist">  
+            <p:menuitem value="#{langues.Create}" onclick="document.getElementById('InstitutionListForm:createButton').click();" icon="ui-icon-plus"/>                
+            <p:menuitem value="#{langues.Edit}" onclick="document.getElementById('InstitutionListForm:editButton').click();" icon="ui-icon-pencil"/>
+            <p:menuitem value="#{langues.Delete}" onclick="document.getElementById('InstitutionListForm:deleteButton').click();" icon="ui-icon-trash"/>
+            <p:separator/>
+            <p:menuitem value="" icon="ui-icon-search"   ajax="false"/>  
+        </p:contextMenu>
+        <p:dataTable id="datalist"
+                     value="#{motifaideController.motifaides}"
+                     var="item"
+                     rowKey="#{item.idmotifaide}"
+                     paginator="true"
+                     rows="10"
+                     style="margin-top:1% !important; text-align:left; margin-left:5%; margin-right: 5%; font-weight: bold; font-style: oblique;"
+                     rowIndexVar="index"
+                     rowsPerPageTemplate="10,20,30,40,50"
+                     selectionMode="single"
+                     selection="#{motifaideController.selected}"
+                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}">
+
+            <p:ajax event="rowSelect"   update="@form:createButton,@form:editButton,@form:deleteButton,@form:InstitutionDataTableContextMenu" listener="#{motifaideController.activeButton()}"/>
+            <p:ajax event="rowUnselect" update="@form:createButton,@form:editButton,@form:deleteButton,@form:InstitutionDataTableContextMenu"  listener="#{motifaideController.deactiveButton()}"  />
+            <p:ajax event="contextMenu" update="@form:createButton @form:editButton @form:deleteButton"/>
+            <p:ajax event="rowDblselect" onsuccess="document.getElementById('InstitutionListForm:viewButton').click();"  listener="#{motifaideController.activeButton()}" />
+
+            <f:facet name="header"> 
+                <h:outputText value="#{langues.motifaide}"/>
+            </f:facet> 
+
+            <p:column style=" width: 15%">
+                <f:facet name="header">
+                    <h:outputText value="#{langues.code}"/>
+                </f:facet>
+                <h:outputText value="#{item.idmotifaide}"/>
+            </p:column>
+
+            <p:column style=" width: 20%" filterBy="#{item.nomfr}">
+                <f:facet name="header">
+                    <h:outputText value="#{langues.nom_francais}"/>
+                </f:facet>
+                <h:outputText value="#{item.nomfr}"/>
+            </p:column>
+
+            <p:column style=" width: 20%"  filterBy="#{item.nomen}">
+                <f:facet name="header">
+                    <h:outputText value="#{langues.nom_anglais}"/>
+                </f:facet>
+                <h:outputText value="#{item.nomen}"/>
+            </p:column>
+
+        </p:dataTable>
+        
+        <p:separator/>
+        
+        <center>
+            <p:commandButton id="createButton" icon="ui-icon-plus"   value="#{langues.Create}" actionListener="#{motifaideController.prepareCreate()}" update=":InstitutionCreateForm" oncomplete="PF('InstitutionCreateDialog').show()"/>
+            <p:commandButton id="editButton"   icon="ui-icon-pencil" value="#{langues.Edit}" update=":InstitutionCreateForm" oncomplete="PF('InstitutionCreateDialog').show()" disabled="#{motifaideController.detail}"/>
+            <p:commandButton id="deleteButton" icon="ui-icon-trash"  value="#{langues.Delete}" actionListener="#{motifaideController.delete()}" update=":growl,datalist" disabled="#{motifaideController.detail}">
+                <p:confirm header="#{langues.ConfirmationHeader}" message="#{langues.ConfirmDeleteMessage}" icon="ui-icon-alert"/>
+            </p:commandButton>
+        </center>
+
+        <!--<ui:include src="/confirmation.xhtml"/>-->
+    </h:form>
+
+</ui:composition>

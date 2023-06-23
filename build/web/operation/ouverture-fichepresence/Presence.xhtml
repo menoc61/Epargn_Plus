@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+        <p:dialog id="PresenceCreateDlg" widgetVar="PresenceCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="Valider presence">
+            <h:form id="PresenceCreateForm">
+                <h:panelGroup id="display">
+                    <h:panelGrid columns="2">
+
+                        <p:outputLabel value="#{ouverturerencontreController.fichePresence.idmembre.idmembre.nom} #{ouverturerencontreController.fichePresence.idmembre.idmembre.prenom} est-il présent ?"/>
+                        <h:selectBooleanCheckbox value="#{ouverturerencontreController.fichePresence.present}">
+                            <p:ajax listener="#{ouverturerencontreController.controlPresence()}" update="display"/>
+                        </h:selectBooleanCheckbox>
+
+                        <p:outputLabel rendered="#{ouverturerencontreController.showHeure}" value="Heure d'arrivée" for="heure"/>
+                        <p:calendar rendered="#{ouverturerencontreController.showHeure}" required="true" id="heure" value="#{ouverturerencontreController.fichePresence.heureDebut}" pattern="HH:mm" timeOnly="true">
+                            <p:ajax/>
+                        </p:calendar>
+
+                        <p:outputLabel rendered="#{ouverturerencontreController.showJustifie}" value="l'absence est elle justifiée ?"/>
+                        <h:selectBooleanCheckbox rendered="#{ouverturerencontreController.showJustifie}" value="#{ouverturerencontreController.fichePresence.justifie}">
+                            <p:ajax update="display" listener="#{ouverturerencontreController.controlJustifie()}"/>
+                        </h:selectBooleanCheckbox>
+
+                        <p:outputLabel value="Justificatif" for="justificatif"/>
+                        <p:inputTextarea id="justificatif" style="width: 350px" cols="150" rows="10"   value="#{ouverturerencontreController.fichePresence.motif}">
+                            <p:ajax/>
+                        </p:inputTextarea>
+
+                    </h:panelGrid>
+
+                    <p:separator/>
+
+                    <center>
+                        <p:commandButton icon="ui-icon-close" value="#{langues.Cancel}" oncomplete="PF('PresenceCreateDialog').hide()"/>
+                        <p:commandButton icon="ui-icon-check" actionListener="#{ouverturerencontreController.validatePresence()}" value="#{langues.Valider}" update=":PrivilegeListForm" oncomplete="PF('PresenceCreateDialog').hide()"/>              
+                    </center>
+
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

@@ -1,0 +1,51 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <f:metadata>
+        <f:event type="preRenderView" listener="#{loginController.watcher()}" />
+    </f:metadata> 
+
+    <!-- BEGIN SIDEBAR -->
+    <div class="sidebar-scroll">
+        <div id="sidebar" class="nav-collapse collapse">
+
+            <!-- BEGIN RESPONSIVE QUICK SEARCH FORM -->
+            <div class="navbar-inverse">
+                <form class="navbar-search visible-phone">
+                    <input type="text" class="search-query" placeholder="Search" />
+                </form>
+            </div>
+            <!-- END RESPONSIVE QUICK SEARCH FORM -->
+            <!-- BEGIN SIDEBAR MENU -->
+            <ul class="sidebar-menu">
+
+                <!--Accueil-->
+                <li class="sub-menu" id="menuIndex">
+                    <a class="" href="#{request.contextPath}/acceuil.html">
+                        <i class="icon-home"></i>
+                        <span>#{langues.accueil}</span>
+                    </a>
+                </li>
+
+                <!--Securité-->
+                <li class="sub-menu" id="emprunt_r">
+                    <a href="javascript:;" class="">
+                        <i class="icon-legal"></i>
+                        <span>#{langues.emprunt_remboursement}</span>
+                        <span class="arrow"></span>
+                    </a>
+                    <ul class="sub">
+                        <li><a class="" href="#{request.contextPath}/operation/emprunt/index.html">#{langues.emprunt}</a></li>
+                        <li><a class="" href="#{request.contextPath}/operation/remboursement/index.html">#{langues.remboursement_dette}</a></li>
+                        <li><a class="" href="#{request.contextPath}/operation/encours_emprunt/List.html">#{langues.encours_emprunt}</a></li>            
+                    </ul>
+                </li>
+
+            </ul>
+            <!-- END SIDEBAR MENU -->
+        </div>
+    </div>
+    <!-- END SIDEBAR -->
+
+</ui:composition>

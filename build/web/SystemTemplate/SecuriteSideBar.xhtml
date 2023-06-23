@@ -1,0 +1,55 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <f:metadata>
+        <f:event type="preRenderView" listener="#{loginController.watcher()}" />
+    </f:metadata> 
+
+    <!-- BEGIN SIDEBAR -->
+    <div class="sidebar-scroll">
+        <div id="sidebar" class="nav-collapse collapse">
+
+            <!-- BEGIN RESPONSIVE QUICK SEARCH FORM -->
+            <div class="navbar-inverse">
+                <form class="navbar-search visible-phone">
+                    <input type="text" class="search-query" placeholder="Search" />
+                </form>
+            </div>
+            <!-- END RESPONSIVE QUICK SEARCH FORM -->
+            <!-- BEGIN SIDEBAR MENU -->
+            <ul class="sidebar-menu">
+
+                <!--Accueil-->
+                <li class="sub-menu" id="menuIndex">
+                    <a class="" href="#{request.contextPath}/acceuil.html">
+                        <i class="icon-home"></i>
+                        <span>#{langues.accueil}</span>
+                    </a>
+                </li>
+
+                <!--Securité-->
+                <li class="sub-menu" id="securite">
+                    <a href="javascript:;" class="">
+                        <i class="icon-legal"></i>
+                        <span>#{langues.securite}</span>
+                        <span class="arrow"></span>
+                    </a>
+                    <ul class="sub">
+                        <li><a class="" href="#{request.contextPath}/securite/groupeutilisateur/List.html">#{langues.groupe_utilisateur}</a></li>
+                        <li><a class="" href="#{request.contextPath}/securite/utilisateur/List.html">#{langues.utilisateurs}</a></li>
+                        <li><a class="" href="#{request.contextPath}/securite/compteutilisateur/List.html">#{langues.compte_utilisateur}</a></li>
+                        <li><a class="" href="#{request.contextPath}/securite/privilege/List.html">#{langues.privileges}</a></li>
+                        <li><a class="" href="#{request.contextPath}/securite/activercompte/activercompte.html">#{langues.activer_compte_utilisateur}</a></li>
+                        <li><a class="" href="#{request.contextPath}/securite/desactivercompte/desactivercompte.html">#{langues.desactiver_compte_utilisateur}</a></li>
+                        <li><a class="" href="#{request.contextPath}/securite/mouchard/List.html">#{langues.mouchard}</a></li>          
+                    </ul>
+                </li>
+
+            </ul>
+            <!-- END SIDEBAR MENU -->
+        </div>
+    </div>
+    <!-- END SIDEBAR -->
+
+</ui:composition>

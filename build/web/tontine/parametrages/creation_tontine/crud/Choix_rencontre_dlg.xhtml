@@ -1,0 +1,50 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+                    
+    
+    <p:dialog showEffect="scale" 
+              hideEffect="scale" 
+              id="ChoixRencontreDlg" 
+              widgetVar="ChoixRencontreDialog" 
+              modal="true"
+              width="600"
+              resizable="true" 
+              appendTo="@(body)" 
+              header="#{langues.choix_rencontres}" 
+              closeOnEscape="true">
+    
+        
+        <h:form id="ChoixRencontreDlgForm">
+            <h:panelGrid columns="1"
+                         style="width: 100%;">
+                <h:panelGroup>
+                    <p:selectManyCheckbox value="#{creationTontineController.list_selected_recontres}"
+                                          layout="grid" columns="3" styleClass="grid_checkbox"                                          
+                                          converter="rencontreConverter">
+                        <f:selectItems value="#{creationTontineController.selectableRencontres()}"
+                                       var="rencontre" itemLabel="#{rencontre.nomfr}" itemValue="#{rencontre}" />                                                  
+                    </p:selectManyCheckbox>
+                </h:panelGroup>
+                
+                <p:separator />
+                
+                <h:panelGroup>
+                    <center>
+                        <p:commandButton value="#{langues.terminer}"
+                                         actionListener="#{creationTontineController.determine_nbre_rencontre()}"
+                                         oncomplete="PF('ChoixRencontreDialog').hide()"
+                                         update=":CotisationCreateForm" />
+                    </center>
+                </h:panelGroup>
+            </h:panelGrid>
+        </h:form>
+        
+    </p:dialog>
+    
+</ui:composition>
+

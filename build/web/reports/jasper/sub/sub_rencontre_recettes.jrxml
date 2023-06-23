@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="sub_rencontre_recettes" pageWidth="275" pageHeight="842" columnWidth="275" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="1f85194b-294a-4daf-8ae8-2e02d7f107fa">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="table">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<subDataset name="Table Dataset 1" uuid="614c6581-ad7f-4d8e-b740-1f2f8692e298"/>
+	<parameter name="id_tontiner" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[54]]></defaultValueExpression>
+	</parameter>
+	<parameter name="id_cotisation" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[8]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+     caisse."idcaisse" AS caisse_idcaisse,
+     caisse."montant" AS caisse_montant,
+     caisse."libelleoperation" AS caisse_libelleoperation,
+     rubriquecaisse."idrubriquecaisse" AS rubriquecaisse_idrubriquecaisse,
+     rubriquecaisse."idnaturecaisse" AS rubriquecaisse_idnaturecaisse,
+     caisse."idmembrecycle" AS caisse_idmembrecycle,
+     tontiner."idtontiner" AS tontiner_idtontiner
+FROM
+     "public"."caisse" caisse INNER JOIN "public"."rubriquecaisse" rubriquecaisse ON caisse."idrubriquecaisse" = rubriquecaisse."idrubriquecaisse"
+     INNER JOIN "public"."tontiner" tontiner ON caisse."idtontiner" = tontiner."idtontiner"
+WHERE
+     tontiner."idtontiner" = $P{id_tontiner}
+ AND rubriquecaisse."idnaturecaisse" = 2]]>
+	</queryString>
+	<field name="caisse_idcaisse" class="java.lang.Long"/>
+	<field name="caisse_montant" class="java.lang.Double"/>
+	<field name="caisse_libelleoperation" class="java.lang.String"/>
+	<field name="rubriquecaisse_idrubriquecaisse" class="java.lang.Integer"/>
+	<field name="rubriquecaisse_idnaturecaisse" class="java.lang.Integer"/>
+	<field name="caisse_idmembrecycle" class="java.lang.Integer"/>
+	<field name="tontiner_idtontiner" class="java.lang.Integer"/>
+	<variable name="TOTAL_RECETTE" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{caisse_montant}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField>
+				<reportElement style="table_TD" x="0" y="0" width="20" height="20" uuid="3044eadf-7b6a-4083-a587-c3d2101698fd"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+					<paragraph leftIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{rubriquecaisse_idrubriquecaisse}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="table_TD" x="20" y="0" width="205" height="20" uuid="0237c6b1-2ef1-4254-8aaa-7b83a2ef45fb"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+					<paragraph leftIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{caisse_libelleoperation}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0">
+				<reportElement style="table_TD" x="225" y="0" width="50" height="20" uuid="2b115d4b-2a1b-4828-99a2-51b8ba4d1bf8"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="9"/>
+					<paragraph rightIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{caisse_montant}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

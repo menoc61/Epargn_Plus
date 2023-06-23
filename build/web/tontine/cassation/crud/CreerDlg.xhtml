@@ -1,0 +1,79 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <p:dialog id="CreerDlg"
+              widgetVar="CreerDialog"
+              showEffect="scale" 
+              hideEffect="scale"
+              modal="true"
+              width="500"
+              resizable="true" 
+              appendTo="@(body)" 
+              header="#{langues.cassation}" 
+              style="max-height: 90%;"
+              closeOnEscape="true" >
+
+        <h:form id="CreerDlgForm">
+
+            <h:panelGrid columns="1" width="100%">
+
+                <h:panelGroup>
+                    <h:outputLabel value="#{langues.relicat}"/>
+                    <div style="border: 1px solid grey; padding: 6px; background-color: #eee; text-align: right;">
+                        <h:outputText value="#{cassationTontineController.cotisation.reliquat}" >
+                            <f:convertNumber maxFractionDigits="0" />
+                        </h:outputText>
+                    </div>
+                </h:panelGroup>
+
+                <h:panelGroup>
+                    <h:outputLabel value="#{langues.nbre_mains}"/>
+                    <div style="border: 1px solid grey; padding: 6px; background-color: #eee; text-align: right;">
+                        <h:outputText value="#{cassationTontineController.list_mains.size()}" >
+                            <f:convertNumber maxFractionDigits="0" />
+                        </h:outputText>
+                    </div>
+                </h:panelGroup>
+
+                <h:panelGroup>
+                    <h:outputLabel value="#{langues.gains_membre}"/>
+                    <div style="border: 1px solid grey; padding: 6px; background-color: #eee; text-align: right;">
+                        <h:outputText value="#{cassationTontineController.calcul_gains_membre()}" >
+                            <f:convertNumber maxFractionDigits="0" />
+                        </h:outputText>
+                    </div>
+                </h:panelGroup>
+
+
+                <p:separator />
+
+                <h:panelGroup>
+                    <center>
+                        <p:commandButton value="#{langues.fermer}"
+                                         onclick="PF('CreerDialog').hide()"
+                                         style="float: left;"
+                                         update=":ListerForm,:actionForm" />
+
+                        <p:commandButton value="#{langues.enregistrer}"
+                                         style="float: right;"
+                                         styleClass="ui-button"
+                                         actionListener="#{cassationTontineController.save()}"
+                                         update=":ListerForm,:actionForm,:growl" />
+
+                    </center>
+                </h:panelGroup>
+
+            </h:panelGrid>
+
+        </h:form>
+
+    </p:dialog>
+
+
+</ui:composition>
+

@@ -1,0 +1,68 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <p:dialog id="ProgrammeMainDlg"
+              widgetVar="ProgrammeMainDialog"
+              showEffect="scale" 
+              hideEffect="scale"
+              modal="true"
+              width="500"
+              resizable="true" 
+              appendTo="@(body)" 
+              header="#{langues.programmer_main}" 
+              closeOnEscape="true">
+
+        <h:form id="ProgrammeMainDlgForm">
+            <h:panelGrid columns="1"
+                         style="width: 100%;">
+                <center>
+                    <h:panelGroup>
+                        <h:outputLabel value="#{langues.rencontre}" for="s_ren" />
+                        <p:selectOneMenu value="#{cotisationProgrammationController.tontiner.idtontiner}"
+                                         style="width: 400px" id="s_ren">                
+                            <p:ajax  update=":ProgrammeMainDlgForm"/>
+                            <f:selectItems value="#{cotisationProgrammationController.get_list_rencontre_programmable()}"
+                                           var="el_r" itemValue="#{el_r.idtontiner}" />                                                      
+                        </p:selectOneMenu>
+                    </h:panelGroup>
+
+                    <hr />
+
+                    <h:panelGroup>
+                        <h:outputLabel value="#{langues.main}" for="s_main" />
+                        <p:selectOneMenu value="#{cotisationProgrammationController.main.idmain}"
+                                         id="s_main" style="width: 400px">              
+                            <p:ajax update=":ProgrammeMainDlgForm"/>
+                            <f:selectItem itemLabel="#{langues.choisir}" itemValue="0" />
+                            <f:selectItems value="#{cotisationProgrammationController.list_mains}"
+                                           var="el_main"
+                                           itemLabel="#{el_main.nom} (#{el_main.idinscription.idmembre.idmembre.nom} #{el_main.idinscription.idmembre.idmembre.prenom})"
+                                           itemValue="#{el_main.idmain}" />
+                        </p:selectOneMenu>
+
+                    </h:panelGroup>
+                </center>
+                <p:separator />
+
+                <h:panelGroup>
+                    <center>
+                        <p:commandButton value="#{langues.enregistrer}"
+                                         actionListener="#{cotisationProgrammationController.save()}"
+                                         disabled="#{!cotisationProgrammationController.can_save()}"
+                                         update=":ProgrammationDlgForm,:ListerForm,:growl">
+                        </p:commandButton>
+                    </center>
+                </h:panelGroup>
+
+            </h:panelGrid>
+        </h:form>
+
+    </p:dialog>
+
+</ui:composition>
+

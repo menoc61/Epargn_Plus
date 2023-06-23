@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition>
+        <p:dialog id="PrivilegeCreateDlg" widgetVar="PrivilegeCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="ATTRIBUER LES PRIVILEGES">
+            <h:form id="PrivilegeCreateForm">
+                <h:panelGroup id="display">
+                    <h:panelGrid columns="1">
+
+                        <center>
+
+                            <p:selectOneMenu id="groupe" value="#{privilegeController.compteutilisateur.idcompte}" required="true" requiredMessage="le groupe utilisateur réquis">
+                                <f:selectItem itemLabel="#{langues.choisir}" itemValue=""/>
+                                <f:selectItems value="#{privilegeController.compteutilisateurs}" var="item" itemLabel="#{item.idutilisateur.nom} #{item.idutilisateur.prenom}" itemValue="#{item.idcompte}"/>                     
+                                <p:ajax listener="#{privilegeController.handleUserChange()}" update="access"/>
+                            </p:selectOneMenu>
+
+                        </center>
+
+                        <p:pickList id="access" value="#{privilegeController.menuDualList}" var="menu" effect="bounce"
+                                    itemValue="#{menu}" itemLabel="#{menu.libelle}" showSourceControls="true" showTargetControls="true" showCheckbox="false"
+                                    showSourceFilter="true" showTargetFilter="true" filterMatchMode="contains" converter="menuConverter" required="true" requiredMessage="les menus sont requis">
+
+                            <f:facet name="sourceCaption">#{langues.disponibles}</f:facet>
+                            <f:facet name="targetCaption">#{langues.selectionnes}</f:facet>                            
+                        </p:pickList>
+
+                    </h:panelGrid>
+
+                    <p:separator/>
+
+                    <p:commandButton actionListener="#{privilegeController.save()}" style="float: right;" icon="ui-icon-check" value="#{langues.Valider}" update="display,:PrivilegeListForm:datalist,:PrivilegeListForm:msgErreur" oncomplete="PF('PrivilegeCreateDialog').hide()"/>
+                    <p:commandButton style="float: left; color: red;" icon="ui-icon-close" value="#{langues.annuler}" onclick="PF('PrivilegeCreateDialog').hide()"/>
+
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

@@ -1,0 +1,85 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <p:dialog id="EnchereDlg"
+              widgetVar="EnchereDialog"
+              showEffect="scale" 
+              hideEffect="scale"
+              modal="true"
+              width="400"
+              resizable="true" 
+              appendTo="@(body)" 
+              header="#{langues.encherir}" 
+              closeOnEscape="true">
+
+        <h:form id="EnchereDlgForm" style="width: 100%;" >
+            <h:panelGrid columns="1" style="width: 100%;">
+
+                <h:panelGroup>
+                    <h:outputLabel value="#{langues.rencontre}"/>
+                    <div style="border: 1px solid grey; padding: 6px; background-color: #eee;">
+                        <h:outputText value="#{cotisationProgrammationController.tontiner.idrencontre.nomfr}" />
+                    </div>
+                </h:panelGroup>
+
+                <hr />
+
+                <h:panelGroup>
+                    <h:outputLabel value="#{langues.vainceur}"/>
+                    <p:selectOneMenu value="#{cotisationProgrammationController.inscriptionCotisation.idinscription}"
+                                     class="form-control" disabled="#{!cotisationProgrammationController.can_enchere()}">                 
+                        <p:ajax update=":EnchereDlgForm" />
+                        <f:selectItem itemLabel="#{langues.choisir}" itemValue="0" />
+                        <f:selectItems value="#{cotisationProgrammationController.list_inscriptionCotisations}"
+                                       var="insc" itemLabel="#{insc.idmembre.idmembre.nom} #{insc.idmembre.idmembre.prenom}"  
+                                       itemValue="#{insc.idinscription}" />
+                    </p:selectOneMenu>
+                </h:panelGroup>
+
+                <h:panelGroup>
+                    <h:outputLabel value="#{langues.main}"/>
+                    <p:selectOneMenu value="#{cotisationProgrammationController.main.idmain}"
+                                     class="form-control"
+                                     disabled="#{!cotisationProgrammationController.can_enchere()}">
+                        <f:selectItem itemLabel="#{langues.choisir}" itemValue="0" />
+                        <f:selectItems value="#{cotisationProgrammationController.get_list_mains_non_programme_vaiceur()}"
+                                       var="insc" itemLabel="#{insc.nom}" itemValue="#{insc.idmain}" />                                                
+                    </p:selectOneMenu>
+                </h:panelGroup>
+
+                <hr />
+
+                <h:panelGroup>
+                    <h:outputLabel value="#{langues.montant}"/>
+                    <h:inputText value="#{cotisationProgrammationController.encherebenficiare.montant}"
+                                 disabled="#{!cotisationProgrammationController.can_enchere()}">
+                    </h:inputText>
+                </h:panelGroup>
+
+                <p:separator />
+
+                <h:panelGroup>
+                    <center>
+                        <p:commandButton value="#{langues.fermer}"
+                                         onclick="PF('EnchereDialog').hide()"
+                                         icon="ui-icon-times"/>
+                        
+                        <p:commandButton value="#{langues.enregistrer}"
+                                         icon="ui-icon-check"
+                                         update=":ListerForm,:growl,:ProgrammationDlgForm"
+                                         actionListener="#{cotisationProgrammationController.save()}" />
+                    </center>
+                </h:panelGroup>
+
+            </h:panelGrid>
+        </h:form>
+
+    </p:dialog>
+
+</ui:composition>
+

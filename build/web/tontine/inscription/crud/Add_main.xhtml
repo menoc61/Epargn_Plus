@@ -1,0 +1,93 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <p:dialog id="AddMainDlg"
+              widgetVar="AddMainDialog"
+              showEffect="scale" 
+              hideEffect="scale"
+              modal="true"
+              width="520"
+              resizable="true" 
+              appendTo="@(body)" 
+              header="#{langues.add_main}" 
+              closeOnEscape="true">
+
+        <h:form id="AddMainForm">
+
+            <h:panelGrid columns="1">
+
+                <h:panelGroup>
+                    <h:outputLabel for="membr" value="#{langues.membre}" />
+                    <p:selectOneMenu id="membr"
+                                     value="#{cotisationInscriptionController.membrecycle.idmembrecycle}"
+                                     style="width: 450px;">
+                        <p:ajax listener="#{cotisationInscriptionController.updateData_addMain()}"
+                                update=":AddMainForm" />
+                        <f:selectItems value="#{cotisationInscriptionController.list_membrecycle}"
+                                       var="el_m"
+                                       itemLabel="#{el_m.idmembre.nom} #{el_m.idmembre.prenom}"
+                                       itemValue="#{el_m.idmembrecycle}" />
+                    </p:selectOneMenu>
+                </h:panelGroup>
+
+                <hr/>
+
+                <h:panelGroup>
+                    <h:outputLabel for="code" value="#{langues.code}" />
+                    <p:inputText id="code"
+                                 value="#{cotisationInscriptionController.main.codemain}"
+                                 style="width: 450px;"
+                                 disabled="true" />
+                </h:panelGroup>
+
+                <h:panelGroup>
+                    <h:outputLabel for="nber" value="#{langues.nbre_seances_restant}" />
+                    <p:inputText id="nber"
+                                 value="#{cotisationInscriptionController.main.nbretourspasse}"
+                                 style="width: 450px;"
+                                 disabled="true" />
+                </h:panelGroup>
+                <hr />
+                <h:panelGroup>
+                    <h:outputLabel for="nom" value="#{langues.nom}" />
+                    <p:inputText id="nom"
+                                 value="#{cotisationInscriptionController.main.nom}"
+                                 style="width: 450px;"
+                                 disabled="false" />
+                </h:panelGroup>
+
+                <h:panelGroup>
+                    <h:outputLabel for="montant" value="#{langues.montant_souscrit}" />
+                    <h:inputText id="montant"
+                                 value="#{cotisationInscriptionController.main.montantsouscrit}"
+                                 style="width: 450px;"
+                                 disabled="false" >
+                        <f:convertNumber maxFractionDigits="0" />
+                    </h:inputText>
+                </h:panelGroup>
+
+                <p:separator />
+
+                <div style="width: 98%; bottom: 0px;">
+
+                    <p:commandButton style="margin-left: auto; margin-right: auto;" 
+                                     actionListener="#{cotisationInscriptionController.save()}" 
+                                     value="#{langues.Save}" 
+                                     update=":ListerForm,:growl,:AddMembreForm">
+                    </p:commandButton>
+
+                </div>
+
+            </h:panelGrid>
+
+        </h:form>
+
+    </p:dialog>
+
+</ui:composition>
+

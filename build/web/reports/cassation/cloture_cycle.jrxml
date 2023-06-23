@@ -1,0 +1,647 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="cloture_cycle" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="6c3cae74-ae1e-4607-864c-78edc1413cc3">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="210"/>
+	<parameter name="idcycle" class="java.lang.Integer"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["D:\\epargn_plus_report\\"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+     cassation."montant_epargne" AS cassation_montant_epargne,
+     cassation."nombre_point" AS cassation_nombre_point,
+     cassation."montant_gain" AS cassation_montant_gain,
+     cassation."montant_rembourse" AS cassation_montant_rembourse,
+     cassation."montant_interet" AS cassation_montant_interet,
+     cassation."montant_emprunte" AS cassation_montant_emprunte,
+     cassation."duree" AS cassation_duree,
+     cassation."coef_epargne" AS cassation_coef_epargne,
+     cassation."pourcentage_gain" AS cassation_pourcentage_gain,
+     cassation."reste_capital" AS cassation_reste_capital,
+     cassation."reste_interet" AS cassation_reste_interet,
+     membre."nom" AS membre_nom,
+     membre."prenom" AS membre_prenom,
+     membre."code" AS membre_code,
+     cycletontine."nomfr" AS cycletontine_nomfr,
+     cycletontine."unite_emprunt" AS cycletontine_unite_emprunt,
+     cycletontine."id_pas_emprunt" AS cycletontine_id_pas_emprunt,
+     cycletontine."montant_secours" AS cycletontine_montant_secours,
+     tontine."nom" AS tontine_nom,
+     pas_emprunt."nom" AS pas_emprunt_nom,
+     pas_emprunt."valeur" AS pas_emprunt_valeur,
+     tontine."slogan" AS tontine_slogan,
+     cassation."gain_tontine" AS cassation_gain_tontine,
+     cassation."redevance_cotisation" AS cassation_redevance_cotisation,
+     cassation."redevance_main_laivee" AS cassation_redevance_main_laivee,
+     cassation."redevance_secours" AS cassation_redevance_secours,
+     cassation."net_a_percevoir" AS cassation_net_a_percevoir
+FROM
+     "public"."membrecycle" membrecycle INNER JOIN "public"."cassation" cassation ON membrecycle."idmembrecycle" = cassation."idmembre"
+     INNER JOIN "public"."membre" membre ON membrecycle."idmembre" = membre."idmembre"
+     INNER JOIN "public"."cycletontine" cycletontine ON membrecycle."idcycle" = cycletontine."idcycle"
+     AND cycletontine."idcycle" = cassation."idcycle"
+     INNER JOIN "public"."tontine" tontine ON cycletontine."idtontine" = tontine."idtontine"
+     INNER JOIN "public"."pas_emprunt" pas_emprunt ON cycletontine."id_pas_emprunt" = pas_emprunt."idpas"
+WHERE
+     cycletontine.idcycle = $P{idcycle}
+ORDER BY
+     membre_code;]]>
+	</queryString>
+	<field name="cassation_montant_epargne" class="java.lang.Double"/>
+	<field name="cassation_nombre_point" class="java.lang.Double"/>
+	<field name="cassation_montant_gain" class="java.lang.Double"/>
+	<field name="cassation_montant_rembourse" class="java.lang.Double"/>
+	<field name="cassation_montant_interet" class="java.lang.Double"/>
+	<field name="cassation_montant_emprunte" class="java.lang.Double"/>
+	<field name="cassation_duree" class="java.lang.Double"/>
+	<field name="cassation_coef_epargne" class="java.lang.Double"/>
+	<field name="cassation_pourcentage_gain" class="java.lang.Double"/>
+	<field name="cassation_reste_capital" class="java.lang.Double"/>
+	<field name="cassation_reste_interet" class="java.lang.Double"/>
+	<field name="membre_nom" class="java.lang.String"/>
+	<field name="membre_prenom" class="java.lang.String"/>
+	<field name="membre_code" class="java.lang.String"/>
+	<field name="cycletontine_nomfr" class="java.lang.String"/>
+	<field name="cycletontine_unite_emprunt" class="java.lang.Double"/>
+	<field name="cycletontine_id_pas_emprunt" class="java.lang.Integer"/>
+	<field name="cycletontine_montant_secours" class="java.lang.Double"/>
+	<field name="tontine_nom" class="java.lang.String"/>
+	<field name="pas_emprunt_nom" class="java.lang.String"/>
+	<field name="pas_emprunt_valeur" class="java.lang.Integer"/>
+	<field name="tontine_slogan" class="java.lang.String"/>
+	<field name="cassation_gain_tontine" class="java.lang.Double"/>
+	<field name="cassation_redevance_cotisation" class="java.lang.Double"/>
+	<field name="cassation_redevance_main_laivee" class="java.lang.Double"/>
+	<field name="cassation_redevance_secours" class="java.lang.Double"/>
+	<field name="cassation_net_a_percevoir" class="java.lang.Double"/>
+	<variable name="cassation_montant_epargne_1" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{cassation_montant_epargne}]]></variableExpression>
+	</variable>
+	<variable name="cassation_montant_emprunte_1" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{cassation_montant_emprunte}]]></variableExpression>
+	</variable>
+	<variable name="cassation_montant_rembourse_1" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{cassation_montant_rembourse}]]></variableExpression>
+	</variable>
+	<variable name="cassation_montant_interet_1" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{cassation_montant_interet}]]></variableExpression>
+	</variable>
+	<variable name="cassation_reste_interet_1" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{cassation_reste_interet}]]></variableExpression>
+	</variable>
+	<variable name="cassation_nombre_point_1" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{cassation_nombre_point}]]></variableExpression>
+	</variable>
+	<variable name="cassation_pourcentage_gain_1" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{cassation_pourcentage_gain}]]></variableExpression>
+	</variable>
+	<variable name="cassation_montant_gain_1" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{cassation_montant_gain}]]></variableExpression>
+	</variable>
+	<variable name="cassation_gain_tontine_1" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{cassation_gain_tontine}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="499" splitType="Stretch">
+			<image>
+				<reportElement x="7" y="13" width="109" height="72" uuid="4eb4a1cc-13a1-45f5-9be3-222a8f9b49a1"/>
+				<imageExpression><![CDATA["image_1.jpg"]]></imageExpression>
+			</image>
+			<image>
+				<reportElement x="715" y="21" width="70" height="105" uuid="97656dfc-9f98-41cc-940e-ff5fdbaaef78"/>
+				<imageExpression><![CDATA["image_2.png"]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement x="119" y="85" width="592" height="20" uuid="26783ca1-6fd7-4c99-bda4-46a02bd8a07c"/>
+				<textElement textAlignment="Center">
+					<font fontName="Times New Roman" size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{tontine_slogan}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement mode="Opaque" x="119" y="36" width="592" height="49" backcolor="#99CCFF" uuid="5f8f6e46-99ac-4b67-a07b-d3c14335d704"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Dotted" lineColor="#66CCFF"/>
+					<leftPen lineWidth="1.0" lineStyle="Dotted" lineColor="#66CCFF"/>
+					<bottomPen lineWidth="1.0" lineStyle="Dotted" lineColor="#66CCFF"/>
+					<rightPen lineWidth="1.0" lineStyle="Dotted" lineColor="#66CCFF"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="20"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{tontine_nom}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="119" y="189" width="592" height="41" forecolor="#00CCFF" uuid="36dacb2f-a9b7-4e56-8476-b0cac18e25a7"/>
+				<box>
+					<topPen lineWidth="0.5" lineStyle="Dotted"/>
+					<leftPen lineWidth="0.5" lineStyle="Dotted"/>
+					<bottomPen lineWidth="0.5" lineStyle="Dotted"/>
+					<rightPen lineWidth="0.5" lineStyle="Dotted"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="24" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ETAT DE CLOTURE DU CYCLE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="162" y="304" width="85" height="24" uuid="9eb74338-c31f-4d98-a64b-0d30a4eec87b"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<text><![CDATA[Unité d'épargne : ]]></text>
+			</staticText>
+			<textField pattern="#,##0;(#,##0)">
+				<reportElement x="247" y="304" width="147" height="24" uuid="5310652a-5b59-45dd-ba48-80103c80b21f"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cycletontine_unite_emprunt}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="162" y="328" width="95" height="24" uuid="7fa110c8-20fd-4573-bb2c-26145769a703"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<text><![CDATA[Pas de calcul (Jrs) : ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="257" y="328" width="137" height="24" uuid="04a9109d-bb18-4f5d-a16d-b0bcab1ea88f"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{pas_emprunt_valeur}]]></textFieldExpression>
+			</textField>
+			<break>
+				<reportElement x="0" y="492" width="100" height="1" uuid="01ecc0a5-2eec-4300-9c6b-7c7760e90fb7"/>
+			</break>
+			<line>
+				<reportElement x="40" y="299" width="725" height="1" uuid="567249dd-996c-4697-814a-24fbffd0a9bc"/>
+			</line>
+			<staticText>
+				<reportElement x="42" y="270" width="120" height="29" uuid="8804360d-b085-43ab-b6f1-37ea41565daa"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Méthode de calcul]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="162" y="352" width="268" height="24" uuid="825f6bd3-e7f6-436b-8ac2-ac83143c0868"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<text><![CDATA[Durée  : Nombre de jours de l'emprunt / pas de calcul ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="162" y="376" width="289" height="24" uuid="c7e8da48-d76e-4580-b824-166eaba0930a"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<text><![CDATA[Coéf d'épargne  : Montant de l'épargne / unité d'emprunt ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="162" y="400" width="289" height="24" uuid="d801023f-4f00-40b5-bad6-26b552b38e80"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<text><![CDATA[Nombre de point  : Durée  * Coéf ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="162" y="424" width="324" height="24" uuid="bf36b5bf-9a4c-4785-baad-b1cd2b5dbe20"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<text><![CDATA[% Gain   :  (Nbre de point du membre  * 100) / Nbre de point total ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="162" y="448" width="369" height="24" uuid="40d01b0a-1176-4b0b-9bbb-f0b50c5f53c1"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<text><![CDATA[Gain   :  (Pourcentage du gain du membre * Montant interet géneré ) / 100]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="35" splitType="Stretch">
+			<staticText>
+				<reportElement mode="Opaque" x="0" y="0" width="180" height="35" forecolor="#000000" backcolor="#66CCFF" uuid="2c4bf2a1-e381-4a38-9b78-d20dc861b571"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="11"/>
+				</textElement>
+				<text><![CDATA[Membre]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="238" y="0" width="64" height="35" forecolor="#000000" backcolor="#66CCFF" uuid="d1f0f351-7039-449a-92d6-d2824690a483"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="11"/>
+				</textElement>
+				<text><![CDATA[Epargnes]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="302" y="0" width="69" height="35" forecolor="#000000" backcolor="#66CCFF" uuid="3832e490-067d-46a4-ae77-63c35fa3fc21"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="11"/>
+				</textElement>
+				<text><![CDATA[Capital emprunté]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="371" y="0" width="70" height="35" forecolor="#000000" backcolor="#66CCFF" uuid="4f625a5a-b62e-4d30-a616-2a9e774350b4"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="11"/>
+				</textElement>
+				<text><![CDATA[Capital Remboursé]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="441" y="0" width="72" height="35" forecolor="#000000" backcolor="#66CCFF" uuid="c8440c49-756b-47bb-b19c-4573f5853923"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="11"/>
+				</textElement>
+				<text><![CDATA[Interet Remboursé]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="513" y="0" width="73" height="35" forecolor="#000000" backcolor="#66CCFF" uuid="ba34f4f8-b450-4770-8a64-30cb0d4004fb"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="11"/>
+				</textElement>
+				<text><![CDATA[Interet Géneré]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="586" y="0" width="57" height="35" forecolor="#000000" backcolor="#66CCFF" uuid="fa893103-daa5-488f-8a8b-b2a8a3db668b"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="11"/>
+				</textElement>
+				<text><![CDATA[Nbres Points]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="643" y="0" width="57" height="35" forecolor="#000000" backcolor="#66CCFF" uuid="d67ff2dc-4163-4143-b4a1-663e65ecde94"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="11"/>
+				</textElement>
+				<text><![CDATA[% Gain]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="700" y="0" width="102" height="35" forecolor="#000000" backcolor="#66CCFF" uuid="6d00f166-6789-4c6f-a413-fa8ce234e8f2"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="11"/>
+				</textElement>
+				<text><![CDATA[Gain]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="180" y="0" width="58" height="35" forecolor="#000000" backcolor="#66CCFF" uuid="0cf8a467-400d-4fa6-9061-b66b78eef562"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="10"/>
+				</textElement>
+				<text><![CDATA[Gain association]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="25" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="180" height="25" uuid="f7ebfd54-48c4-4e13-be14-52eacf22481d"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{membre_code}+" - "+  $F{membre_nom}+" "+$F{membre_prenom}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0;-#,##0">
+				<reportElement x="238" y="0" width="64" height="25" uuid="a4d9e521-443e-436f-b5f6-74f6c7e596f7"/>
+				<box rightPadding="1">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cassation_montant_epargne}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0;#,##0-">
+				<reportElement x="302" y="0" width="69" height="25" uuid="54a59c75-897b-47a6-ac2e-2422fe4d938e"/>
+				<box rightPadding="1">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cassation_montant_emprunte}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0;#,##0-">
+				<reportElement x="371" y="0" width="70" height="25" uuid="177c29fb-60c1-4337-9f84-26425bc42eb8"/>
+				<box rightPadding="1">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cassation_montant_rembourse}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0;#,##0-">
+				<reportElement x="441" y="0" width="72" height="25" uuid="62513a2b-2644-4308-a1a5-d953014c2420"/>
+				<box rightPadding="1">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cassation_montant_interet}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0;(#,##0)">
+				<reportElement x="513" y="0" width="73" height="25" uuid="843f742e-2cf7-4536-9e3b-ba54d2a5dcb7"/>
+				<box rightPadding="1">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cassation_reste_interet}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00;(#,##0.00)">
+				<reportElement x="586" y="0" width="57" height="25" uuid="bf21a220-94aa-4d89-86ef-96fd4c02d48f"/>
+				<box rightPadding="1">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cassation_nombre_point}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00;(#,##0.00)">
+				<reportElement x="643" y="0" width="57" height="25" uuid="4e231be3-6aed-40c2-8e54-b0e2635176c5"/>
+				<box rightPadding="1">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cassation_pourcentage_gain}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00;(#,##0.00)">
+				<reportElement x="700" y="0" width="102" height="25" uuid="fe7efcb5-e468-4735-b668-8db5a3d428d3"/>
+				<box rightPadding="1">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cassation_montant_gain}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0">
+				<reportElement x="180" y="0" width="58" height="25" uuid="d5c56d81-6b89-4397-ada5-c74d3a1c5dd2"/>
+				<box rightPadding="1">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cassation_gain_tontine}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="85" splitType="Stretch">
+			<staticText>
+				<reportElement mode="Opaque" x="0" y="0" width="180" height="29" forecolor="#000000" backcolor="#66CCFF" uuid="866a56db-79bb-4694-8536-a07939f5ce92"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<text><![CDATA[Totaux]]></text>
+			</staticText>
+			<textField pattern="#,##0;(#,##0)">
+				<reportElement mode="Opaque" x="238" y="0" width="64" height="29" backcolor="#66CCFF" uuid="e322cdf3-c67f-48ae-a55a-195a5dc99a88"/>
+				<box rightPadding="1">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$V{cassation_montant_epargne_1}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0;(#,##0)">
+				<reportElement mode="Opaque" x="302" y="0" width="69" height="29" backcolor="#66CCFF" uuid="7b8fd2ad-c8ca-4568-98ac-55ac77b42c57"/>
+				<box rightPadding="1">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$V{cassation_montant_emprunte_1}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0;(#,##0)">
+				<reportElement mode="Opaque" x="371" y="0" width="70" height="29" backcolor="#66CCFF" uuid="064f7bf5-2d19-45f4-8360-f4f804dc96c9"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$V{cassation_montant_rembourse_1}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0;(#,##0)">
+				<reportElement mode="Opaque" x="441" y="0" width="72" height="29" backcolor="#66CCFF" uuid="28a9d415-48a5-4b60-83de-86bc6969f55d"/>
+				<box rightPadding="1">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$V{cassation_montant_interet_1}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0;(#,##0)">
+				<reportElement mode="Opaque" x="513" y="0" width="73" height="29" backcolor="#66CCFF" uuid="6ceb9be2-bbfc-4cac-b8b6-c7ed1ae91385"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$V{cassation_reste_interet_1}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00;(#,##0.00)">
+				<reportElement mode="Opaque" x="586" y="0" width="57" height="29" backcolor="#66CCFF" uuid="358372d5-08c4-4c7d-81b6-4b857c53c8a7"/>
+				<box rightPadding="1">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$V{cassation_nombre_point_1}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00;(#,##0.00)">
+				<reportElement mode="Opaque" x="643" y="0" width="57" height="29" backcolor="#66CCFF" uuid="e68e860f-6e1f-4aa4-99ae-3fa0b357854f"/>
+				<box rightPadding="1">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$V{cassation_pourcentage_gain_1}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00;(#,##0.00)">
+				<reportElement mode="Opaque" x="700" y="0" width="102" height="29" backcolor="#66CCFF" uuid="5f009af8-460d-4513-b34b-95f3a949c3a9"/>
+				<box rightPadding="1">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$V{cassation_montant_gain_1}]]></textFieldExpression>
+			</textField>
+			<break>
+				<reportElement x="0" y="33" width="100" height="1" uuid="bdba061b-f3bc-4d9e-abea-5b99cbc70c40"/>
+			</break>
+			<subreport>
+				<reportElement positionType="Float" x="0" y="37" width="802" height="18" uuid="ab2bcc1a-511a-45c7-a4ba-8ee3d7fd612a"/>
+				<subreportParameter name="idcycle">
+					<subreportParameterExpression><![CDATA[$P{idcycle}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA["detail_cassation.jasper"]]></subreportExpression>
+			</subreport>
+			<textField pattern="#,##0;(#,##0)">
+				<reportElement mode="Opaque" x="180" y="0" width="58" height="29" backcolor="#66CCFF" uuid="9d213698-2ba5-4117-a1a2-f5abf444be97"/>
+				<box rightPadding="1">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$V{cassation_gain_tontine_1}]]></textFieldExpression>
+			</textField>
+			<break>
+				<reportElement x="0" y="61" width="100" height="1" uuid="621b6d2f-2609-43b1-a7ba-8c67ed88a983"/>
+			</break>
+			<subreport>
+				<reportElement positionType="Float" x="0" y="66" width="802" height="13" uuid="3d66f0c8-5b99-459f-a2f8-bd8705b50471"/>
+				<subreportParameter name="idcycle">
+					<subreportParameterExpression><![CDATA[$P{idcycle}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="SUBREPORT_DIR"/>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA["etat-redevance.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</summary>
+</jasperReport>

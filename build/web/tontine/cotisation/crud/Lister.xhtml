@@ -1,0 +1,239 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <h:form id="ListerForm"
+            style="padding-top: 170px;">
+
+        <h:panelGroup rendered="#{!cotisationController.visible}">
+
+            <p:dataTable id="datatable"
+                         value="#{cotisationController.list_beneficiaires}"
+                         var="item"
+                         rowIndexVar="index"
+                         >
+                <f:facet name="header">
+                    <h:outputText value="#{langues.programme}" />
+                </f:facet>
+                <p:columnGroup type="header">
+                    <p:row>
+                        <p:column headerText="#{langues.Numero}" style="width: 8%" />
+                        <p:column headerText="#{langues.code}" style="width: 10%" />
+                        <!--<p:column headerText="#{langues.nom}" style="width: 20%" />
+                        <p:column headerText="#{langues.membre}" style="width: 38%" />-->
+                        <p:column headerText="#{langues.doit_bouffer}" style="width: 12%" />
+                        <p:column headerText="#{langues.a_bouffer}" style="width: 12%" />
+                    </p:row>
+                </p:columnGroup>
+
+                <p:subTable value="#{item.listbenef}"
+                            var="itemBenef" >
+                    <f:facet name="header">
+                        <div style="width: 99%; padding: 5px; background: rgb(230,230,230);">
+                            <h:outputText value="#{item.t.idrencontre.nomfr}" />
+                            <h:outputText value=" (Terminé)"
+                                          rendered="#{item.t.effectue}" />
+                            <div style="float: right;">
+                                <h:outputText value="#{langues.nbre_beneficiaire} : #{cotisationController.get_nbre_beneficiaire_programme(item.t)}" />
+                                <h:outputText value="  :::  " />
+                                #{langues.relicat}  : 
+                                <h:outputText value="#{cotisationController.calcul_relicat(item.t)}" >
+                                    <f:convertNumber maxFractionDigits="0" />
+                                </h:outputText>
+                            </div>
+                        </div>
+                    </f:facet>
+
+                    <p:column>
+                        <h:outputText value="#{index + 1}" />
+                    </p:column>
+                    <p:column>
+                        <h:outputText value="#{itemBenef.idmain.codemain}" />
+                    </p:column>
+                    <p:column>
+                        <h:outputText value="#{cotisationController.calcul_montant_doit_bouffer_main(itemBenef.idmain)}" >
+                            <f:convertNumber maxFractionDigits="0" />
+                        </h:outputText>
+                    </p:column>
+                    <p:column>
+                        <h:outputText value="#{itemBenef.montant}" >
+                            <f:convertNumber maxFractionDigits="0" />
+                        </h:outputText>
+                    </p:column>
+                </p:subTable>
+
+            </p:dataTable>
+
+        </h:panelGroup>
+
+
+        <h:panelGroup rendered="#{cotisationController.visible}">
+
+            <h:panelGrid columns="1" style="width: 100%" >
+
+                <p:panel style="width: 100%">
+                    <f:facet name="header">
+                        <center>
+                            <h:outputText value="#{langues.description}" style="float: left;" />
+                            <p:commandButton value="#{langues.terminer_seance}"
+                                             style="float: right;"
+                                             rendered="#{!cotisationController.tontiner_is_termine()}"
+                                             actionListener="#{cotisationController.termine_seance()}"
+                                             update=":ListerForm,:actionForm,:CotiserDlgForm,:growl">
+                                <p:confirm header="#{langues.ConfirmationHeader}"
+                                           message="#{langues.confirm_terminer}" icon="ui-icon-alert"/>
+                            </p:commandButton>
+
+                            <p:commandButton value="#{langues.print_recu}"
+                                             ajax="false"
+                                             style="float: right;"
+                                             actionListener="#{cotisationController.print_recu()}"
+                                             rendered="#{cotisationController.tontiner_is_termine()}"/>
+
+                            <p:commandButton value="#{langues.print_pv}"
+                                             ajax="false"
+                                             style="float: right;"
+                                             actionListener="#{cotisationController.print_pv()}"
+                                             rendered="#{cotisationController.tontiner_is_termine()}" />
+                        </center>
+                    </f:facet>
+
+                    <h:panelGrid columns="1" width="100%">
+                        <h:panelGroup>
+                            <h:outputLabel value="#{langues.etat}"/>
+                            <div style="border: 1px solid grey; padding: 6px; background-color: #eee;">
+                                <h:outputText value="#{cotisationController.tontiner.effectue == true ? langues.termine : langues.en_cours}" />
+                            </div>
+                        </h:panelGroup>
+                    </h:panelGrid>
+
+                </p:panel>
+
+                <br />
+                <h:panelGroup>
+                    <h:panelGrid columns="2">
+
+                        <p:dataTable value="#{cotisationController.list_beneficiairesTontine}"
+                                     var="item0">
+                            <f:facet name="header">
+                                <h:outputText value="#{langues.les_beneficiaires}" />
+                            </f:facet>
+                            <p:column headerText="#{langues.code}" style="width: 12%" >
+                                <h:outputText value="#{item0.idmain.codemain}" />
+                            </p:column>
+                            <p:column headerText="#{langues.doit_beneficier}" style="width: 16%; text-align: right;" >
+                                <h:outputText value="#{cotisationController.calcul_montant_doit_bouffer_main(item0.idmain)}" >
+                                    <f:convertNumber maxFractionDigits="0" />
+                                </h:outputText>
+                            </p:column>
+                            <p:column headerText="#{langues.a_bouffer}" style="width: 16%; text-align: right;" >
+                                <h:outputText value="#{cotisationController.calcul_montant_a_bouffer_main(item0)}" >
+                                    <f:convertNumber maxFractionDigits="0" />
+                                </h:outputText>
+                            </p:column>
+                        </p:dataTable>
+
+                    </h:panelGrid>
+                </h:panelGroup>
+
+                <hr />
+
+                <p:dataTable value="#{cotisationController.list_cotisationTontine}"
+                             var="item"
+                             paginator="true"
+                             paginatorPosition="bottom">
+                    <f:facet name="header">
+                        <h:outputText value="#{langues.cotisations}" />
+                    </f:facet>
+
+                    <!-- Definir les colones en  divisant la colone a cotise avec les sous colones lui-meme et appui -->
+                    <p:columnGroup type="header">
+                        <p:row>
+                            <p:column headerText="#{langues.nom}" rowspan="2" style="width: 25%" ></p:column>
+                            <p:column headerText="#{langues.doit_cotiser}" rowspan="2" style="width: 20%" ></p:column>
+                            <p:column headerText="#{langues.a_cotiser}" colspan="2" style="width: 40%" ></p:column>
+                            <p:column headerText="#{langues.OperationHeading}" rowspan="2" style="width: 15%"></p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column headerText="#{langues.lui_meme}" style="width: 50%"></p:column>
+                            <p:column headerText="#{langues.Assistance}" style="width: 50%"></p:column>
+                        </p:row>
+                    </p:columnGroup>
+
+
+                    <p:column>
+                        <h:outputText value="#{item.idmain.nom}" />
+                    </p:column>
+                    <p:column >
+                        <h:outputText value="#{item.idmain.montantsouscrit}" >
+                            <f:convertNumber maxFractionDigits="0" />
+                        </h:outputText>
+                    </p:column>
+                    <p:column>
+                        <h:outputText value="#{item.ACotise}" >
+                            <f:convertNumber maxFractionDigits="0" />
+                        </h:outputText>
+                    </p:column>
+                    <p:column>
+                        <h:outputText value="#{cotisationController.calcul_montant_aide(item.idmain)}" >
+                            <f:convertNumber maxFractionDigits="0" />
+                        </h:outputText>
+                    </p:column>
+                    <p:column headerText="#{langues.OperationHeading}" style="width: 25%">
+                        <p:commandButton icon="ui-icon-trash"
+                                         title="#{langues.supprimer}"
+                                         disabled="#{cotisationController.tontiner_is_termine()}"
+                                         actionListener="#{cotisationController.delete(item)}"
+                                         update=":ListerForm,:growl,:CotiserDlgForm">
+                            <p:confirm header="#{langues.ConfirmationHeader}"
+                                       message="#{langues.ConfirmDeleteMessage}" icon="ui-icon-alert"/>
+                        </p:commandButton>
+                    </p:column>
+
+                    <p:columnGroup type="footer">
+                        <p:row>
+                            <p:column footerText="#{langues.totaux}" />
+                            <p:column style="text-align: right;">
+                                <f:facet name="footer">
+                                    <h:outputText value="#{cotisationController.calcul_total_doit()}">
+                                        <f:convertNumber maxFractionDigits="0" />
+                                    </h:outputText> / 
+                                    <h:outputText value="#{cotisationController.calcul_total_doit_rencontre()}">
+                                        <f:convertNumber maxFractionDigits="0" />
+                                    </h:outputText>
+                                </f:facet>
+                            </p:column>
+                            <p:column style="text-align: right;">
+                                <f:facet name="footer">
+                                    <h:outputText value="#{cotisationController.calcul_total_lui_meme()}">
+                                        <f:convertNumber maxFractionDigits="0" />
+                                    </h:outputText>
+                                </f:facet>
+                            </p:column>
+                            <p:column style="text-align: right;">
+                                <f:facet name="footer">
+                                    <h:outputText value="#{cotisationController.calcul_total_assistance()}">
+                                        <f:convertNumber maxFractionDigits="0" />
+                                    </h:outputText>
+                                </f:facet>
+                            </p:column>
+                        </p:row>
+                    </p:columnGroup>
+
+                </p:dataTable>
+
+
+
+
+            </h:panelGrid>
+
+        </h:panelGroup>
+
+    </h:form>
+
+</ui:composition>
+

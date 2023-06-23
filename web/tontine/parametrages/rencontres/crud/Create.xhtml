@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog showEffect="scale" hideEffect="scale" 
+                  id="CreateDlg" 
+                  widgetVar="CreateDialog" 
+                  modal="true" 
+                  resizable="false" 
+                  appendTo="@(body)" 
+                  header="#{langues.CreateRencontreTitle}" 
+                  closeOnEscape="true">
+
+            <h:form id="CreateForm">
+
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" columnClasses="column" 
+                                 style="width: 600px; height:100px">
+
+                        <p:outputLabel value="#{langues.nom_francais}" for="nom" />
+                        <p:inputText style=" width: 400px"  id="nom" 
+                                     value="#{rencontreCotisationController.rencontre.nomfr}" 
+                                     size="254" maxlength="254"/>
+                                                
+                        <p:outputLabel value="#{langues.nom_anglais}" for="nom1" />
+                        <p:inputText style=" width: 400px"  id="nom1" 
+                                     value="#{rencontreCotisationController.rencontre.nomen}" 
+                                     size="254" maxlength="254"/>
+                        
+                        <p:outputLabel for="button" value="Date Rencontre" />
+                        <p:calendar id="button" pattern="dd/MM/yyyy" 
+                                    value="#{rencontreCotisationController.rencontre.daterencontre}" 
+                                    showOn="button" navigator="true" />
+                    </p:panelGrid>
+                    
+                    <p:separator/>
+                    
+                    <p:commandButton style="float: right" 
+                                     actionListener="#{rencontreCotisationController.save()}" 
+                                     value="#{langues.Save}" 
+                                     update="display,:ListForm:datalist,:growl" >
+                        <p:confirm header="#{langues.ConfirmationHeader}" message="#{langues.ConfirmCreateMessage}" icon="ui-icon-alert"/>
+                    </p:commandButton>
+
+                    <p:commandButton style="float: left" value="#{langues.Cancel}" onclick="PF('CreateDialog').hide()"/>
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition>
+
+        <p:dialog showEffect="scale" hideEffect="scale" id="DepenseCreateDlg" widgetVar="DepenseCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="#{langues.CreateDepenseTitle}" closeOnEscape="true">
+
+            <h:form id="DepenseCreateForm">
+
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" style="width: 700px; height:400px; border: solid 0.5px ;overflow: auto" columnClasses="column">
+
+                        <p:outputLabel value="#{langues.rencontre}" for="rencontre" />
+                        <p:selectOneMenu style=" width: 200px"  id="rencontre" value="#{depenseController.rencontre}" required="true" requiredMessage="#{langues.mois} #{langues.requis}" converter="rencontreConverter" filter="true">
+                            <f:selectItem itemLabel="#{langues.SelectOneMessage}"/>
+                            <f:selectItems value="#{depenseController.rencontres}"
+                                           var="rencontre"
+                                           itemValue="#{rencontre}"
+                                           itemLabel="#{loginController.language eq 'en' ? rencontre.nomen : rencontre.nomfr}"/>                                                
+                            <p:ajax  update="button" listener="#{depenseController.updateDate()}"/>
+                        </p:selectOneMenu>                        
+
+                        <p:outputLabel for="button" value="Date" />
+                        <p:calendar  id="button" pattern="dd/MM/yyyy" disabled="true" value="#{depenseController.depense.date}" showOn="button" />
+
+                        <p:outputLabel value="#{langues.rubriquecaisse}" for="rubrique" />
+                        <p:selectOneMenu style=" width: 200px"  id="rubrique" value="#{depenseController.depense.idrubriquecaisse}" required="true" requiredMessage="#{langues.rubriquecaisse} #{langues.requis}" converter="rubriquecaisseConverter" filter="true">
+                            <f:selectItem itemLabel="#{langues.SelectOneMessage}"/>
+                            <f:selectItems value="#{depenseController.rubriquecaisses}"
+                                           var="rubrique"
+                                           itemValue="#{rubrique}"
+                                           itemLabel="#{loginController.language eq 'en' ? rubrique.nomen : rubrique.nomfr}"/>                                           
+                        </p:selectOneMenu>                             
+                        
+                        <p:outputLabel value="Motif de la dépense" for="motif" />
+                        <p:inputTextarea style=" width: 500px"  rows="5" cols="100" id="motif" value="#{depenseController.depense.observation}"/>
+
+                        <p:outputLabel style=" width: 70px" value="#{langues.montant}" for="num" />
+                        <p:inputText id="num" value="#{depenseController.depense.montant}"/>
+
+                        
+                    </p:panelGrid>
+                    
+                    <p:separator/>
+                    
+                    <p:commandButton style="float: right" actionListener="#{depenseController.save()}" value="#{langues.Save}" update="display,:DepenseListForm:datalist,:growl" oncomplete="PF('DepenseCreateDialog').hide()">
+                        <p:confirm header="#{langues.ConfirmationHeader}" message="#{langues.ConfirmCreateMessage}" icon="ui-icon-alert"/>
+                    </p:commandButton>
+
+                    <p:commandButton style="float: left" value="#{langues.Cancel}" onclick="PF('DepenseCreateDialog').hide()"/>
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

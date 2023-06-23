@@ -1,0 +1,118 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <p:dialog id="CotiserMainDlg"
+              widgetVar="CotiserMainDialog"
+              showEffect="scale" 
+              hideEffect="scale"
+              modal="true"
+              width="520"
+              resizable="true" 
+              appendTo="@(body)" 
+              header="#{langues.cotiser}" 
+              closeOnEscape="true" > 
+
+        <h:form id="CotiserMainDlgForm">
+            <h:panelGrid columns="1"
+                         style="width: 100%;">
+                <center>
+
+                    <h:panelGroup>
+                        <h:outputLabel value="#{langues.main}" for="s_main" />
+                        <p:inputText value="#{cotisationController.cotisationTontine.idmain.nom}"
+                                     disabled="true"
+                                     id="s_main"/>
+                    </h:panelGroup>
+
+                    <hr />
+
+                    <h:panelGrid columns="2" 
+                                 style="width: 100%">
+                        <h:panelGroup>
+                            <h:outputLabel for="mtn_doit" value="#{langues.doit_cotiser}" />
+                            <h:inputText id="mtn_doit"
+                                         value="#{cotisationController.cotisationTontine.doitCotiser}"
+                                         style="text-align: right;"
+                                         disabled="true">
+                                <f:convertNumber maxFractionDigits="0" />
+                            </h:inputText>
+                        </h:panelGroup>
+
+
+                        <h:panelGroup>
+                            <h:outputLabel for="mtn_a" value="#{langues.a_cotise}" />
+                            <h:inputText id="mtn_a"
+                                         value="#{cotisationController.cotisationTontine.ACotise}"
+                                         style="text-align: right;" >
+                                <f:convertNumber maxFractionDigits="0" />
+                            </h:inputText>
+                        </h:panelGroup>
+                    </h:panelGrid>
+                    
+                    <p:panel>
+                        <f:facet name="header">
+                            <h:outputText value="#{langues.appui_financier}"
+                                          style="float: left" />
+                            
+                            <p:commandButton value="#{langues.ajouter}"
+                                             actionListener="#{cotisationController.prepareAddAide()}"
+                                             style="float: right;"
+                                             update=":growl,:AideCotisationDlgForm"/>
+                        </f:facet>
+                        <p:dataTable value="#{cotisationController.define_list_aides_local(cotisationController.cotisationTontine.idmain)}"
+                                     var="item"
+                                     rows="5"
+                                     paginator="true">
+                            <p:column headerText="#{langues.membre}">
+                                <h:outputText value="#{item.nomaide}" />
+                            </p:column>
+                            <p:column headerText="#{langues.montant}">
+                                <h:outputText value="#{item.montant}">
+                                    <f:convertNumber maxFractionDigits="0" />
+                                </h:outputText>
+                            </p:column>
+                            <p:column headerText="#{langues.OperationHeading}" >
+                                <p:commandButton icon="ui-icon-trash"
+                                                 actionListener="#{cotisationController.deleteAide(item)}"
+                                                 update=":CotiserMainDlgForm" />
+                            </p:column>
+                            <p:columnGroup type="footer">
+                                <p:row>
+                                    <p:column footerText="#{langues.totaux}" />
+                                    <p:column >
+                                        <f:facet name="footer">
+                                            <h:outputText value="">
+                                                <f:convertNumber />
+                                            </h:outputText>
+                                        </f:facet>
+                                    </p:column>
+                                </p:row>
+                            </p:columnGroup>
+                        </p:dataTable>
+                    </p:panel>
+
+                </center>
+                <p:separator />
+
+                <h:panelGroup>
+                    <center>
+                        <p:commandButton value="#{langues.terminer}"
+                                         actionListener="#{cotisationController.termine_details()}"
+                                         update=":CotiserDlgForm,:growl">
+
+                        </p:commandButton>
+                    </center>
+                </h:panelGroup>
+
+            </h:panelGrid>
+        </h:form>
+
+    </p:dialog>
+
+</ui:composition>
+

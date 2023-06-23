@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition>
+
+        <p:dialog showEffect="scale" hideEffect="scale" 
+                  id="EmpruntCreateDlg" widgetVar="EmpruntCreateDialog" 
+                  modal="true" resizable="false" appendTo="@(body)" 
+                  header="#{langues.CreateEmpruntTitle}" closeOnEscape="true">
+
+            <h:form id="EmpruntCreateForm">
+
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" style="width: 700px; height:400px; border: solid 0.5px ;overflow: auto" columnClasses="column">
+
+                        <p:outputLabel value="Pourcentage d'avalise"/>
+                        <p:outputLabel value=">= à #{empruntController.cycletontine.tauxavaliste} % de l'épargne de l'avaliste"/>
+
+                        <p:outputLabel value="Rencontre d'emprunt" for="rencontre"/>
+                        <p:selectOneMenu id="rencontre" value="#{empruntController.rencontre}" filter="true" converter="rencontreConverter">
+                            <f:selectItem itemLabel="#{langues.SelectOneMessage}"/>
+                            <f:selectItems value="#{empruntController.rencontres}" var="item" itemLabel="#{item.nomfr}" itemValue="#{item}"/>
+                            <p:ajax update="date_button" listener="#{empruntController.updateDate()}"/>
+                        </p:selectOneMenu>
+
+                        <p:outputLabel value="#{langues.membre}" for="avaliste"/>
+                        <p:selectOneMenu style=" width: 200px"  id="avaliste" value="#{empruntController.emprunt.idmembre}" required="true" requiredMessage="#{langues.membre} #{langues.requis}" filter="true" converter="membrecycleConverter">
+                            <f:selectItem itemLabel="#{langues.SelectOneMessage}"/>
+                            <f:selectItems value="#{empruntController.membrecycles}"
+                                           var="mc"
+                                           itemValue="#{mc}"
+                                           itemLabel="#{mc.idmembre.nom} #{mc.idmembre.prenom}"/>                                           
+                        </p:selectOneMenu> 
+
+                        <p:outputLabel value="#{langues.typeinteret}" for="typeinteret" />
+                        <p:selectOneMenu style=" width: 500px"  id="typeinteret" value="#{empruntController.emprunt.idtypeinteret}" required="true" requiredMessage="#{langues.typeinteret} #{langues.requis}" converter="typeinteretConverter"  filter="true">
+                            <f:selectItem itemLabel="#{langues.SelectOneMessage}"/>
+                            <f:selectItems value="#{empruntController.typeinterets}"
+                                           var="typeinteret"
+                                           itemValue="#{typeinteret}"
+                                           itemLabel="#{loginController.language eq 'en' ? typeinteret.nomEn : typeinteret.nomFr}"/>                                                                   
+                        </p:selectOneMenu>                        
+
+                        <p:outputLabel for="date_button" value="Date Emprunt" />
+                        <p:calendar disabled="true" id="date_button" pattern="dd/MM/yyyy" value="#{empruntController.emprunt.dateemprunt}" showOn="button" />
+
+                        <p:outputLabel style=" width: 70px" value="#{langues.montant}" for="num"/>
+                        <p:inputText id="num" value="#{empruntController.emprunt.montantemp}"/>
+
+                        <p:outputLabel style=" width: 50px" value="#{langues.taux}" for="taux"/>
+                        <p:inputText id="taux" value="#{empruntController.emprunt.taux}"/>
+
+                        <p:outputLabel value="#{langues.observation}" for="observation" />
+                        <p:inputTextarea style=" width: 500px"  rows="3" cols="70" id="observation" value="#{empruntController.emprunt.observtaion}" title="#{langues.observation}" maxlength="254"/>
+
+                        <p:outputLabel value="Choisir les avalistes"/>
+                        <p:commandButton value="Choisir" update=":EmpruntSelectAvalisteCreateForm" oncomplete="PF('EmpruntSelectAvalisteDialog').show()" actionListener="#{empruntController.prepareAvalise()}" />
+
+                    </p:panelGrid>
+
+                    <p:separator/>
+
+                    <center>
+                        <p:commandButton value="#{langues.Cancel}" onclick="PF('EmpruntCreateDialog').hide()"/>
+
+                        <p:commandButton actionListener="#{empruntController.save()}" value="#{langues.Save}" update="display,:EmpruntListForm:datalist,:growl ,:EmpruntListForm">
+                            <p:confirm header="#{langues.ConfirmationHeader}" message="#{langues.ConfirmCreateMessage}" icon="ui-icon-alert"/>
+                        </p:commandButton>
+                    </center>
+
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

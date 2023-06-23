@@ -1,0 +1,92 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <f:metadata>
+        <f:event type="preRenderView" listener="#{loginController.watcher()}" />
+    </f:metadata> 
+
+    <!-- BEGIN SIDEBAR -->
+    <div class="sidebar-scroll">
+        <div id="sidebar" class="nav-collapse collapse">
+
+            <!-- BEGIN RESPONSIVE QUICK SEARCH FORM -->
+            <div class="navbar-inverse">
+                <form class="navbar-search visible-phone">
+                    <input type="text" class="search-query" placeholder="Search" />
+                </form>
+            </div>
+            <!-- END RESPONSIVE QUICK SEARCH FORM -->
+            <!-- BEGIN SIDEBAR MENU -->
+            <ul class="sidebar-menu">
+
+
+
+                <!--Accueil-->
+                <li class="sub-menu" id="menuIndex">
+                    <a class="" href="#{request.contextPath}/acceuil.html">
+                        <i class="icon-home"></i>
+                        <span>#{langues.accueil}</span>
+                    </a>
+                </li>
+
+                <!--Securité-->
+                <li class="sub-menu" id="rencontre_">
+                    <a href="javascript:;" class="">
+                        <i class="icon-legal"></i>
+                        <span>#{langues.rencontre}</span>
+                        <span class="arrow"></span>
+                    </a>
+                    <ul class="sub nav-second-level">
+
+                        <li><a class="" href="#{request.contextPath}/operation/rencontre/index.html">#{langues.enregistrement}</a></li>
+
+                        <li><a class="" href="#{request.contextPath}/operation/ouverture-calculinteret/List.html">#{langues.calcul_interet}</a></li>
+                        <li><a class="" href="#{request.contextPath}/operation/ouverture-fichepresence/List.html">#{langues.presence}</a></li>
+                                                 
+                        <li><a class="" href="#{request.contextPath}/operation/fermetture-rencontre/List.html">#{langues.fermetture_rencontre}</a></li>
+
+                        <li><a class="" href="#{request.contextPath}/operation/situation_financiere_rencontre/index.html">#{langues.situation_financiere_rencontre}</a></li>
+                        <li><a class="" href="#{request.contextPath}/operation/situation_financiere_cycle/index.html">#{langues.situation_financiere_cycle}</a></li>
+                    </ul>
+
+                </li>
+                
+                
+                <li class="sub-menu" id="rencontre_recette">
+                    <a href="javascript:;" class="">
+                        <i class="icon-legal"></i>
+                        <span>#{langues.recettes}</span>
+                        <span class="arrow"></span>
+                    </a>
+                    <ul class="sub nav-second-level">
+                        
+                        <li><a class="" href="#{request.contextPath}/operation/recette/index.html">#{langues.autre_recettes}</a></li>   
+                        <li><a class="" href="#{request.contextPath}/operation/payement-sanction/index.html">#{langues.penalite_retard}</a></li> 
+                        <li><a class="" href="#{request.contextPath}/operation/caisse/index.html">#{langues.autre_operation_caisse}</a></li>                                                                        
+                                                                             
+                    </ul>
+
+                </li>
+                
+                <li class="sub-menu" id="rencontre_depenses">
+                    <a href="#{request.contextPath}/operation/depense/index.html" class="">
+                        <i class="icon-legal"></i>
+                        <span>#{langues.depenses}</span>
+                        <span class="arrow"></span>
+                    </a>
+                    <ul class="sub nav-second-level">
+
+                      <!--<li><a class="" href="#{request.contextPath}/operation/depense/index.html">#{langues.autres_depenses}</a></li>-->                                                  
+
+                    </ul>
+
+                </li>
+
+            </ul>
+            <!-- END SIDEBAR MENU -->
+        </div>
+    </div>
+    <!-- END SIDEBAR -->
+
+</ui:composition>

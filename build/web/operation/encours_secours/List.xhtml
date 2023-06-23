@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition template="/SystemTemplate/SecoursTemplate.xhtml">
+
+        <ui:define name="title">
+            <h:outputText value="Generation la situation du secours"></h:outputText>
+        </ui:define>
+
+        <ui:define name="content">
+
+            <h:form id="PrivilegeListForm">
+                <p:messages id="msgErreur" closable="true"/>
+                <p:growl id="growl" showDetail="true"/>
+
+                <center>
+                    <br/>
+
+                    <p:panelGrid columns="2" columnClasses="column">
+
+                        <p:outputLabel value="Rencontre"/>
+                        <p:selectOneMenu value="#{situationsecoursController.rencontre}" required="true" converter="rencontreConverter">
+                            <f:selectItem itemLabel="#{langues.choisir}"/>
+                            <f:selectItems value="#{situationsecoursController.rencontres}" var="item" itemLabel="#{item.nomfr}" itemValue="#{item}"/>
+                            <p:ajax update="datalist1,daterencontre,calcul_interet,re-initialise" listener="#{situationsecoursController.updateData()}"/>
+                        </p:selectOneMenu>
+
+                        <p:outputLabel for="daterencontre" value="Date de rencontre"/>
+                        <p:calendar disabled="true" id="daterencontre" value="#{situationsecoursController.rencontre.daterencontre}">
+                            <p:ajax/>
+                        </p:calendar>
+
+                    </p:panelGrid>
+
+                </center>
+
+                <p:separator/>
+
+                <center>
+                    <p:commandButton disabled="#{situationsecoursController.showInitBtn}" actionListener="#{situationsecoursController.generer()}" id="calcul_interet" value="Génerer la situation de secours" update="datalist1 , growl,re-initialise,calcul_interet"/>
+                    <p:commandButton disabled="#{situationsecoursController.showReinitialise1}" actionListener="#{situationsecoursController.reinitialize()}" id="re-initialise" value="Ré-initiliaser" update="datalist1,growl,calcul_interet,re-initialise"/>
+                </center>
+
+                <p:dataTable id="datalist1" value="#{situationsecoursController.encoursSecourses}" var="item"
+                             editable="true"
+                             editMode="cell"
+                             paginator="true"
+                             rowKey="#{item.idEncoursSecours}"
+                             rows="10"
+                             rowsPerPageTemplate="10,20,30,40,50"
+                             style="margin-top:1% !important; text-align:left; margin-left:5%; margin-right: 5%; font-weight: bold; font-style: oblique;"
+                             rowIndexVar="index"
+                             widgetVar="fonctionTable"
+                             draggableColumns="true"
+                             resizableColumns="true">
+
+                    <f:facet name="header"> 
+                        <h:outputText value="Tableau de la situation de secours"/>
+                    </f:facet> 
+
+                    <p:column style="width: 35%" filterBy="#{item.idmembre.idmembre.nom} #{item.idmembre.idmembre.prenom}">
+                        <f:facet name="header">
+                            <h:outputText value="#{langues.membre}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.idmembre.idmembre.code} #{item.idmembre.idmembre.nom} #{item.idmembre.idmembre.prenom}"/>
+                    </p:column>
+
+                    <p:column style="" filterBy="#{item.encours}">
+                        <f:facet name="header">
+                            <h:outputText value="Encours"/>
+                        </f:facet>
+                        <h:outputText value="#{item.encours}">
+                            <f:convertNumber/>
+                        </h:outputText>
+                    </p:column>
+
+                    <p:column style="" filterBy="#{item.montantCotise}">
+                        <f:facet name="header">
+                            <h:outputText value="Montant cotisé"/>
+                        </f:facet>
+                        <h:outputText value="#{item.montantCotise}">
+                            <f:convertNumber/>
+                        </h:outputText>
+                    </p:column> 
+
+                    <p:column style="" filterBy="#{item.reste}">
+                        <f:facet name="header">
+                            <h:outputText value="Reste"/>
+                        </f:facet>
+                        <h:outputText value="#{item.reste}">
+                            <f:convertNumber/>
+                        </h:outputText>
+                    </p:column>
+
+                    <p:column style="width: 15%" >
+                        <f:facet name="header">
+                            <h:outputText value="Observation"/>
+                        </f:facet>
+                        <h:outputText value="#{item.observation}"/>                                
+                    </p:column>                                                
+
+                </p:dataTable>
+
+            </h:form>
+
+        </ui:define>
+
+        <ui:define name="scriptCollapse">
+            <script>
+                var el = document.getElementById("secours_");
+                el.setAttribute("class", "sub-menu active");
+            </script>
+        </ui:define>
+
+    </ui:composition>
+
+</html>

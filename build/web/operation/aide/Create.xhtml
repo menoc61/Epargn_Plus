@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition>
+
+        <p:dialog showEffect="scale" height="600px" 
+                  width="1000px" style="overflow: auto" 
+                  hideEffect="scale" id="AideCreateDlg" 
+                  widgetVar="AideCreateDialog" modal="true"
+                  resizable="false" appendTo="@(body)" 
+                  header="#{langues.CreateAideTitle}" 
+                  closeOnEscape="true">
+
+            <h:form id="AideCreateForm">
+
+                <center>
+
+                    <h:panelGroup id="display">
+                        <h:panelGrid columns="2" columnClasses="column">
+
+                            <p:outputLabel value="#{langues.rencontre}" for="rencontre" />
+                            <p:selectOneMenu style=" width: 200px"  id="rencontre" value="#{aideController.rencontre}" required="true" requiredMessage="#{langues.mois} #{langues.requis}" converter="rencontreConverter" filter="true">
+                                <f:selectItem itemLabel="#{langues.SelectOneMessage}"/>
+                                <f:selectItems value="#{aideController.rencontres}"
+                                               var="rencontre"
+                                               itemValue="#{rencontre}"
+                                               itemLabel="#{loginController.language eq 'en' ? rencontre.nomen : rencontre.nomfr}"/>                                                
+                                <p:ajax update="button" listener="#{aideController.updateDate()}"/>
+                            </p:selectOneMenu>                        
+
+                            <p:outputLabel for="button" value="Date Aide" />
+                            <p:calendar  id="button" pattern="dd/MM/yyyy" disabled="true" value="#{aideController.aide.dateaide}" showOn="button" />
+
+                            <p:outputLabel value="#{langues.beneficiaire}" for="membre" />
+                            <p:selectOneMenu style=" width: 200px"  id="membre" value="#{aideController.aide.idmembre}" required="true" requiredMessage="#{langues.membre} #{langues.requis}" converter="membrecycleConverter" filter="true">
+                                <f:selectItem itemLabel="#{langues.SelectOneMessage}"/>
+                                <f:selectItems value="#{aideController.membrecycles}"
+                                               var="membrecycle"
+                                               itemValue="#{membrecycle}"
+                                               itemLabel="#{membrecycle.idmembre.nom} #{membrecycle.idmembre.prenom}"/>                                           
+                            </p:selectOneMenu>
+
+                            <p:outputLabel value="#{langues.motifaide}" for="motifaide" />
+                            <p:selectOneMenu style=" width: 500px"  id="motifaide" value="#{aideController.aide.idmotifaide}" required="true" requiredMessage="#{langues.motifaide} #{langues.requis}" converter="motifaideConverter"  filter="true">
+                                <f:selectItem itemLabel="#{langues.SelectOneMessage}"/>
+                                <f:selectItems value="#{aideController.motifaides}"
+                                               var="motifaide"
+                                               itemValue="#{motifaide}"
+                                               itemLabel="#{loginController.language eq 'en' ? motifaide.nomen : motifaide.nomfr}"/>                                                                  
+                            </p:selectOneMenu>                        
+
+                            <p:outputLabel style=" width: 70px" value="#{langues.montant}" for="montant" />
+                            <p:inputText id="montant" value="#{aideController.aide.montantaide}">
+                                <p:ajax event="keyup" update="datalist" listener="#{aideController.updatePartage()}"/>
+                            </p:inputText>
+                            
+                            <p:outputLabel style=" width: 70px" value="Main lévée" for="main_levee" />
+                            <p:inputText id="main_levee" value="#{aideController.aide.montantMaintLevee}">
+                                <p:ajax event="keyup" update="datalist" listener="#{aideController.updatePartage()}"/>
+                            </p:inputText>
+
+                            <p:outputLabel value="#{langues.observation}" for="observation" />
+                            <p:inputTextarea style="width: 500px"  rows="7" cols="70" id="observation" value="#{aideController.aide.observation}" title="#{langues.observation}" maxlength="254"/>
+
+                        </h:panelGrid>
+
+                        <p:separator/>
+
+                        <p:dataTable id="datalist"
+                                     value="#{aideController.aideMembres}"
+                                     var="item"
+                                     paginator="true"
+                                     rows="10"
+                                     style="word-wrap: break-word; margin-top:1% !important; text-align:left; margin-left:5%; margin-right: 5%; font-weight: bold; font-style: oblique;"
+                                     rowIndexVar="index"
+                                     rowsPerPageTemplate="10,20,30,40,50"                                    
+                                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}">
+                            
+                            <f:facet name="header"> 
+                                <h:outputText value="Fiche de partage"/>
+                            </f:facet> 
+
+                            <p:column style="width: 10% !important;">
+                                <f:facet name="header">
+                                    <h:outputText value="#{langues.Numero}"/>
+                                </f:facet>
+                                <h:outputText value="#{index+1}"/>
+                            </p:column>
+
+                            <p:column  style=" width: 20%" filterBy="#{item.idmembre.idmembre.code} #{item.idmembre.idmembre.nom}">
+                                <f:facet name="header">
+                                    <h:outputText value="#{langues.membre}"/>
+                                </f:facet>
+                                <h:outputText value="#{item.idmembre.idmembre.code} - #{item.idmembre.idmembre.nom} #{item.idmembre.idmembre.prenom}"/>
+                            </p:column>
+                            
+                            <p:column style=" width: 10%">
+                                <f:facet name="header">
+                                    <h:outputText value="Montant secours"/>
+                                </f:facet>
+                                <h:outputText value="#{item.montant}">
+                                    <f:convertNumber/>
+                                </h:outputText>
+                            </p:column>
+                            
+                            <p:column style=" width: 10%">
+                                <f:facet name="header">
+                                    <h:outputText value="Main levée"/>
+                                </f:facet>
+                                <h:outputText value="#{item.montantMainLevee}">
+                                    <f:convertNumber/>
+                                </h:outputText>
+                            </p:column>
+
+                        </p:dataTable>
+
+                        <p:separator/>
+
+                        <p:commandButton actionListener="#{aideController.save()}" value="#{langues.Save}" update="display,:AideListForm:datalist,:growl" oncomplete="PF('AideCreateDialog').hide()">
+                            <p:confirm header="#{langues.ConfirmationHeader}" message="#{langues.ConfirmCreateMessage}" icon="ui-icon-alert"/>
+                        </p:commandButton>
+
+                        <p:commandButton value="#{langues.Cancel}" onclick="PF('AideCreateDialog').hide()"/>
+                    </h:panelGroup>
+
+                </center>                
+
+            </h:form>
+        </p:dialog>
+    </ui:composition>
+
+</html>

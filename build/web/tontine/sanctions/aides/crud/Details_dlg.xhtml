@@ -1,0 +1,191 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <p:dialog id="DetailsDlg"
+              widgetVar="DetailsDialog"
+              showEffect="scale" 
+              hideEffect="scale"
+              modal="true"
+              width="800"
+              resizable="true" 
+              appendTo="@(body)" 
+              header="#{langues.details_assistance}" 
+              closeOnEscape="true" >
+
+        <h:form id="DetailsDlgForm">
+
+            <h:panelGrid columns="1"
+                         style="width: 100%;">
+
+                <h:panelGroup>
+                    <table style="width: 100%;  margin-bottom: 10px;" >
+                        <tr>
+                            <td style="width: 70%">
+                                <h:outputLabel value="#{langues.rencontre}"/>
+                                <div style="border: 1px solid grey; padding: 6px; background-color: #eee;">
+                                    <h:outputText value="#{aideCotisationController.aidecotisation.idcotisationtontine.idtontiner.idrencontre.nomfr}" />
+                                </div>
+                            </td>
+                            <td style="width: 30%">
+                                <h:panelGroup >
+                                    <h:outputLabel value="#{langues.etat}"/>
+                                    <div style="border: 1px solid grey; padding: 6px; background-color: #eee;
+                                         #{aideCotisationController.deja_rembourse() ? 'border:1px solid green; background-color: green; color: white;' : 'border:1px solid grey; color: orange;' }">
+                                        <h:outputText value="#{aideCotisationController.deja_rembourse() ? 'Remboursé' : 'Non remboursé' }"/>
+                                    </div>
+                                </h:panelGroup>
+                            </td>
+                        </tr>
+                    </table>
+
+
+                </h:panelGroup>
+
+                <h:panelGroup>
+                    <table style="width: 100%;" >
+                        <tr>
+                            <td style="width: 30%">
+                                <h:panelGroup >
+                                    <h:outputLabel value="#{langues.type_assistance}"/>
+                                    <div style="border: 1px solid grey; padding: 6px; background-color: #eee;">
+                                        <h:outputText value="#{aideCotisationController.aidecotisation.idmembrecycle != null ? 'Aide d\'un membre' : 'Emprunt dans la caisse'}" />
+                                    </div>
+                                </h:panelGroup>
+                            </td>
+                            <td style="width: 70%;">
+                                <h:panelGroup  >
+                                    <h:outputLabel value="#{langues.beneficiaire}"/>
+                                    <div style="border: 1px solid grey; padding: 6px; background-color: #eee;">
+                                        <h:outputText value="#{aideCotisationController.cotisationTontine.idmain.nom}" />
+                                    </div>
+                                </h:panelGroup>
+                            </td>
+                        </tr>
+                    </table>
+                </h:panelGroup>
+
+                <hr />
+
+                <h:panelGroup>
+                    <p:dataTable value="#{aideCotisationController.list_aidescotisation_temp}"
+                                 var="item"
+                                 paginator="true"
+                                 paginatorPosition="bottom"
+                                 rows="5">
+                        <f:facet name="header">
+                            <h:outputLabel value="#{langues.montantaccorde}"/>
+                        </f:facet>
+                        <p:column headerText="#{langues.membre_offrant}"
+                                  style="width: 40%;">
+                            <h:outputText value="#{item.nomaide}" />
+                        </p:column>
+
+                        <p:column headerText="#{langues.montant}"
+                                  style="width: 20%; text-align: right;">
+                            <h:outputText value="#{item.montant}" />
+                        </p:column>
+
+                        <p:column headerText="#{langues.interet}"
+                                  style="width: 15%; text-align: right;">
+                            <h:outputText value="#{aideCotisationController.calcul_interet_assistance(item)}" >
+                                <f:convertNumber maxFractionDigits="0" />
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column headerText="#{langues.total}"
+                                  style="width: 25%; text-align: right;">
+                            <h:outputText value="#{aideCotisationController.calcul_total_assistance(item)}" >
+                                <f:convertNumber maxFractionDigits="0" />
+                            </h:outputText>
+                        </p:column>
+
+                        <p:columnGroup type="footer">
+                            <p:row>
+                                <p:column footerText="#{langues.totaux}" />
+                                <p:column style="text-align: right;">
+                                    <f:facet name="footer">
+                                        <h:outputText value="#{aideCotisationController.montantTotal_assistance()}" >
+                                            <f:convertNumber maxFractionDigits="0" />
+                                        </h:outputText>
+                                    </f:facet>
+                                </p:column>
+                                <p:column style="text-align: right;">
+                                    <f:facet name="footer">
+                                        <h:outputText value="#{aideCotisationController.calcul_total_interet()}" >
+                                            <f:convertNumber maxFractionDigits="0" />
+                                        </h:outputText>
+                                    </f:facet>
+                                </p:column>
+                                <p:column style="text-align: right; background-color: rgba(220,235,245,0.2);">
+                                    <f:facet name="footer">
+                                        <h:outputText value="#{aideCotisationController.calcul_total_total_assistance()}" >
+                                            <f:convertNumber maxFractionDigits="0" />
+                                        </h:outputText>
+                                    </f:facet>
+                                </p:column>
+                            </p:row>
+                        </p:columnGroup>
+
+                    </p:dataTable>
+
+                </h:panelGroup>
+                <hr />
+                <h:panelGroup>
+                    <table style="width: 100%;" >
+                        <tr>
+                            <td style="width: 50%">
+                                <h:outputLabel value="#{langues.penalites_non_cotisation}"/>
+                                <div style="border: 1px solid grey; padding: 6px; background-color: #eee; text-align: right;">
+                                    <h:outputText value="#{aideCotisationController.calcul_penalite_non_cotisation()}" >
+                                        <f:convertNumber maxFractionDigits="0" />
+                                    </h:outputText>
+                                </div>
+                            </td>
+                            <td colspan="2" style="padding: 10px; box-sizing: border-box; background-color: rgba(0,0,100,0.2);">
+                                <h:outputLabel style="font-weight: bold;" value="#{langues.montant_total_doit}"/>
+                                <div style="border: 1px solid grey; padding: 6px; background-color: #eee; text-align: right; font-weight: bold;">
+                                    <h:outputText value="#{aideCotisationController.calcul_montant_total_doit()}" >
+                                        <f:convertNumber maxFractionDigits="0" />
+                                    </h:outputText>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+
+                        </tr>
+                    </table>
+                </h:panelGroup>
+
+                <p:separator />
+
+                <h:panelGroup>
+                    <center>
+                        <p:commandButton value="#{langues.fermer}"
+                                         onclick="PF('DetailsDialog').hide()"
+                                         icon="ui-icon-close"
+                                         class="btn"/>
+                        <h:outputText value="&ensp; &ensp;" />
+                        <p:commandButton value="#{langues.marquer_rembourser}"
+                                         icon="ui-icon-check"
+                                         class="btn"
+                                         update=":DetailsDlgForm,:growl,:ListerForm"
+                                         actionListener="#{aideCotisationController.rembourser()}"
+                                         disabled="#{aideCotisationController.deja_rembourse()}">
+                            <p:confirm header="#{langues.ConfirmationHeader}"
+                                       message="#{langues.ConfirmEditMessage}"
+                                       icon="pi pi-alert"/>
+                        </p:commandButton>
+                    </center>
+                </h:panelGroup>
+
+            </h:panelGrid>
+        </h:form>
+
+    </p:dialog>
+
+</ui:composition>

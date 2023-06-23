@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="couverturerapporttontine_assistance" language="groovy" pageWidth="802" pageHeight="555" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="802" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="e8ff99a3-0cf0-412c-aec4-76695e6fb3af">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="membrecycle" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+     Sum(aide."montantaide") AS aide_montantaide,
+     rencontre."nomfr" AS rencontre_nomfr,
+     rencontre."daterencontre" AS rencontre_daterencontre,
+     motifaide."nomfr" AS motifaide_nomfr,
+     membrecycle."idmembrecycle" AS membrecycle_idmembrecycle,
+     aide."idbeneficiare" AS aide_idbeneficiare,
+     aide."observation" AS aide_observation,
+     membre."nom" AS membre_nom,
+     membre."prenom" AS membre_prenom
+FROM
+     "public"."membrecycle" membrecycle INNER JOIN "public"."aide" aide ON membrecycle."idmembrecycle" = aide."idmembre"
+     INNER JOIN "public"."rencontre" rencontre ON aide."idrencontre" = rencontre."idrencontre"
+     INNER JOIN "public"."motifaide" motifaide ON aide."idmotifaide" = motifaide."idmotifaide"
+     INNER JOIN "public"."membre" membre ON membrecycle."idmembre" = membre."idmembre"
+WHERE
+     membrecycle.idmembrecycle = $P{membrecycle}
+GROUP BY
+     rencontre."nomfr",
+     rencontre."daterencontre",
+     motifaide."nomfr",
+     membrecycle."idmembrecycle",
+     aide."idbeneficiare",
+     aide."observation",
+     membre."nom",
+     membre."prenom"
+ORDER BY
+     rencontre_daterencontre ASC]]>
+	</queryString>
+	<field name="aide_montantaide" class="java.lang.Double"/>
+	<field name="rencontre_nomfr" class="java.lang.String"/>
+	<field name="rencontre_daterencontre" class="java.sql.Date"/>
+	<field name="motifaide_nomfr" class="java.lang.String"/>
+	<field name="membrecycle_idmembrecycle" class="java.lang.Integer"/>
+	<field name="aide_idbeneficiare" class="java.lang.Integer"/>
+	<field name="aide_observation" class="java.lang.String"/>
+	<field name="membre_nom" class="java.lang.String"/>
+	<field name="membre_prenom" class="java.lang.String"/>
+	<variable name="aide_montantaide_2" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{aide_montantaide}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="86" splitType="Stretch">
+			<staticText>
+				<reportElement mode="Opaque" x="584" y="38" width="218" height="48" forecolor="#FFFFFF" backcolor="#0099FF" uuid="659355e3-8827-4eb2-bd6e-34061d8c464b"/>
+				<box>
+					<pen lineWidth="1.0" lineColor="#000000"/>
+					<topPen lineWidth="1.0" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="15" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[Observtaion]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="0" width="802" height="38" uuid="fb1403bb-afa4-49e4-88bd-aa348702c101"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="SansSerif" size="18" isBold="true" isItalic="false" isUnderline="false"/>
+				</textElement>
+				<text><![CDATA[         IV.2.  ASSISTANCES]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="10" y="38" width="274" height="48" forecolor="#FFFFFF" backcolor="#0099FF" uuid="00f84ad4-fb8c-40b2-9212-02dc59e18be8"/>
+				<box>
+					<pen lineWidth="0.5" lineColor="#000000"/>
+					<topPen lineWidth="0.5" lineColor="#000000"/>
+					<leftPen lineWidth="0.5" lineColor="#000000"/>
+					<bottomPen lineWidth="0.5" lineColor="#000000"/>
+					<rightPen lineWidth="0.5" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="15" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[Rencontre]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="284" y="38" width="100" height="48" forecolor="#FFFFFF" backcolor="#0099FF" uuid="80b2c0a8-1a80-484c-8875-8bba5f9f51c2"/>
+				<box>
+					<pen lineWidth="0.5" lineColor="#000000"/>
+					<topPen lineWidth="0.5" lineColor="#000000"/>
+					<leftPen lineWidth="0.5" lineColor="#000000"/>
+					<bottomPen lineWidth="0.5" lineColor="#000000"/>
+					<rightPen lineWidth="0.5" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="15" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[Bénéficiaire]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="384" y="38" width="100" height="48" forecolor="#FFFFFF" backcolor="#0099FF" uuid="9a4c2f5e-f7a7-481c-839c-ebf305778cb4"/>
+				<box leftPadding="3">
+					<pen lineWidth="1.0" lineColor="#000000"/>
+					<topPen lineWidth="1.0" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="15" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[Motif de l'assistance]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="484" y="38" width="100" height="48" forecolor="#FFFFFF" backcolor="#0099FF" uuid="b04caa28-6015-4b81-9385-cb5414e59fd2"/>
+				<box>
+					<pen lineWidth="1.0" lineColor="#000000"/>
+					<topPen lineWidth="1.0" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="15" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[Montant]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="30" splitType="Stretch">
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="RelativeToTallestObject" x="384" y="0" width="100" height="30" uuid="48d14788-d524-429e-826f-4be2cbc053af"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="12" isItalic="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{motifaide_nomfr}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="RelativeToTallestObject" x="584" y="0" width="218" height="30" uuid="4ec06801-00ab-4a62-9275-f874bb48fb35"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="12" isItalic="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{aide_observation}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="RelativeToTallestObject" x="284" y="0" width="100" height="30" uuid="6de37924-76d2-48a5-93c2-e782d9dbffcc"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="12" isItalic="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{membre_nom}+" "+$F{membre_prenom}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0;-#,##0">
+				<reportElement stretchType="RelativeToTallestObject" x="484" y="0" width="100" height="30" uuid="dbd2a8fc-fb3c-4427-8925-c85af450ff00"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="12" isItalic="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{aide_montantaide}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="RelativeToTallestObject" x="10" y="0" width="274" height="30" uuid="b4b8c7a5-de17-4bcc-a030-ce620f90cbba"/>
+				<box leftPadding="3">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Justified" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="14" isBold="true" isItalic="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{rencontre_nomfr}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="30" splitType="Stretch">
+			<staticText>
+				<reportElement x="10" y="0" width="474" height="30" uuid="53e5e85b-96ac-452c-84eb-99a0aeb11b32"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="SansSerif" size="16" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[                       Total Global]]></text>
+			</staticText>
+			<textField pattern="#,##0;-#,##0" isBlankWhenNull="true">
+				<reportElement mode="Opaque" x="484" y="0" width="100" height="30" forecolor="#FFFFFF" backcolor="#0099FF" uuid="d9c8f735-1262-4407-aa0f-30ec37d0eb1d"/>
+				<box>
+					<pen lineWidth="1.0" lineColor="#000000"/>
+					<topPen lineWidth="1.0" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="16" isBold="true" isItalic="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{aide_montantaide_2}]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

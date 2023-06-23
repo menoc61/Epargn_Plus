@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report1" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="28c0ebdd-6a0d-48af-acd0-f00a8e9e6f5c">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="Crosstab Data Text" hAlign="Center"/>
+	<queryString>
+		<![CDATA[SELECT
+     caisse."idcaisse" AS caisse_idcaisse,
+     caisse."idrubriquecaisse" AS caisse_idrubriquecaisse,
+     caisse."idcycle" AS caisse_idcycle,
+     caisse."montant" AS caisse_montant,
+     caisse."idmembrecycle" AS caisse_idmembrecycle,
+     caisse."idrencontre" AS caisse_idrencontre,
+     caisse."dateoperation" AS caisse_dateoperation,
+     caisse."libelleoperation" AS caisse_libelleoperation,
+     rencontre."idrencontre" AS rencontre_idrencontre,
+     rencontre."nomfr" AS rencontre_nomfr,
+     rencontre."daterencontre" AS rencontre_daterencontre,
+     rencontre."nomen" AS rencontre_nomen,
+     rencontre."idcycle" AS rencontre_idcycle,
+     rencontre."ouverture_rencontre" AS rencontre_ouverture_rencontre,
+     rencontre."heuredebut" AS rencontre_heuredebut,
+     rencontre."heurefin" AS rencontre_heurefin,
+     rubriquecaisse."idrubriquecaisse" AS rubriquecaisse_idrubriquecaisse,
+     rubriquecaisse."nomfr" AS rubriquecaisse_nomfr,
+     rubriquecaisse."nomen" AS rubriquecaisse_nomen,
+     rubriquecaisse."code" AS rubriquecaisse_code,
+     rubriquecaisse."modifiable" AS rubriquecaisse_modifiable,
+     rubriquecaisse."afficher" AS rubriquecaisse_afficher,
+     rubriquecaisse."idnaturecaisse" AS rubriquecaisse_idnaturecaisse,
+     naturecaisse."idnaturecaisse" AS naturecaisse_idnaturecaisse,
+     naturecaisse."nomfr" AS naturecaisse_nomfr,
+     naturecaisse."nomen" AS naturecaisse_nomen
+FROM
+     "public"."rencontre" rencontre INNER JOIN "public"."caisse" caisse ON rencontre."idrencontre" = caisse."idrencontre"
+     INNER JOIN "public"."rubriquecaisse" rubriquecaisse ON caisse."idrubriquecaisse" = rubriquecaisse."idrubriquecaisse"
+     INNER JOIN "public"."naturecaisse" naturecaisse ON rubriquecaisse."idnaturecaisse" = naturecaisse."idnaturecaisse"]]>
+	</queryString>
+	<field name="caisse_idcaisse" class="java.lang.Integer"/>
+	<field name="caisse_idrubriquecaisse" class="java.lang.Integer"/>
+	<field name="caisse_idcycle" class="java.lang.Integer"/>
+	<field name="caisse_montant" class="java.lang.Double"/>
+	<field name="caisse_idmembrecycle" class="java.lang.Integer"/>
+	<field name="caisse_idrencontre" class="java.lang.Integer"/>
+	<field name="caisse_dateoperation" class="java.sql.Date"/>
+	<field name="caisse_libelleoperation" class="java.lang.String"/>
+	<field name="rencontre_idrencontre" class="java.lang.Integer"/>
+	<field name="rencontre_nomfr" class="java.lang.String"/>
+	<field name="rencontre_daterencontre" class="java.sql.Date"/>
+	<field name="rencontre_nomen" class="java.lang.String"/>
+	<field name="rencontre_idcycle" class="java.lang.Integer"/>
+	<field name="rencontre_ouverture_rencontre" class="java.lang.Boolean"/>
+	<field name="rencontre_heuredebut" class="java.sql.Time"/>
+	<field name="rencontre_heurefin" class="java.sql.Time"/>
+	<field name="rubriquecaisse_idrubriquecaisse" class="java.lang.Integer"/>
+	<field name="rubriquecaisse_nomfr" class="java.lang.String"/>
+	<field name="rubriquecaisse_nomen" class="java.lang.String"/>
+	<field name="rubriquecaisse_code" class="java.lang.String"/>
+	<field name="rubriquecaisse_modifiable" class="java.lang.Boolean"/>
+	<field name="rubriquecaisse_afficher" class="java.lang.Boolean"/>
+	<field name="rubriquecaisse_idnaturecaisse" class="java.lang.Integer"/>
+	<field name="naturecaisse_idnaturecaisse" class="java.lang.Integer"/>
+	<field name="naturecaisse_nomfr" class="java.lang.String"/>
+	<field name="naturecaisse_nomen" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band splitType="Stretch"/>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch">
+			<crosstab>
+				<reportElement x="0" y="0" width="555" height="42" uuid="11d5f72b-7a10-4f0e-995e-3105af90d1ec"/>
+				<rowGroup name="naturecaisse_nomfr" width="70" totalPosition="End">
+					<bucket class="java.lang.String">
+						<bucketExpression><![CDATA[$F{naturecaisse_nomfr}]]></bucketExpression>
+					</bucket>
+					<crosstabRowHeader>
+						<cellContents backcolor="#FAEBD7" mode="Opaque">
+							<box>
+								<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+							</box>
+							<textField>
+								<reportElement style="Crosstab Data Text" x="0" y="0" width="70" height="25" uuid="fc6a249e-4951-49c8-af8c-06f2d6d4df38"/>
+								<textFieldExpression><![CDATA[$V{naturecaisse_nomfr}]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabRowHeader>
+					<crosstabTotalRowHeader>
+						<cellContents backcolor="#AF6400" mode="Opaque">
+							<box>
+								<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+							</box>
+							<staticText>
+								<reportElement x="0" y="0" width="140" height="25" forecolor="#FFFFFF" uuid="0a9049f8-a53f-4f29-9d89-9a2ecdc06d74"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle"/>
+								<text><![CDATA[Total naturecaisse_nomfr]]></text>
+							</staticText>
+						</cellContents>
+					</crosstabTotalRowHeader>
+				</rowGroup>
+				<rowGroup name="rubriquecaisse_nomfr" width="70" totalPosition="End">
+					<bucket class="java.lang.String">
+						<bucketExpression><![CDATA[$F{rubriquecaisse_nomfr}]]></bucketExpression>
+					</bucket>
+					<crosstabRowHeader>
+						<cellContents backcolor="#FAEBD7" mode="Opaque">
+							<box>
+								<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+							</box>
+							<textField>
+								<reportElement style="Crosstab Data Text" x="0" y="0" width="70" height="25" uuid="65bb3307-e314-4a22-b39d-b39057228468"/>
+								<textFieldExpression><![CDATA[$V{rubriquecaisse_nomfr}]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabRowHeader>
+					<crosstabTotalRowHeader>
+						<cellContents backcolor="#FFE4BF" mode="Opaque">
+							<box>
+								<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+							</box>
+							<staticText>
+								<reportElement x="0" y="0" width="70" height="25" uuid="38a820b4-7d0e-4b9d-87db-e86e6531164d"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle"/>
+								<text><![CDATA[Total rubriquecaisse_nomfr]]></text>
+							</staticText>
+						</cellContents>
+					</crosstabTotalRowHeader>
+				</rowGroup>
+				<columnGroup name="rencontre_nomfr" height="30" totalPosition="End">
+					<bucket class="java.lang.String">
+						<bucketExpression><![CDATA[$F{rencontre_nomfr}]]></bucketExpression>
+					</bucket>
+					<crosstabColumnHeader>
+						<cellContents backcolor="#FAEBD7" mode="Opaque">
+							<box>
+								<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+							</box>
+							<textField>
+								<reportElement style="Crosstab Data Text" x="0" y="0" width="50" height="30" uuid="0926293f-cddf-4c02-96db-86abc7fd993a"/>
+								<textFieldExpression><![CDATA[$V{rencontre_nomfr}]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabColumnHeader>
+					<crosstabTotalColumnHeader>
+						<cellContents backcolor="#FFE4BF" mode="Opaque">
+							<box>
+								<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+							</box>
+							<staticText>
+								<reportElement x="0" y="0" width="50" height="30" uuid="2fba04ab-bda5-4c99-a2d4-575f3d4a28f5"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle"/>
+								<text><![CDATA[Total rencontre_nomfr]]></text>
+							</staticText>
+						</cellContents>
+					</crosstabTotalColumnHeader>
+				</columnGroup>
+				<measure name="caisse_montantMeasure" class="java.lang.Double" calculation="Sum">
+					<measureExpression><![CDATA[$F{caisse_montant}]]></measureExpression>
+				</measure>
+				<crosstabCell width="50" height="25">
+					<cellContents>
+						<box>
+							<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						</box>
+						<textField>
+							<reportElement style="Crosstab Data Text" x="0" y="0" width="50" height="25" uuid="b609b3b3-f30e-44b3-9de7-cdb3ceee4254"/>
+							<textFieldExpression><![CDATA[$V{caisse_montantMeasure}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell height="25" rowTotalGroup="naturecaisse_nomfr">
+					<cellContents backcolor="#AF6400" mode="Opaque">
+						<box>
+							<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						</box>
+						<textField>
+							<reportElement style="Crosstab Data Text" x="0" y="0" width="50" height="25" forecolor="#FFFFFF" uuid="8eddef6a-11b1-4558-8026-60d124f75e7a"/>
+							<textFieldExpression><![CDATA[$V{caisse_montantMeasure}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell width="50" columnTotalGroup="rencontre_nomfr">
+					<cellContents backcolor="#FFE4BF" mode="Opaque">
+						<box>
+							<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						</box>
+						<textField>
+							<reportElement style="Crosstab Data Text" x="0" y="0" width="50" height="25" uuid="e774d1b3-eb31-419a-a24d-f421a04b4a43"/>
+							<textFieldExpression><![CDATA[$V{caisse_montantMeasure}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell rowTotalGroup="naturecaisse_nomfr" columnTotalGroup="rencontre_nomfr">
+					<cellContents backcolor="#AF6400" mode="Opaque">
+						<box>
+							<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						</box>
+						<textField>
+							<reportElement style="Crosstab Data Text" x="0" y="0" width="50" height="25" forecolor="#FFFFFF" uuid="9fbcfb86-fc87-4f40-8373-e716ccdfc132"/>
+							<textFieldExpression><![CDATA[$V{caisse_montantMeasure}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell height="25" rowTotalGroup="rubriquecaisse_nomfr">
+					<cellContents backcolor="#FFE4BF" mode="Opaque">
+						<box>
+							<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						</box>
+						<textField>
+							<reportElement style="Crosstab Data Text" x="0" y="0" width="50" height="25" uuid="7fbca5e3-e662-4ecb-9095-8899b8ed1bcc"/>
+							<textFieldExpression><![CDATA[$V{caisse_montantMeasure}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell rowTotalGroup="rubriquecaisse_nomfr" columnTotalGroup="rencontre_nomfr">
+					<cellContents backcolor="#FFE4BF" mode="Opaque">
+						<box>
+							<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						</box>
+						<textField>
+							<reportElement style="Crosstab Data Text" x="0" y="0" width="50" height="25" uuid="feaa8f0e-9a5c-44e8-ab38-81ae9ea543bb"/>
+							<textFieldExpression><![CDATA[$V{caisse_montantMeasure}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+			</crosstab>
+		</band>
+	</summary>
+</jasperReport>

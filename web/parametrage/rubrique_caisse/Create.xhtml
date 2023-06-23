@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog showEffect="scale" hideEffect="scale" id="FormationsanitaireCreateDlg" widgetVar="FormationsanitaireCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="#{langues.rubriquecaisse}" closeOnEscape="true">
+
+            <h:form id="FormationsanitaireCreateForm">
+
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" style="width: 650px; height:120px " columnClasses="column">
+                       
+                       <p:outputLabel style="width: 300px" value="#{langues.naturecaisse}" for="nature" />
+                       <p:selectOneMenu style=" width: 200px"  id="nature" value="#{rubriquecaisse1Controller.naturecaisse.idnaturecaisse}" required="true" requiredMessage="#{langues.frequence} #{langues.requis}" filter="true">
+                                <f:selectItem itemLabel="#{langues.SelectOneMessage}"/>
+                                <f:selectItems value="#{rubriquecaisse1Controller.naturecaisses}"
+                                               var="nature"
+                                               itemValue="#{nature.idnaturecaisse}"
+                                               itemLabel="#{loginController.language eq 'en' ? nature.nomen : nature.nomfr}"/>                                               
+                       </p:selectOneMenu>                        
+
+                        <p:outputLabel value="#{langues.code}" for="observ" />
+                        <p:inputText style=" width: 70px; "  id="observ" value="#{rubriquecaisse1Controller.rubriquecaisse.code}" size="254"  maxlength="254"/>
+                     
+                        <p:outputLabel  value="#{langues.nom_francais}" for="nom_fr" />
+                        <p:inputText style=" width: 420px"  id="nom_fr" value="#{rubriquecaisse1Controller.rubriquecaisse.nomfr}" size="254" maxlength="254" requiredMessage="#{langues.nom}"/>
+
+                        <p:outputLabel value="#{langues.nom_anglais}" for="nom_en" />
+                        <p:inputText style=" width: 420px"  id="nom_en" value="#{rubriquecaisse1Controller.rubriquecaisse.nomen}" size="254" maxlength="254"/>
+                        
+                        <p:outputLabel   value="#{langues.modifiable}" for="modifiable" />
+                        <p:selectBooleanCheckbox disabled="true" id="modifiable" value="#{rubriquecaisse1Controller.rubriquecaisse.modifiable}"/>
+                        
+                        <p:outputLabel value="#{langues.afficher}" for="afficher" />
+                        <p:selectBooleanCheckbox id="afficher" value="#{rubriquecaisse1Controller.rubriquecaisse.afficher}"/>
+                        
+                        <p:outputLabel value="Editable en caisse ?" for="editable" />
+                        <p:selectBooleanCheckbox id="editable" value="#{rubriquecaisse1Controller.rubriquecaisse.editableEnCaisse}"/>
+                                                                        
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{rubriquecaisse1Controller.save()}" value="#{langues.Save}" update="display,:FormationsanitaireListForm:datalist,:growl" oncomplete="PF('FormationsanitaireCreateDialog').hide()">
+                        <p:confirm header="#{langues.ConfirmationHeader}" message="#{langues.ConfirmCreateMessage}" icon="ui-icon-alert"/>
+                    </p:commandButton>
+
+                    <p:commandButton value="#{langues.Cancel}" onclick="PF('FormationsanitaireCreateDialog').hide()"/>
+                </h:panelGroup>
+                
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

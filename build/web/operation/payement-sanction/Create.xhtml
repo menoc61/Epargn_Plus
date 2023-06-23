@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition>
+
+        <p:dialog showEffect="scale" hideEffect="scale" id="EmpruntCreateDlg" widgetVar="EmpruntCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="FORMULAIRE D'ENREGISTREMENT DE PAIEMENT DE SANCTION" closeOnEscape="true">
+
+            <h:form id="EmpruntCreateForm">
+
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" style="width: 700px; height:400px; border: solid 0.5px ;overflow: auto" columnClasses="column">
+                        
+                        <p:outputLabel value="Rencontre de paiement" for="rencontre"/>
+                        <p:selectOneMenu id="rencontre" value="#{payementsanctionController.rencontre}" filter="true" converter="rencontreConverter">
+                            <f:selectItem itemLabel="#{langues.SelectOneMessage}"/>
+                            <f:selectItems value="#{payementsanctionController.rencontres}" var="item" itemLabel="#{item.nomfr}" itemValue="#{item}"/>
+                            <p:ajax update="date_button_r,montant_a_rembourser,validateBtn" listener="#{payementsanctionController.updateDate()}"/>
+                        </p:selectOneMenu>
+
+                        <p:outputLabel for="date_button_r" value="Date de paiement" />
+                        <p:calendar disabled="true" id="date_button_r" pattern="dd/MM/yyyy" value="#{payementsanctionController.rencontre.daterencontre}" showOn="button" />
+
+                        <p:outputLabel value="Sanction" for="membre"/>
+                        <p:selectOneMenu style=" width: 200px"  id="membre" value="#{payementsanctionController.fichePresence.id}" required="true" requiredMessage="#{langues.membre} #{langues.requis}" filter="true">
+                            <f:selectItem itemLabel="#{langues.SelectOneMessage}"/>
+                            <f:selectItems value="#{payementsanctionController.fichePresences}"
+                                           var="mc" itemValue="#{mc.id}"                                          
+                                           itemLabel="#{mc.idmembre.idmembre.code} #{mc.idmembre.idmembre.nom} #{mc.idmembre.idmembre.prenom} #{mc.montantPenalite}"/>
+                            <p:ajax update="montant_a_rembourser" listener="#{payementsanctionController.updateEmprunt()}"/>
+                        </p:selectOneMenu>                                                                                                                             
+                                                                      
+                        <p:outputLabel style=" width: 50px" value="Montant à regler" for="montant_a_rembourser"/>
+                        <p:inputText disabled="true" id="montant_a_rembourser" value="#{payementsanctionController.payementSanction.montant}">                                   
+                        </p:inputText>
+                                                         
+                        <p:outputLabel value="#{langues.observation}" for="observation" />
+                        <p:inputTextarea style=" width: 500px"  rows="3" cols="70" id="observation" value="#{payementsanctionController.payementSanction.observation}" title="#{langues.observation}" maxlength="254"/>
+
+                    </p:panelGrid>
+                    
+                    <p:separator/>
+                    
+                    <p:commandButton style="float: right" id="validateBtn" actionListener="#{payementsanctionController.save()}" value="#{langues.Save}" update="display,:EmpruntListForm:datalist,:growl,:EmpruntListForm" oncomplete="PF('EmpruntCreateDialog').hide()">
+                        <p:confirm header="#{langues.ConfirmationHeader}" message="#{langues.ConfirmCreateMessage}" icon="ui-icon-alert"/>
+                    </p:commandButton>
+
+                    <p:commandButton style="float: left" value="#{langues.Cancel}" onclick="PF('EmpruntCreateDialog').hide()"/>
+                </h:panelGroup> 
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

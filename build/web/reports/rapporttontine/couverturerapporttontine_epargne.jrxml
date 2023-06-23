@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="couverturerapporttontine_epargne" language="groovy" pageWidth="802" pageHeight="555" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="802" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="3de0dc5d-68c1-4882-9179-56c7d0384977">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="membrecycle" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+     Sum(epargne."montant") AS epargne_montant,
+     epargne."observation" AS epargne_observation,
+     rencontre."nomfr" AS rencontre_nomfr,
+     rencontre."daterencontre" AS rencontre_daterencontre,
+     membrecycle."idmembrecycle" AS membrecycle_idmembrecycle
+FROM
+     "public"."membrecycle" membrecycle INNER JOIN "public"."epargne" epargne ON membrecycle."idmembrecycle" =  epargne."idmembrecycle"
+     INNER JOIN "public"."rencontre" rencontre ON epargne."idrencontre" = rencontre."idrencontre"
+WHERE
+  membrecycle.idmembrecycle = $P{membrecycle}
+GROUP BY
+
+     epargne."observation",
+     rencontre."nomfr",
+     rencontre."daterencontre",
+     membrecycle."idmembrecycle"
+ORDER BY
+     rencontre_daterencontre ASC]]>
+	</queryString>
+	<field name="epargne_montant" class="java.lang.Double"/>
+	<field name="epargne_observation" class="java.lang.String"/>
+	<field name="rencontre_nomfr" class="java.lang.String"/>
+	<field name="rencontre_daterencontre" class="java.sql.Date"/>
+	<field name="membrecycle_idmembrecycle" class="java.lang.Integer"/>
+	<variable name="epargne_montant_2" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{epargne_montant}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="89" splitType="Stretch">
+			<staticText>
+				<reportElement mode="Opaque" x="10" y="45" width="782" height="37" backcolor="#F9F3F3" uuid="ee1e6215-49ac-4d92-917f-3086e11a3893"/>
+				<box>
+					<pen lineWidth="0.5" lineStyle="Dashed"/>
+					<topPen lineWidth="0.5" lineStyle="Dashed"/>
+					<leftPen lineWidth="0.5" lineStyle="Dashed"/>
+					<bottomPen lineWidth="0.5" lineStyle="Dashed"/>
+					<rightPen lineWidth="0.5" lineStyle="Dashed"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="SansSerif" size="18" isBold="true" isItalic="false" isUnderline="false"/>
+				</textElement>
+				<text><![CDATA[         III  DETAIL DES EPARGNES]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="30" splitType="Stretch">
+			<staticText>
+				<reportElement mode="Opaque" x="350" y="0" width="137" height="30" forecolor="#FFFFFF" backcolor="#0099FF" uuid="8dbbbc1b-edbc-4067-9aaa-5207e2517086"/>
+				<box>
+					<pen lineWidth="0.5" lineColor="#000000"/>
+					<topPen lineWidth="0.5" lineColor="#000000"/>
+					<leftPen lineWidth="0.5" lineColor="#000000"/>
+					<bottomPen lineWidth="0.5" lineColor="#000000"/>
+					<rightPen lineWidth="0.5" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="15" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[Montant ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="487" y="0" width="305" height="30" forecolor="#FFFFFF" backcolor="#0099FF" uuid="66eec625-ac3b-4e27-9fb7-44ae0fb95b29"/>
+				<box>
+					<pen lineWidth="0.5" lineColor="#000000"/>
+					<topPen lineWidth="0.5" lineColor="#000000"/>
+					<leftPen lineWidth="0.5" lineColor="#000000"/>
+					<bottomPen lineWidth="0.5" lineColor="#000000"/>
+					<rightPen lineWidth="0.5" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="15" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[Observation]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="10" y="0" width="340" height="30" forecolor="#FFFFFF" backcolor="#0099FF" uuid="429bf9e6-58c5-40aa-9799-110c53a82654"/>
+				<box>
+					<pen lineWidth="0.5" lineColor="#000000"/>
+					<topPen lineWidth="0.5" lineColor="#000000"/>
+					<leftPen lineWidth="0.5" lineColor="#000000"/>
+					<bottomPen lineWidth="0.5" lineColor="#000000"/>
+					<rightPen lineWidth="0.5" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="15" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[Rencontre]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="30" splitType="Stretch">
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="RelativeToTallestObject" x="487" y="0" width="305" height="30" uuid="5e35f30b-0a2c-4c5b-ab95-deb3c0854845"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="12" isItalic="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{epargne_observation}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0;-#,##0">
+				<reportElement x="350" y="0" width="137" height="30" uuid="9f9eb86e-fe1d-4807-8cce-bcb4250c9746"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="12" isItalic="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{epargne_montant}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="10" y="0" width="340" height="30" uuid="07fe6575-0e94-49b4-bcfa-85f0379d28be"/>
+				<box leftPadding="3">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Justified" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="14" isBold="false" isItalic="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{rencontre_nomfr}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="30" splitType="Stretch">
+			<staticText>
+				<reportElement x="10" y="0" width="340" height="30" uuid="8b3e81ec-b83e-416a-9e9c-2dd6cbf7cd26"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="SansSerif" size="16" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[                       Total Global]]></text>
+			</staticText>
+			<textField pattern="#,##0;-#,##0" isBlankWhenNull="true">
+				<reportElement mode="Opaque" x="350" y="0" width="137" height="30" forecolor="#FFFFFF" backcolor="#0099FF" uuid="ce52690e-6504-475e-9762-dc33213a0008"/>
+				<box>
+					<pen lineWidth="0.5" lineColor="#000000"/>
+					<topPen lineWidth="0.5" lineColor="#000000"/>
+					<leftPen lineWidth="0.5" lineColor="#000000"/>
+					<bottomPen lineWidth="0.5" lineColor="#000000"/>
+					<rightPen lineWidth="0.5" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="16" isBold="true" isItalic="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{epargne_montant_2}]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

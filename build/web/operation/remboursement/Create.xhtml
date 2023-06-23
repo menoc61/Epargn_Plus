@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition>
+
+        <p:dialog showEffect="scale" hideEffect="scale" id="EmpruntCreateDlg" widgetVar="EmpruntCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="FORMULAIRE D'ENREGISTREMENT D'UN REMBOURSEMENT" closeOnEscape="true">
+
+            <h:form id="EmpruntCreateForm">
+
+                <h:panelGroup id="display">
+                    <h:panelGrid columns="2" style="" columnClasses="column">
+                        
+                        <p:outputLabel value="Rencontre de remboursement" for="rencontre"/>
+                        <p:selectOneMenu id="rencontre" value="#{remboursementController.rencontre}" filter="true" converter="rencontreConverter">
+                            <f:selectItem itemLabel="#{langues.SelectOneMessage}"/>
+                            <f:selectItems value="#{remboursementController.rencontres}" var="item" itemLabel="#{item.nomfr}" itemValue="#{item}"/>
+                            <p:ajax update="date_button_r,emprunt,typeinteret,montant_emprunte,montant_a_rembourser,validateBtn" listener="#{remboursementController.updateDate()}"/>
+                        </p:selectOneMenu>
+
+                        <p:outputLabel for="date_button_r" value="Date de remboursement" />
+                        <p:calendar disabled="true" id="date_button_r" pattern="dd/MM/yyyy" value="#{remboursementController.remboursement.daterembour}" showOn="button" />
+
+                        <p:outputLabel value="#{langues.membre}" for="membre"/>
+                        <p:selectOneMenu style=" width: 200px"  id="membre" value="#{remboursementController.membrecycle}" required="true" requiredMessage="#{langues.membre} #{langues.requis}" filter="true" converter="membrecycleConverter">
+                            <f:selectItem itemLabel="#{langues.SelectOneMessage}"/>
+                            <f:selectItems value="#{remboursementController.membrecycles}"
+                                           var="mc" itemValue="#{mc}"                                          
+                                           itemLabel="#{mc.idmembre.nom} #{mc.idmembre.prenom}"/>
+                            <p:ajax update="emprunt,typeinteret,reste_a_rembourser,taux,montant_emprunte,reste_a_rembourser" listener="#{remboursementController.updateEmprunt()}"/>
+                        </p:selectOneMenu>                                                
+                                                
+                        <p:outputLabel value="#{langues.emprunt}" for="emprunt"/>
+                        <p:selectOneMenu style=" width: 200px"  id="emprunt" value="#{remboursementController.emprunt}" required="true" requiredMessage="#{langues.emprunt} #{langues.requis}" filter="true" converter="empruntConverter">
+                            <f:selectItem itemLabel="#{langues.SelectOneMessage}"/>
+                            <f:selectItems value="#{remboursementController.emprunts1}"
+                                           var="emp" itemValue="#{emp}"                                           
+                                           itemLabel="#{emp.montantemp} [#{emp.idrencontre.nomfr}]"/>
+                            <p:ajax update="typeinteret,montant_emprunte,taux,reste_a_rembourser,montant_a_rembourser,reste_interet_a_rembourser" listener="#{remboursementController.updateOther()}"/>
+                        </p:selectOneMenu> 
+
+                        <p:outputLabel value="Type d'interet"/>
+                        <h:outputText id="typeinteret" value="#{remboursementController.emprunt.idtypeinteret.nomFr}"/>
+
+                        <p:outputLabel style=" width: 70px" value="Montant total emprunté" for="montant_emprunte"/>
+                        <p:inputText disabled="true" id="montant_emprunte" value="#{remboursementController.emprunt.montantemp}"/>
+
+                        <p:outputLabel style=" width: 70px" value="Capital à rembourser" for="reste_a_rembourser"/>
+                        <p:inputText disabled="true" id="reste_a_rembourser" value="#{remboursementController.emprunt.montantRemboursable}"/>
+                        
+                        <p:outputLabel style=" width: 70px" value="Cumul interet à rembourser" for="reste_interet_a_rembourser"/>
+                        <p:inputText disabled="true" id="reste_interet_a_rembourser" value="#{remboursementController.emprunt.cumulInteret}"/>
+
+                        <p:outputLabel style=" width: 50px" value="#{langues.taux}" for="taux"/>
+                        <p:inputText  disabled="true" id="taux" value="#{remboursementController.emprunt.taux}"/>
+                                               
+                        <p:outputLabel value="Type de remboursement " for="type_remboursement"/>
+                        <p:selectOneMenu style=" width: 200px"  id="type_remboursement" value="#{remboursementController.typeRemboursement.id}" required="true" requiredMessage="Type de remboursement : #{langues.requis}" filter="true">
+                            <f:selectItem itemLabel="#{langues.SelectOneMessage}"/>
+                            <f:selectItems value="#{remboursementController.typeRemboursements}"
+                                           var="tr" itemValue="#{tr.id}"                                          
+                                           itemLabel="#{tr.nom}"/>                            
+                        </p:selectOneMenu>
+
+                        <p:outputLabel style=" width: 50px" value="Montant à rembourser" for="montant_a_rembourser"/>
+                        <p:inputText id="montant_a_rembourser" value="#{remboursementController.remboursement.montantRembourse}">       
+                            
+                        </p:inputText>
+                                                         
+                        <p:outputLabel value="#{langues.observation}" for="observation" />
+                        <p:inputTextarea style=" width: 500px"  rows="3" cols="70" id="observation" value="#{remboursementController.remboursement.observation}" title="#{langues.observation}" maxlength="254"/>
+
+                    </h:panelGrid>
+                    
+                    <p:separator/>
+                                        
+                    <p:commandButton style="float: right" id="validateBtn" disabled="#{remboursementController.showValidateBtn}" actionListener="#{remboursementController.save()}" value="#{langues.Save}" update="display,:EmpruntListForm:datalist,:growl,:EmpruntListForm" oncomplete="PF('EmpruntCreateDialog').hide()">
+                        <p:confirm header="#{langues.ConfirmationHeader}" message="#{langues.ConfirmCreateMessage}" icon="ui-icon-alert"/>
+                    </p:commandButton>
+
+                    <p:commandButton style="float: left" value="#{langues.Cancel}" onclick="PF('EmpruntCreateDialog').hide()"/>
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+
+    <p:messages id="growl" closable="true" />
+    <h:form id="FormationsanitaireListForm">
+
+        <p:panel header="#{langues.rubriquecaisse}">
+            <p:contextMenu id="FormationsanitaireDataTableContextMenu" for="datalist">  
+                <p:menuitem value="#{langues.Create}" onclick="document.getElementById('FormationsanitaireListForm:createButton').click();" icon="ui-icon-plus"/>
+                <p:menuitem value="#{langues.View}" onclick="document.getElementById('FormationsanitaireListForm:viewButton').click();" icon="ui-icon-search"/>
+                <p:menuitem value="#{langues.Edit}" onclick="document.getElementById('FormationsanitaireListForm:editButton').click();" icon="ui-icon-pencil"/>
+                <p:menuitem value="#{langues.Delete}" onclick="document.getElementById('FormationsanitaireListForm:deleteButton').click();" icon="ui-icon-trash"/>
+                <p:separator/>                  
+            </p:contextMenu>
+            <p:dataTable id="datalist"
+                         value="#{rubriquecaisse1Controller.rubriquecaisses}"
+                         var="item"
+                         rowKey="#{item.idrubriquecaisse}"
+                         paginator="true"
+                         rows="10"
+                         rowsPerPageTemplate="10,20,30,40,50"
+                         selectionMode="single"
+                         rowIndexVar="index"
+                         selection="#{rubriquecaisse1Controller.selectedRubriquecaisse}"
+                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}">
+
+                <p:ajax event="rowSelect"   update="@form:createButton,@form:editButton,@form:deleteButton,@form:FormationsanitaireDataTableContextMenu" listener="#{rubriquecaisse1Controller.activeButton()}"/>
+                <p:ajax event="rowUnselect" update="@form:createButton,@form:editButton,@form:deleteButton,@form:FormationsanitaireDataTableContextMenu" listener="#{rubriquecaisse1Controller.deactiveButton()}"/>
+                <p:ajax event="contextMenu" update="@form:createButton @form:editButton @form:deleteButton"/>
+                <p:ajax event="rowDblselect" onsuccess="document.getElementById('FormationsanitaireListForm:viewButton').click();" listener="#{rubriquecaisse1Controller.activeButton()}" />
+
+                <p:column  filterBy="#{item.code}">
+                    <f:facet name="header">
+                        <h:outputText value="#{langues.code}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.code}"/>
+                </p:column>
+
+                <p:column  style=" width: 20%">
+                    <f:facet name="header">
+                        <h:outputText value="Nature caisse"/>
+                    </f:facet>
+                    <h:outputText value="#{loginController.language eq 'en' ? item.idnaturecaisse.nomen : item.idnaturecaisse.nomfr}"/>
+                </p:column>
+
+                <p:column sortBy="#{item.nomfr}" filterBy="#{item.nomfr}">
+                    <f:facet name="header">
+                        <h:outputText value="#{langues.nom_francais}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.nomfr}"/>
+                </p:column>
+
+                <p:column sortBy="#{item.nomen}" filterBy="#{item.nomen}">
+                    <f:facet name="header">
+                        <h:outputText value="#{langues.nom_anglais}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.nomen}"/>
+                </p:column>
+
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="#{langues.modifiable}"/>
+                    </f:facet>
+                    <p:selectBooleanCheckbox value="#{item.modifiable}" disabled="true"/>
+                </p:column>
+
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText class="hardBreak" value="#{langues.afficher}"/>
+                    </f:facet>
+                    <p:selectBooleanCheckbox value="#{item.afficher}" disabled="true"/>
+                </p:column>
+
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText class="hardBreak" value="Editable dans la caisse ?"/>
+                    </f:facet>
+                    <p:selectBooleanCheckbox value="#{item.editableEnCaisse}" disabled="true"/>
+                </p:column>
+
+            </p:dataTable>
+
+        </p:panel>
+        
+        <p:separator/>
+        
+        <center>
+            <p:commandButton id="createButton" icon="ui-icon-plus"   value="#{langues.Create}" actionListener="#{rubriquecaisse1Controller.prepareCreate()}" update=":FormationsanitaireCreateForm" oncomplete="PF('FormationsanitaireCreateDialog').show()"/>
+            <p:commandButton id="editButton"   icon="ui-icon-pencil" value="#{langues.Edit}" actionListener="#{rubriquecaisse1Controller.prepareEdit()}" update=":FormationsanitaireEditForm" oncomplete="PF('FormationsanitaireEditDialog').show()" disabled="#{rubriquecaisse1Controller.detail}"/>
+            <p:commandButton id="deleteButton" icon="ui-icon-trash"  value="#{langues.Delete}" actionListener="#{rubriquecaisse1Controller.delete()}" update=":growl,datalist" disabled="#{rubriquecaisse1Controller.detail}">
+                <p:confirm header="#{langues.ConfirmationHeader}" message="#{langues.ConfirmDeleteMessage}" icon="ui-icon-alert"/>
+            </p:commandButton>
+        </center>
+        <ui:include src="/confirmation.xhtml"/>
+    </h:form>
+
+</ui:composition>

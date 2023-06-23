@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <p:dialog showEffect="scale" 
+              hideEffect="scale" 
+              id="CotisationCreateDlg" 
+              widgetVar="CotisationCreateDialog" 
+              modal="true"
+              width="800"
+              resizable="true" 
+              appendTo="@(body)" 
+              header="#{langues.creer_tontine}" 
+              closeOnEscape="true">
+
+        <h:form id="CotisationCreateForm">
+            <h:panelGroup id="display">
+                <p:tabView>
+                    <p:tab id="tab1"
+                           title="#{langues['Text.create_tontine_title']}" >
+
+                        <p:panelGrid columns="2" style="width: 100%; overflow: auto" columnClasses="column">
+
+                            <p:outputLabel value="#{langues.cycletontine}" for="cycle" />
+                            <p:outputLabel id="cycle" style="width: 400px"  value="#{creationTontineController.cycletontine.nomfr}"/>
+
+                            <p:outputLabel value="#{langues.nom}" for="nom" />
+                            <p:inputText required="true" id="nom" style="width: 400px" value="#{creationTontineController.cotisation.nom}"
+                                         disabled="#{creationTontineController.cotisation.estTermine}"/>
+
+                            <p:outputLabel value="#{langues.montant}" for="num" />
+                            <p:inputText required="true" id="num"  value="#{creationTontineController.cotisation.montant}"
+                                         disabled="#{creationTontineController.cotisation.estTermine}">
+                                <f:convertNumber maxFractionDigits="0"/>
+                            </p:inputText>
+
+                        </p:panelGrid>
+
+                        <hr />
+
+                        <h:panelGrid columns="3" style="width: 100%;">
+
+                            <h:outputLabel for="nbreT" value="#{langues.premier_jour}" />
+                            <p:selectOneMenu value="#{creationTontineController.rencontre.idrencontre}"
+                                             class="form-control" filter="true" filterMatchMode="contains" style="width: 100%;"       
+                                             disabled="#{creationTontineController.cotisation.estTermine}">
+                                <p:ajax update="btnChoix" />
+                                <f:selectItem itemLabel="#{langues.choisir}" itemValue="0" />
+                                <f:selectItems value="#{creationTontineController.list_rencontres}"
+                                               var="re" itemLabel="#{re.nomfr}" itemValue="#{re.idrencontre}" />                                                                 
+                            </p:selectOneMenu>
+
+                            <p:commandButton id="btnChoix"
+                                             style="float: right;"
+                                             value="#{langues.choix_rencontres}"
+                                             onclick="PF('ChoixRencontreDialog').show()"
+                                             update=":ChoixRencontreDlgForm"
+                                             disabled="#{!creationTontineController.can_choose_rencontre() || creationTontineController.cotisation.estTermine}"/>
+
+                        </h:panelGrid>
+
+                        <br />
+
+                        <h:panelGrid columns="2">
+
+                            <h:outputLabel for="nbreT" value="#{langues.nbre_seances}" />
+                            <h:inputText id="nbreT"
+                                         disabled="true"
+                                         value="#{creationTontineController.nbre}"
+                                         style="width: 500px;" />
+
+                        </h:panelGrid>
+
+                    </p:tab>
+
+                    <p:tab id="tab2"
+                           title="#{langues['penalites']}">
+
+                        <h:panelGrid columns="2" style=" width: 700px;"  columnClasses="column">
+
+                            <p:outputLabel value="#{langues.penalide_non_cotisation_membre}" for="pen1" />
+                            <p:inputNumber id="pen1"
+                                           disabled="#{creationTontineController.mode == 'Edit' || creationTontineController.cotisation.estTermine}"
+                                           value="#{creationTontineController.cotisation.penaliteNonCotisation}"
+                                           style="width: 500px">
+                                <f:convertNumber maxFractionDigits="0" />
+                            </p:inputNumber>
+
+                            <p:outputLabel value="#{langues.penalide_non_cotisation_membre_bouffe}" for="pen2" />
+                            <p:inputNumber id="pen2"
+                                           disabled="#{creationTontineController.mode == 'Edit' || creationTontineController.cotisation.estTermine}"
+                                           style="width: 500px;"
+                                           value="#{creationTontineController.cotisation.penaliteNonCotisationABouffe}" >
+                                <f:convertNumber maxFractionDigits="0" />
+                            </p:inputNumber>
+
+                            <p:outputLabel value="#{langues.interet_assistance_cotisation}" for="pen3" />
+                            <p:inputNumber id="pen3"
+                                           disabled="#{creationTontineController.mode == 'Edit' || creationTontineController.cotisation.estTermine}"
+                                           value="#{creationTontineController.cotisation.interetAssistanceCotisation}"
+                                           style="width: 500px;" />
+
+                        </h:panelGrid>
+
+                    </p:tab>
+
+                    <p:tab id="tab3"
+                           title="#{langues['parametrages']}">
+
+                        <h:panelGrid columns="2" style=" width: 700px;"  columnClasses="column">
+
+
+                            <p:outputLabel value="#{langues.passe_est_aux_enchere}" for="param1" />
+                            <p:selectBooleanButton id="param1"
+                                                   disabled="#{creationTontineController.mode == 'Edit' || creationTontineController.cotisation.estTermine}"
+                                                   value="#{creationTontineController.cotisation.canEnchered}"
+                                                   styleClass="ui-button ui-button-default"
+                                                   onLabel="#{langues.Oui}"
+                                                   offLabel="#{langues.No}">
+                                <p:ajax update="CotisationCreateForm" />
+                            </p:selectBooleanButton>
+
+                            <p:outputLabel value="#{langues.taux_min}" for="param2" />
+                            <p:inputNumber id="param2"
+                                           style="width: 500px;"
+                                           disabled="#{creationTontineController.mode == 'Edit' || creationTontineController.cotisation.estTermine}"
+                                           value="#{creationTontineController.cotisation.enchereMin}" >
+                                <f:convertNumber maxFractionDigits="0" />
+                            </p:inputNumber>
+
+                            <p:outputLabel value="#{langues.taux_max}" for="param3" />
+                            <p:inputNumber id="param3"
+                                           disabled="#{creationTontineController.mode == 'Edit'}"
+                                           value="#{creationTontineController.cotisation.enchereMax}"
+                                           style="width: 500px;" />
+
+                        </h:panelGrid>
+
+                    </p:tab>
+
+                </p:tabView>
+
+                <p:separator/>
+
+                <div style="width: 100%; bottom: 0px;">
+
+                    <p:commandButton style="float: right" 
+                                     actionListener="#{creationTontineController.save()}" 
+                                     value="#{langues.terminer}"
+                                     disabled="#{creationTontineController.cotisation.estTermine}"
+                                     update="display,:CotisationListForm,:growl" oncomplete="PF('CotisationCreateDialog').hide()">
+                        <p:confirm header="#{langues.ConfirmationHeader}" message="#{langues.ConfirmCreateMessage}" icon="ui-icon-alert"/>
+                    </p:commandButton>
+
+                    <p:commandButton style="float: left" 
+                                     value="#{langues.Cancel}" 
+                                     onclick="PF('CotisationCreateDialog').hide()"/>
+                </div>
+
+            </h:panelGroup>
+
+        </h:form>
+
+    </p:dialog>
+
+</ui:composition>
+

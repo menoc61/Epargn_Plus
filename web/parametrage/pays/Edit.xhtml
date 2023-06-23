@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+        <p:dialog showEffect="slide" hideEffect="slide" id="CategorieindicateurEditDlg" widgetVar="CategorieindicateurEditDialog" modal="true" resizable="false"  appendTo="@(body)" header="#{langues.EditPaysTitle}" closeOnEscape="true">
+
+            <h:form id="CategorieindicateurEditForm">
+
+                <h:panelGroup id="display">
+                    <p:panelGrid  columns="2" style="width: 600px; height:100px " columnClasses="column" rendered="#{paysController.selectedPays != null}">
+
+                        <p:outputLabel value="#{langues.nom_francais}" for="nom" />
+                        <p:inputText style=" width: 400px" id="nom" value="#{paysController.selectedPays.nomFr}" title="#{langues.EditCategorieindicateurTitle_nom}" size="254" maxlength="254"/>
+                       
+                        <p:outputLabel value="#{langues.nom_anglais}" for="nom1" />
+                        <p:inputText style=" width: 400px" id="nom1" value="#{paysController.selectedPays.nomEn}" title="#{langues.EditCategorieindicateurTitle_nom}" size="254" maxlength="254"/>
+                        
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{paysController.editPays()}" value="#{langues.Save}" update="display,:CategorieindicateurListForm:datalist,:growl" oncomplete="PF('CategorieindicateurEditDialog').hide()">
+                        <p:confirm header="#{langues.ConfirmationHeader}" message="#{langues.ConfirmEditMessage}" icon="ui-icon-alert"/>
+                    </p:commandButton>
+                    <p:commandButton value="#{langues.Cancel}" onclick="PF('CategorieindicateurEditDialog').hide()"/>
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

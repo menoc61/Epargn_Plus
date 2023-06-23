@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="sub_pv_beneficiaires" pageWidth="555" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="1ec2c50b-fc04-4a6d-910c-080d66aaf4c2">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="table">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<subDataset name="Table Dataset 1" uuid="a63e6ab1-c1d5-48aa-b644-2431be34509f"/>
+	<parameter name="id_rencontre" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[38]]></defaultValueExpression>
+	</parameter>
+	<parameter name="id_cotisation" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[1]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+     tontiner."idtontiner" AS tontiner_idtontiner,
+     tontiner."montantcotise" AS tontiner_montantcotise,
+     tontiner."redevance" AS tontiner_redevance,
+     rencontre."idrencontre" AS rencontre_idrencontre,
+     rencontre."nomfr" AS rencontre_nomfr,
+     rencontre."daterencontre" AS rencontre_daterencontre,
+     rencontre."nomen" AS rencontre_nomen,
+     mains."idmain" AS mains_idmain,
+     mains."codemain" AS mains_codemain,
+     mains."nom" AS mains_nom,
+     inscription_cotisation."idinscription" AS inscription_cotisation_idinscription,
+     inscription_cotisation."idcotisation" AS inscription_cotisation_idcotisation,
+     inscription_cotisation."idmembre" AS inscription_cotisation_idmembre,
+     inscription_cotisation."etat" AS inscription_cotisation_etat,
+     cotisation."idcotisation" AS cotisation_idcotisation,
+     membrecycle."idmembrecycle" AS membrecycle_idmembrecycle,
+     membre."idmembre" AS membre_idmembre,
+     membre."nom" AS membre_nom,
+     membre."prenom" AS membre_prenom,
+     beneficiaire_tontine."idbeneficiaire" AS beneficiaire_tontine_idbeneficiaire,
+     beneficiaire_tontine."montant" AS beneficiaire_tontine_montant,
+     beneficiaire_tontine."reste" AS beneficiaire_tontine_reste,
+     cotisation."nbretours" AS cotisation_nbretours,
+     mains."montantsouscrit" AS mains_montantsouscrit,
+     mains."nbretourspasse" AS mains_nbretourspasse
+FROM
+     "public"."tontiner" tontiner INNER JOIN "public"."rencontre" rencontre ON tontiner."idrencontre" = rencontre."idrencontre"
+     INNER JOIN "public"."cotisation" cotisation ON tontiner."idcotisation" = cotisation."idcotisation"
+     INNER JOIN "public"."beneficiaire_tontine" beneficiaire_tontine ON tontiner."idtontiner" = beneficiaire_tontine."idtontiner"
+     INNER JOIN "public"."mains" mains ON beneficiaire_tontine."idmain" = mains."idmain"
+     INNER JOIN "public"."inscription_cotisation" inscription_cotisation ON mains."idinscription" = inscription_cotisation."idinscription"
+     INNER JOIN "public"."membrecycle" membrecycle ON inscription_cotisation."idmembre" = membrecycle."idmembrecycle"
+     INNER JOIN "public"."membre" membre ON membrecycle."idmembre" = membre."idmembre"
+WHERE
+     rencontre."idrencontre" = $P{id_rencontre}
+ AND cotisation."idcotisation" = $P{id_cotisation}]]>
+	</queryString>
+	<field name="tontiner_idtontiner" class="java.lang.Integer"/>
+	<field name="tontiner_montantcotise" class="java.lang.Double"/>
+	<field name="tontiner_redevance" class="java.lang.Double"/>
+	<field name="rencontre_idrencontre" class="java.lang.Integer"/>
+	<field name="rencontre_nomfr" class="java.lang.String"/>
+	<field name="rencontre_daterencontre" class="java.sql.Date"/>
+	<field name="rencontre_nomen" class="java.lang.String"/>
+	<field name="mains_idmain" class="java.lang.Integer"/>
+	<field name="mains_codemain" class="java.lang.String"/>
+	<field name="mains_nom" class="java.lang.String"/>
+	<field name="inscription_cotisation_idinscription" class="java.lang.Long"/>
+	<field name="inscription_cotisation_idcotisation" class="java.lang.Integer"/>
+	<field name="inscription_cotisation_idmembre" class="java.lang.Integer"/>
+	<field name="inscription_cotisation_etat" class="java.lang.Boolean"/>
+	<field name="cotisation_idcotisation" class="java.lang.Integer"/>
+	<field name="membrecycle_idmembrecycle" class="java.lang.Integer"/>
+	<field name="membre_idmembre" class="java.lang.Integer"/>
+	<field name="membre_nom" class="java.lang.String"/>
+	<field name="membre_prenom" class="java.lang.String"/>
+	<field name="beneficiaire_tontine_idbeneficiaire" class="java.lang.Long"/>
+	<field name="beneficiaire_tontine_montant" class="java.lang.Double"/>
+	<field name="beneficiaire_tontine_reste" class="java.lang.Double"/>
+	<field name="cotisation_nbretours" class="java.lang.Integer"/>
+	<field name="mains_montantsouscrit" class="java.lang.Double"/>
+	<field name="mains_nbretourspasse" class="java.lang.Integer"/>
+	<variable name="TOTAL_M" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{beneficiaire_tontine_montant}]]></variableExpression>
+	</variable>
+	<variable name="TOTAL_RESTE" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{beneficiaire_tontine_reste}]]></variableExpression>
+	</variable>
+	<variable name="DOIT_BOUFFER" class="java.lang.Double">
+		<variableExpression><![CDATA[$F{mains_montantsouscrit} * ($F{cotisation_nbretours} - $F{mains_nbretourspasse})]]></variableExpression>
+	</variable>
+	<variable name="Enchere" class="java.lang.Double">
+		<variableExpression><![CDATA[$V{DOIT_BOUFFER} - $F{beneficiaire_tontine_montant}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="33" splitType="Stretch">
+			<staticText>
+				<reportElement style="table" mode="Opaque" x="0" y="0" width="555" height="18" backcolor="#CDD7E1" uuid="85c283fc-346c-4721-b03e-d7009b15b94f"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Les Bénéficiaires de la rencontre]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="table_TH" x="0" y="18" width="300" height="15" uuid="56e924b3-f300-4555-b259-839737fb11f6"/>
+				<textElement verticalAlignment="Middle">
+					<paragraph leftIndent="3"/>
+				</textElement>
+				<text><![CDATA[Code main]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="table_TH" x="495" y="18" width="60" height="15" uuid="d2c1b64b-5899-4d70-b649-152e1876c368"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Enchere]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="table_TH" x="365" y="18" width="65" height="15" uuid="91fe2087-01e1-419a-ae6c-142ae00ca5a7"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[A Bouffé]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="table_TH" x="430" y="18" width="65" height="15" uuid="536acd53-97dc-46a3-975c-b64e87fce946"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Reste]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="table_TH" x="300" y="18" width="65" height="15" uuid="800ce44e-fed5-4dd0-97cc-77538c78eac0"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Doit Bouffer]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="17" splitType="Stretch">
+			<textField>
+				<reportElement style="table_TD" x="0" y="0" width="300" height="17" uuid="65d255f4-7c9f-48cd-9aa8-893b449c1235"/>
+				<textElement verticalAlignment="Middle">
+					<paragraph leftIndent="3"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{mains_codemain}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement style="table_TD" x="495" y="0" width="60" height="17" uuid="1b06f8ad-6a55-4b77-a356-a48efba9a575"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="10"/>
+					<paragraph rightIndent="3"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{Enchere}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement style="table_TD" x="365" y="0" width="65" height="17" uuid="caf1343d-d7c3-4557-9bbc-a27587266337"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<paragraph rightIndent="3"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{beneficiaire_tontine_montant}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement style="table_TD" x="430" y="0" width="65" height="17" uuid="dde183f7-d18a-49aa-bdbe-d9f4e4f88c2a"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<paragraph rightIndent="3"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{beneficiaire_tontine_reste}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement style="table_TD" x="300" y="0" width="65" height="17" uuid="1b59b60d-c925-4b6e-a368-b96dcb47843f"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<paragraph rightIndent="3"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{DOIT_BOUFFER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="15" splitType="Stretch">
+			<textField evaluationTime="Report" pattern="#,##0" isBlankWhenNull="true">
+				<reportElement style="table_CH" x="365" y="0" width="65" height="15" uuid="5f47e6b2-4a64-4db3-878c-0dc02e2ec172"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<paragraph rightIndent="3"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{TOTAL_M}]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report" pattern="#,##0" isBlankWhenNull="true">
+				<reportElement style="table_CH" x="430" y="0" width="65" height="15" uuid="d34b92bf-8980-4814-9143-c51591216c7c"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<paragraph rightIndent="3"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{TOTAL_RESTE}]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

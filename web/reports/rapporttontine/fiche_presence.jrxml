@@ -1,0 +1,432 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="fiche_presence" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="925beef3-9fc5-4928-a41f-5d4347cf6c91">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="idrencontre" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+     fiche_presence."present" AS fiche_presence_present,
+     fiche_presence."heure_debut" AS fiche_presence_heure_debut,
+     fiche_presence."heure_fin" AS fiche_presence_heure_fin,
+     fiche_presence."retard" AS fiche_presence_retard,
+     fiche_presence."justifie" AS fiche_presence_justifie,
+     fiche_presence."montant_penalite" AS fiche_presence_montant_penalite,
+     fiche_presence."regle" AS fiche_presence_regle,
+     fiche_presence."motif" AS fiche_presence_motif,
+     membrecycle."etat" AS membrecycle_etat,
+     membre."nom" AS membre_nom,
+     membre."prenom" AS membre_prenom,
+     membre."code" AS membre_code,
+     rencontre."daterencontre" AS rencontre_daterencontre,
+     cycletontine."nomfr" AS cycletontine_nomfr,
+     rencontre."heuredebut" AS rencontre_heuredebut,
+     rencontre."heurefin" AS rencontre_heurefin,
+     tontine."nom" AS tontine_nom,
+     tontine."slogan" AS tontine_slogan,
+     membre."adresse" AS membre_adresse
+FROM
+     "public"."membrecycle" membrecycle INNER JOIN "public"."fiche_presence" fiche_presence ON membrecycle."idmembrecycle" = fiche_presence."idmembre"
+     INNER JOIN "public"."membre" membre ON membrecycle."idmembre" = membre."idmembre"
+     INNER JOIN "public"."cycletontine" cycletontine ON membrecycle."idcycle" = cycletontine."idcycle"
+     INNER JOIN "public"."rencontre" rencontre ON cycletontine."idcycle" = rencontre."idcycle"
+     INNER JOIN "public"."tontine" tontine ON cycletontine."idtontine" = tontine."idtontine"
+     AND rencontre."idrencontre" = fiche_presence."idrencontre"
+WHERE
+     membrecycle.etat = true
+ AND rencontre.idrencontre = $P{idrencontre}
+ORDER BY
+     membre_code ASC]]>
+	</queryString>
+	<field name="fiche_presence_present" class="java.lang.Boolean"/>
+	<field name="fiche_presence_heure_debut" class="java.sql.Time"/>
+	<field name="fiche_presence_heure_fin" class="java.sql.Time"/>
+	<field name="fiche_presence_retard" class="java.lang.Integer"/>
+	<field name="fiche_presence_justifie" class="java.lang.Boolean"/>
+	<field name="fiche_presence_montant_penalite" class="java.lang.Double"/>
+	<field name="fiche_presence_regle" class="java.lang.Boolean"/>
+	<field name="fiche_presence_motif" class="java.lang.String"/>
+	<field name="membrecycle_etat" class="java.lang.Boolean"/>
+	<field name="membre_nom" class="java.lang.String"/>
+	<field name="membre_prenom" class="java.lang.String"/>
+	<field name="membre_code" class="java.lang.String"/>
+	<field name="rencontre_daterencontre" class="java.sql.Date"/>
+	<field name="cycletontine_nomfr" class="java.lang.String"/>
+	<field name="rencontre_heuredebut" class="java.sql.Time"/>
+	<field name="rencontre_heurefin" class="java.sql.Time"/>
+	<field name="tontine_nom" class="java.lang.String"/>
+	<field name="tontine_slogan" class="java.lang.String"/>
+	<field name="membre_adresse" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="99" splitType="Stretch">
+			<textField>
+				<reportElement mode="Opaque" x="10" y="4" width="533" height="20" backcolor="#66CCFF" uuid="b785d773-fbd3-41de-b64a-2f50017284b7"/>
+				<box>
+					<topPen lineWidth="0.5" lineStyle="Dotted"/>
+					<leftPen lineWidth="0.5" lineStyle="Dotted"/>
+					<bottomPen lineWidth="0.5" lineStyle="Dotted"/>
+					<rightPen lineWidth="0.5" lineStyle="Dotted"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{tontine_nom}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="92" y="42" width="105" height="15" uuid="3634991c-e4ce-4887-a307-da4397ab061f"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{cycletontine_nomfr}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="108" y="24" width="351" height="15" uuid="8a1e432d-234b-411c-ae8e-37569868ce9b"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{tontine_slogan}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement mode="Transparent" x="10" y="42" width="82" height="15" backcolor="#FFFFFF" uuid="476ba7c9-1091-44d5-98f9-bfa187262d7a"/>
+				<box leftPadding="2" rightPadding="0">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<text><![CDATA[Cycle]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Transparent" x="10" y="57" width="82" height="15" backcolor="#FFFFFF" uuid="9658867f-e2de-4507-9488-0f02ea95a1ac"/>
+				<box leftPadding="2" rightPadding="0">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<text><![CDATA[Date rencontre]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="92" y="57" width="105" height="15" uuid="b9b4afd4-73aa-4edc-9510-0a0ec1883203"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{rencontre_daterencontre}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement mode="Transparent" x="10" y="77" width="533" height="20" backcolor="#FFFFFF" uuid="a6fa8f22-d149-4f5d-9be2-6474456d00ad"/>
+				<box leftPadding="2" rightPadding="0">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<text><![CDATA[FICHE DE PRESENCE]]></text>
+			</staticText>
+			<textField pattern="HH.mm">
+				<reportElement x="502" y="57" width="41" height="15" uuid="2d5164aa-9f14-4c25-b254-3ad41a730373"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{rencontre_heurefin}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement mode="Transparent" x="395" y="42" width="107" height="15" backcolor="#FFFFFF" uuid="ed093c5b-5e57-4777-b6a1-abf6e3b1ba26"/>
+				<box leftPadding="2" rightPadding="0">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<text><![CDATA[Heure d'ouverture]]></text>
+			</staticText>
+			<textField pattern="HH.mm">
+				<reportElement x="502" y="42" width="41" height="15" uuid="260748eb-8fe7-4417-9abd-1fba804bd3cf"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{rencontre_heuredebut}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement mode="Transparent" x="395" y="57" width="107" height="15" backcolor="#FFFFFF" uuid="ac97241c-3f2a-4859-aa73-d31fed04311c"/>
+				<box leftPadding="2" rightPadding="0">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<text><![CDATA[Heure de fermetture]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="7" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="31" splitType="Stretch">
+			<staticText>
+				<reportElement mode="Opaque" x="10" y="0" width="243" height="31" backcolor="#66CCFF" uuid="626b7f72-1c2e-4885-a208-0e2138c8062f"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="11"/>
+				</textElement>
+				<text><![CDATA[Membre]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="253" y="0" width="39" height="31" backcolor="#66CCFF" uuid="7e18c4d4-36c9-4377-aed9-3e15df7e4958"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="11"/>
+				</textElement>
+				<text><![CDATA[Pré
+sence ?]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="292" y="0" width="40" height="31" backcolor="#66CCFF" uuid="6c3e6b33-2175-459e-bc8d-d2c1212a70e8"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="11"/>
+				</textElement>
+				<text><![CDATA[Heure
+arrivée]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="332" y="0" width="40" height="31" backcolor="#66CCFF" uuid="00c7a624-e548-423c-962d-8edea87778ae"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="11"/>
+				</textElement>
+				<text><![CDATA[Rétard
+(en min)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="372" y="0" width="40" height="31" backcolor="#66CCFF" uuid="da44070f-a81a-477d-adf1-99f016b85817"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="11"/>
+				</textElement>
+				<text><![CDATA[Jus -
+tifié ?]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="412" y="0" width="40" height="31" backcolor="#66CCFF" uuid="fe470a92-4316-4ae1-80dd-3b8b1c52e170"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="11"/>
+				</textElement>
+				<text><![CDATA[Péna -
+lité]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="452" y="0" width="40" height="31" backcolor="#66CCFF" uuid="715184ef-3585-4bcc-b80e-33aaacf0aa7f"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="10"/>
+				</textElement>
+				<text><![CDATA[Payé ?]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="492" y="0" width="51" height="31" backcolor="#66CCFF" uuid="9a4ae4d9-e6a3-4b35-b09f-c8025b65c104"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="10"/>
+				</textElement>
+				<text><![CDATA[Obsevation /
+Signature]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="28" splitType="Stretch">
+			<textField>
+				<reportElement x="10" y="0" width="243" height="28" uuid="b4468784-2769-4689-8b1c-f867e697cb71"/>
+				<box leftPadding="2" rightPadding="0">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{membre_code}+" - "+$F{membre_nom}+" "+$F{membre_prenom}+" / "+  $F{membre_adresse}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="253" y="0" width="39" height="28" uuid="e74c933c-077d-469d-9099-b7a2fbea6563"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fiche_presence_present}.equals(true) ? "Oui" : "Non"]]></textFieldExpression>
+			</textField>
+			<textField pattern="HH.mm">
+				<reportElement x="292" y="0" width="40" height="28" uuid="f428767c-a565-48a0-a15f-f25beae1966f"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fiche_presence_present}.equals(true) ?  $F{fiche_presence_heure_debut} : ""]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="332" y="0" width="40" height="28" uuid="c4e62b62-7e6b-4498-8bfd-e7f8ef5454d5"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fiche_presence_present}.equals(true) ?  $F{fiche_presence_retard} : ""]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0;(#,##0)">
+				<reportElement x="452" y="0" width="40" height="28" uuid="476ff23d-9650-454d-890c-30081060a2b9"/>
+				<box rightPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($F{fiche_presence_present}.equals(false) && $F{fiche_presence_justifie}.equals(false)) ? ($F{fiche_presence_regle}.equals(true) ? "Oui" : "Non") : " "]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0;(#,##0)">
+				<reportElement x="412" y="0" width="40" height="28" uuid="c5eb5811-29bb-4143-b5e9-73fd781a2e7b"/>
+				<box rightPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[!$F{fiche_presence_present}.equals(true) && $F{fiche_presence_justifie}.equals(false) ?  $F{fiche_presence_montant_penalite} : ""]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="372" y="0" width="40" height="28" uuid="e45a8b91-9409-4747-8717-c783ecaf46d2"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fiche_presence_present}.equals(false) ?  ($F{fiche_presence_justifie}.equals(false) ? "Non" : "Oui") : " "]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement mode="Transparent" x="492" y="0" width="51" height="28" backcolor="#FFFFFF" uuid="0d900c7a-1d21-4e7a-91cf-efcb56e071be"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="10"/>
+				</textElement>
+				<text><![CDATA[]]></text>
+			</staticText>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="10" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="8" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="8" splitType="Stretch"/>
+	</summary>
+</jasperReport>

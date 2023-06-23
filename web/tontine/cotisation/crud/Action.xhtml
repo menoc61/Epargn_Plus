@@ -1,0 +1,77 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <h:form id="actionForm"
+            style="position: fixed; width: calc(100% - 212px); z-index: 2; height: auto; background-color: white; padding-top: 10px; border-bottom: 2px solid dimgrey; margin-top: 60px;">
+
+
+        <h:panelGroup style="display: inline-block; margin: 5px; vertical-align: bottom;">
+            <h:outputLabel for="cotis"
+                           value="#{langues.cotisationn}" />
+            <p:selectOneMenu id="cotis"
+                             value="#{cotisationController.cotisation.idcotisation}"
+                             style="width: 250px;">
+                <p:ajax listener="#{cotisationController.updateData()}"
+                        update=":ListerForm,:actionForm" />
+                <f:selectItem itemLabel="#{langues.choisir}" itemValue="0" />
+                <f:selectItems value="#{cotisationController.list_cotisations}"
+                               var="el_c"
+                               itemValue="#{el_c.idcotisation}"
+                               itemLabel="#{el_c.nom}" />
+            </p:selectOneMenu>
+        </h:panelGroup>
+
+        <h:panelGroup style="display: inline-block; margin: 5px; vertical-align: bottom;">
+            <h:outputLabel value="#{langues.rencontre}" for="renc" />
+            <p:selectOneMenu id="renc"
+                             value="#{cotisationController.tontiner.idtontiner}"
+                             style="width: 300px">
+                <p:ajax update=":ListerForm,:CotiserDlgForm,:actionForm"
+                        listener="#{cotisationController.updateData_cotiserDlg()}"/>
+                <f:selectItem itemLabel="#{langues.choisir}" itemValue="0" />
+                <f:selectItems value="#{cotisationController.get_list_rencontre_programme()}"
+                               var="el_r"
+                               itemLabel="#{el_r.idrencontre.nomfr}"
+                               itemValue="#{el_r.idtontiner}" />
+            </p:selectOneMenu>
+        </h:panelGroup>
+
+        <h:panelGroup style="float: right;">
+            
+            <p:commandButton id="cotiseAllButton"   
+                             icon="ui-icon-plus" 
+                             value="#{langues.tout_cotiser}"
+                             style="vertical-align: bottom; margin: 5px; height: 30px;"
+                             actionListener="#{cotisationController.save_all()}"
+                             disabled="#{cotisationController.cotisation.idcotisation == null || cotisationController.cotisation.idcotisation == 0 || cotisationController.tontiner_is_termine() || cotisationController.cotisation.estTermine}"
+                             update=":growl,:ListerForm">
+                <p:confirm header="#{langues.ConfirmationHeader}" message="#{langues.Confirm_cotiser_all}" icon="ui-icon-alert"/>
+            </p:commandButton>
+            
+            <p:commandButton id="cotiseButton"   
+                             icon="ui-icon-plus" 
+                             value="#{langues.cotisations}"
+                             style="vertical-align: bottom; margin: 5px; height: 30px;"
+                             actionListener="#{cotisationController.prepareCotisation()}" 
+                             disabled="#{cotisationController.cotisation.idcotisation == null || cotisationController.cotisation.idcotisation == 0 || cotisationController.cotisation.estTermine}"
+                             update=":growl,:CotiserDlgForm"/>
+
+            <p:commandButton id="EtatButton"   
+                             icon="ui-icon-eyes" 
+                             value="#{langues.etat}"
+                             style="vertical-align: bottom; margin: 5px; height: 30px; right: 0px;"
+                             actionListener="#{cotisationController.prepareEtat()}" 
+                             disabled="#{cotisationController.cotisation.idcotisation == null || cotisationController.cotisation.idcotisation == 0}"
+                             update=":growl,:EtatDlgForm"/>
+        </h:panelGroup>
+
+
+    </h:form>
+</ui:composition>
+
+

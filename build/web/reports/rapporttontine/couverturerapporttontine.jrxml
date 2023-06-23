@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="couverturerapporttontine" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="c378bd76-df29-4eeb-bf79-7f0e0d4ef3ba">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="180"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["D:\\\\"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="cycle" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+     cycletontine."idcycle" AS cycletontine_idcycle,
+     cycletontine."nomfr" AS cycletontine_nomfr,
+     cycletontine."nomen" AS cycletontine_nomen,
+     cycletontine."idtontine" AS cycletontine_idtontine,
+     cycletontine."nombremembre" AS cycletontine_nombremembre,
+     cycletontine."fraisadhesion" AS cycletontine_fraisadhesion,
+     cycletontine."tauxavaliste" AS cycletontine_tauxavaliste,
+     cycletontine."taux_interet_default" AS cycletontine_taux_interet_default,
+     cycletontine."unite_emprunt" AS cycletontine_unite_emprunt,
+     cycletontine."id_pas_emprunt" AS cycletontine_id_pas_emprunt,
+     cycletontine."montant_cotisation" AS cycletontine_montant_cotisation,
+     cycletontine."montant_min_retard" AS cycletontine_montant_min_retard,
+     cycletontine."montant_abs_non_just" AS cycletontine_montant_abs_non_just,
+     cycletontine."montant_secours" AS cycletontine_montant_secours,
+     cycletontine."transfere" AS cycletontine_transfere,
+     tontine."idtontine" AS tontine_idtontine,
+     tontine."idfreqtontine" AS tontine_idfreqtontine,
+     tontine."idtsanction" AS tontine_idtsanction,
+     tontine."idtranchecotisation" AS tontine_idtranchecotisation,
+     tontine."idmdepaiement" AS tontine_idmdepaiement,
+     tontine."idrubriquecaisse" AS tontine_idrubriquecaisse,
+     tontine."iddevices" AS tontine_iddevices,
+     tontine."nom" AS tontine_nom,
+     tontine."slogan" AS tontine_slogan,
+     tontine."numerodetransfert" AS tontine_numerodetransfert,
+     membrecycle."idmembrecycle" AS membrecycle_idmembrecycle,
+     membrecycle."idmembre" AS membrecycle_idmembre,
+     membrecycle."idcycle" AS membrecycle_idcycle,
+     membrecycle."montantavalise" AS membrecycle_montantavalise,
+     membrecycle."montant_secours" AS membrecycle_montant_secours,
+     membre."idmembre" AS membre_idmembre,
+     membre."nom" AS membre_nom,
+     membre."prenom" AS membre_prenom,
+     membre."sexe" AS membre_sexe,
+     membre."contact" AS membre_contact,
+     membre."email" AS membre_email,
+     membre."photo" AS membre_photo,
+     membre."adresse" AS membre_adresse,
+     membre."idpays" AS membre_idpays,
+     membre."numcni" AS membre_numcni,
+     membre."code" AS membre_code
+FROM
+     "public"."cycletontine" cycletontine INNER JOIN "public"."tontine" tontine ON cycletontine."idtontine" = tontine."idtontine"
+     INNER JOIN "public"."membrecycle" membrecycle ON cycletontine."idcycle" = membrecycle."idcycle"
+     INNER JOIN "public"."membre" membre ON membrecycle."idmembre" = membre."idmembre"
+WHERE
+     membrecycle.idmembrecycle = $P{cycle}]]>
+	</queryString>
+	<field name="cycletontine_idcycle" class="java.lang.Integer"/>
+	<field name="cycletontine_nomfr" class="java.lang.String"/>
+	<field name="cycletontine_nomen" class="java.lang.String"/>
+	<field name="cycletontine_idtontine" class="java.lang.Integer"/>
+	<field name="cycletontine_nombremembre" class="java.lang.Integer"/>
+	<field name="cycletontine_fraisadhesion" class="java.lang.Double"/>
+	<field name="cycletontine_tauxavaliste" class="java.lang.Double"/>
+	<field name="cycletontine_taux_interet_default" class="java.lang.Double"/>
+	<field name="cycletontine_unite_emprunt" class="java.lang.Double"/>
+	<field name="cycletontine_id_pas_emprunt" class="java.lang.Integer"/>
+	<field name="cycletontine_montant_cotisation" class="java.lang.Double"/>
+	<field name="cycletontine_montant_min_retard" class="java.lang.Double"/>
+	<field name="cycletontine_montant_abs_non_just" class="java.lang.Double"/>
+	<field name="cycletontine_montant_secours" class="java.lang.Double"/>
+	<field name="cycletontine_transfere" class="java.lang.Boolean"/>
+	<field name="tontine_idtontine" class="java.lang.Integer"/>
+	<field name="tontine_idfreqtontine" class="java.lang.Integer"/>
+	<field name="tontine_idtsanction" class="java.lang.Integer"/>
+	<field name="tontine_idtranchecotisation" class="java.lang.Integer"/>
+	<field name="tontine_idmdepaiement" class="java.lang.Integer"/>
+	<field name="tontine_idrubriquecaisse" class="java.lang.Integer"/>
+	<field name="tontine_iddevices" class="java.lang.Integer"/>
+	<field name="tontine_nom" class="java.lang.String"/>
+	<field name="tontine_slogan" class="java.lang.String"/>
+	<field name="tontine_numerodetransfert" class="java.lang.String"/>
+	<field name="membrecycle_idmembrecycle" class="java.lang.Integer"/>
+	<field name="membrecycle_idmembre" class="java.lang.Integer"/>
+	<field name="membrecycle_idcycle" class="java.lang.Integer"/>
+	<field name="membrecycle_montantavalise" class="java.lang.Double"/>
+	<field name="membrecycle_montant_secours" class="java.lang.Double"/>
+	<field name="membre_idmembre" class="java.lang.Integer"/>
+	<field name="membre_nom" class="java.lang.String"/>
+	<field name="membre_prenom" class="java.lang.String"/>
+	<field name="membre_sexe" class="java.lang.String"/>
+	<field name="membre_contact" class="java.lang.String"/>
+	<field name="membre_email" class="java.lang.String"/>
+	<field name="membre_photo" class="java.lang.String"/>
+	<field name="membre_adresse" class="java.lang.String"/>
+	<field name="membre_idpays" class="java.lang.Integer"/>
+	<field name="membre_numcni" class="java.lang.String"/>
+	<field name="membre_code" class="java.lang.String"/>
+	<background>
+		<band height="20" splitType="Stretch">
+			<textField>
+				<reportElement x="360" y="0" width="80" height="20" uuid="7bc2a12f-c6d8-4840-b8b6-75e7385e237c"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="440" y="0" width="40" height="20" uuid="f5100517-8507-41fc-bff5-00fcefa7eea4"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</background>
+	<title>
+		<band height="471" splitType="Stretch">
+			<image>
+				<reportElement x="10" y="3" width="137" height="123" uuid="6273f6b5-5ed8-4429-9750-6bd0c037b1a9"/>
+				<imageExpression><![CDATA["sss.png"]]></imageExpression>
+			</image>
+			<image>
+				<reportElement x="650" y="3" width="136" height="123" uuid="61e18314-d8be-4198-adce-0fcdd1af414d"/>
+				<imageExpression><![CDATA["12.jpg"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="2" y="174" width="802" height="70" forecolor="#0099FF" uuid="1354dd4d-04a9-4cf4-99b5-6247ecd98fee"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="34" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[        SITUATION FINANCIERE PAR MEMBRE ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="2" y="244" width="800" height="46" uuid="0b0b7655-f2c0-4c7e-ab9e-315c7ce9a5c1"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="26" isBold="true" isItalic="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cycletontine_nomfr}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="117" y="388" width="606" height="28" uuid="1195c42c-ce59-4bdf-ac66-317e79cc4e1a"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="SansSerif" size="16" isBold="true" isItalic="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{membre_contact}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="28" y="388" width="89" height="29" uuid="ef002497-5935-4e58-8037-3c187d0cb879"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="SansSerif" size="18" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Contact :]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="117" y="358" width="606" height="30" uuid="4716ac39-b1e7-4b80-875b-4fe184e01b59"/>
+				<box>
+					<pen lineWidth="0.0"/>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="SansSerif" size="18" isBold="true" isItalic="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{membre_nom}+" "+$F{membre_prenom}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="28" y="417" width="89" height="25" uuid="4655f975-9a44-4592-8385-11698f5debc7"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="SansSerif" size="18" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Adresse :]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="117" y="416" width="488" height="29" uuid="9361f166-b1c6-4b9b-9089-9733343626bf"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="SansSerif" size="16" isBold="true" isItalic="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{membre_adresse}]]></textFieldExpression>
+			</textField>
+			<textField pattern="EEEEE dd MMMMM yyyy">
+				<reportElement x="621" y="442" width="181" height="29" uuid="ede061de-5336-4a32-834e-fc690c1a1e69"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial Narrow" size="14" isBold="true" isItalic="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="28" y="358" width="89" height="29" uuid="c807e9f9-99b7-43cf-b97f-530e271a6913"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="SansSerif" size="18" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Membre :]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="147" y="32" width="503" height="62" uuid="1fd667b1-6f33-4967-ace7-03eb19eb11bb"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="26" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{tontine_nom}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="10" y="154" width="792" height="20" uuid="d364e892-969c-45f6-ba23-73fb0e83ee48"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{tontine_slogan}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band splitType="Stretch"/>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<summary>
+		<band height="94" splitType="Stretch">
+			<subreport isUsingCache="false">
+				<reportElement positionType="Float" x="0" y="1" width="802" height="10" uuid="d5904377-df98-4a83-8ce9-4d4a0701ca15"/>
+				<subreportParameter name="membrecycle">
+					<subreportParameterExpression><![CDATA[$P{cycle}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA["couverturerapporttontine_etatsynthese.jasper"]]></subreportExpression>
+			</subreport>
+			<subreport>
+				<reportElement positionType="Float" x="0" y="12" width="802" height="11" uuid="d896c655-96e9-4743-9648-ba7c977e9aa5"/>
+				<subreportParameter name="membrecycle">
+					<subreportParameterExpression><![CDATA[$P{cycle}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA["couverturerapporttontine_emprunt.jasper"]]></subreportExpression>
+			</subreport>
+			<subreport>
+				<reportElement positionType="Float" x="0" y="25" width="802" height="15" uuid="ff38be2a-8a99-45e7-8afe-d0a2f2523d5f"/>
+				<subreportParameter name="membrecycle">
+					<subreportParameterExpression><![CDATA[$P{cycle}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA["couverturerapporttontine_interet.jasper"]]></subreportExpression>
+			</subreport>
+			<subreport>
+				<reportElement positionType="Float" x="0" y="42" width="802" height="11" uuid="1468b95e-60c6-439d-90e9-0a95657a8c1a"/>
+				<subreportParameter name="membrecycle">
+					<subreportParameterExpression><![CDATA[$P{cycle}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA["couverturerapporttontine_encours_emprunt.jasper"]]></subreportExpression>
+			</subreport>
+			<subreport>
+				<reportElement positionType="Float" x="0" y="55" width="802" height="9" uuid="bd80115a-a291-452c-9b3f-dd3f843fa14b"/>
+				<subreportParameter name="membrecycle">
+					<subreportParameterExpression><![CDATA[$P{cycle}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA["couverturerapporttontine_epargne.jasper"]]></subreportExpression>
+			</subreport>
+			<subreport>
+				<reportElement positionType="Float" x="0" y="65" width="802" height="11" uuid="d0832ef7-efb0-47d9-9fa9-41e79f53a56b"/>
+				<subreportParameter name="membrecycle">
+					<subreportParameterExpression><![CDATA[$P{cycle}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA["encours_secours.jasper"]]></subreportExpression>
+			</subreport>
+			<subreport>
+				<reportElement positionType="Float" x="2" y="78" width="802" height="10" uuid="812000bd-7a7a-47ef-99b1-3af226df4714"/>
+				<subreportParameter name="membrecycle">
+					<subreportParameterExpression><![CDATA[$P{cycle}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA["couverturerapporttontine_assistance.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</summary>
+</jasperReport>

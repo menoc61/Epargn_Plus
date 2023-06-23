@@ -1,0 +1,307 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="recu" pageWidth="595" pageHeight="421" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="6aeba4a1-c941-496a-b066-3883d6c2fec6">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="table">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<subDataset name="Table Dataset 1" uuid="04f1401c-547c-4830-b0c0-b045d0dd4316"/>
+	<parameter name="id_tontine" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[5]]></defaultValueExpression>
+	</parameter>
+	<parameter name="id_cotisation" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[1]]></defaultValueExpression>
+	</parameter>
+	<parameter name="id_benef" class="java.lang.Long">
+		<defaultValueExpression><![CDATA[1l]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+     beneficiaire_tontine."idbeneficiaire" AS beneficiaire_tontine_idbeneficiaire,
+     beneficiaire_tontine."montant" AS beneficiaire_tontine_montant,
+     beneficiaire_tontine."reste" AS beneficiaire_tontine_reste,
+     tontiner."idtontiner" AS tontiner_idtontiner,
+     tontiner."effectue" AS tontiner_effectue,
+     cotisation."idcotisation" AS cotisation_idcotisation,
+     cotisation."nom" AS cotisation_nom,
+     mains."idmain" AS mains_idmain,
+     mains."codemain" AS mains_codemain,
+     mains."nom" AS mains_nom,
+     inscription_cotisation."idinscription" AS inscription_cotisation_idinscription,
+     inscription_cotisation."idmembre" AS inscription_cotisation_idmembre,
+     inscription_cotisation."etat" AS inscription_cotisation_etat,
+     membrecycle."idmembrecycle" AS membrecycle_idmembrecycle,
+     membre."idmembre" AS membre_idmembre,
+     membre."nom" AS membre_nom,
+     membre."prenom" AS membre_prenom,
+     membre."numcni" AS membre_numcni,
+     rencontre."idrencontre" AS rencontre_idrencontre,
+     rencontre."nomfr" AS rencontre_nomfr,
+     rencontre."daterencontre" AS rencontre_daterencontre,
+     rencontre."nomen" AS rencontre_nomen,
+     tontine."idtontine" AS tontine_idtontine,
+     tontine."idfreqtontine" AS tontine_idfreqtontine,
+     tontine."idtsanction" AS tontine_idtsanction,
+     tontine."idtranchecotisation" AS tontine_idtranchecotisation,
+     tontine."idmdepaiement" AS tontine_idmdepaiement,
+     tontine."idrubriquecaisse" AS tontine_idrubriquecaisse,
+     tontine."iddevices" AS tontine_iddevices,
+     tontine."nom" AS tontine_nom,
+     tontine."slogan" AS tontine_slogan,
+     tontine."numerodetransfert" AS tontine_numerodetransfert
+FROM
+     "public"."tontiner" tontiner INNER JOIN "public"."beneficiaire_tontine" beneficiaire_tontine ON tontiner."idtontiner" = beneficiaire_tontine."idtontiner"
+     INNER JOIN "public"."cotisation" cotisation ON tontiner."idcotisation" = cotisation."idcotisation"
+     INNER JOIN "public"."rencontre" rencontre ON tontiner."idrencontre" = rencontre."idrencontre"
+     INNER JOIN "public"."tontine" tontine ON cotisation."idtontine" = tontine."idtontine"
+     INNER JOIN "public"."mains" mains ON beneficiaire_tontine."idmain" = mains."idmain"
+     INNER JOIN "public"."inscription_cotisation" inscription_cotisation ON mains."idinscription" = inscription_cotisation."idinscription"
+     INNER JOIN "public"."membrecycle" membrecycle ON inscription_cotisation."idmembre" = membrecycle."idmembrecycle"
+     INNER JOIN "public"."membre" membre ON membrecycle."idmembre" = membre."idmembre"
+WHERE
+     tontine."idtontine" = $P{id_tontine}
+ AND cotisation."idcotisation" = $P{id_cotisation}
+ AND beneficiaire_tontine."idbeneficiaire" = $P{id_benef}]]>
+	</queryString>
+	<field name="beneficiaire_tontine_idbeneficiaire" class="java.lang.Long"/>
+	<field name="beneficiaire_tontine_montant" class="java.lang.Double"/>
+	<field name="beneficiaire_tontine_reste" class="java.lang.Double"/>
+	<field name="tontiner_idtontiner" class="java.lang.Integer"/>
+	<field name="tontiner_effectue" class="java.lang.Boolean"/>
+	<field name="cotisation_idcotisation" class="java.lang.Integer"/>
+	<field name="cotisation_nom" class="java.lang.String"/>
+	<field name="mains_idmain" class="java.lang.Integer"/>
+	<field name="mains_codemain" class="java.lang.String"/>
+	<field name="mains_nom" class="java.lang.String"/>
+	<field name="inscription_cotisation_idinscription" class="java.lang.Long"/>
+	<field name="inscription_cotisation_idmembre" class="java.lang.Integer"/>
+	<field name="inscription_cotisation_etat" class="java.lang.Boolean"/>
+	<field name="membrecycle_idmembrecycle" class="java.lang.Integer"/>
+	<field name="membre_idmembre" class="java.lang.Integer"/>
+	<field name="membre_nom" class="java.lang.String"/>
+	<field name="membre_prenom" class="java.lang.String"/>
+	<field name="membre_numcni" class="java.lang.String"/>
+	<field name="rencontre_idrencontre" class="java.lang.Integer"/>
+	<field name="rencontre_nomfr" class="java.lang.String"/>
+	<field name="rencontre_daterencontre" class="java.sql.Date"/>
+	<field name="rencontre_nomen" class="java.lang.String"/>
+	<field name="tontine_idtontine" class="java.lang.Integer"/>
+	<field name="tontine_idfreqtontine" class="java.lang.Integer"/>
+	<field name="tontine_idtsanction" class="java.lang.Integer"/>
+	<field name="tontine_idtranchecotisation" class="java.lang.Integer"/>
+	<field name="tontine_idmdepaiement" class="java.lang.Integer"/>
+	<field name="tontine_idrubriquecaisse" class="java.lang.Integer"/>
+	<field name="tontine_iddevices" class="java.lang.Integer"/>
+	<field name="tontine_nom" class="java.lang.String"/>
+	<field name="tontine_slogan" class="java.lang.String"/>
+	<field name="tontine_numerodetransfert" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="75" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="140" height="20" forecolor="#CCCCCC" uuid="fd658122-28f7-4232-90b1-6ea3973dd9e0"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+					<paragraph leftIndent="5"/>
+				</textElement>
+				<text><![CDATA[EPARGNE +]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="0" y="20" width="250" height="20" uuid="05b3274d-0dea-458c-b008-1a5133754582"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+					<paragraph leftIndent="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{tontine_nom}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="40" width="250" height="20" uuid="7c952d96-4a04-48a0-9709-a626e5de0399"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+					<paragraph leftIndent="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cotisation_nom}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="380" y="0" width="100" height="20" uuid="7e99cc40-8511-438e-bb71-ae7314a83675"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<text><![CDATA[Fait le]]></text>
+			</staticText>
+			<textField pattern="dd MMMMM yyyy">
+				<reportElement x="480" y="0" width="75" height="20" uuid="aad1b16b-234e-4a0b-83cc-b51884b5f753"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="483" y="20" width="72" height="1" uuid="9f24561c-fbc2-41ac-b52a-b020a44e7643"/>
+				<graphicElement>
+					<pen lineStyle="Dotted"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement x="438" y="25" width="117" height="20" uuid="d18c0c27-2b15-4458-bd44-786809c3a5a3"/>
+				<textElement textAlignment="Right" verticalAlignment="Bottom">
+					<font isBold="true"/>
+					<paragraph rightIndent="5"/>
+				</textElement>
+				<text><![CDATA[Montant]]></text>
+			</staticText>
+			<textField pattern="#,##0">
+				<reportElement style="table" mode="Opaque" x="424" y="45" width="131" height="20" backcolor="#F5F5F5" uuid="34d345ac-32eb-41c9-87ca-319269482743"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+					<paragraph rightIndent="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{beneficiaire_tontine_montant}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="28" splitType="Stretch">
+			<rectangle radius="10">
+				<reportElement x="180" y="0" width="197" height="20" uuid="6bce572e-65a6-4b71-8da1-c07c76ed377f"/>
+				<graphicElement>
+					<pen lineWidth="2.0" lineColor="#999999"/>
+				</graphicElement>
+			</rectangle>
+			<textField>
+				<reportElement x="0" y="0" width="555" height="20" uuid="9ff918ab-6ab3-4464-8e77-0673e6741f20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Reçu N° " + $F{beneficiaire_tontine_idbeneficiaire}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="120" splitType="Stretch">
+			<frame>
+				<reportElement x="0" y="0" width="555" height="120" uuid="507be4d4-b488-48cf-8d25-e828b0c4920a"/>
+				<staticText>
+					<reportElement x="0" y="0" width="47" height="20" uuid="782e5370-cf4e-4974-b9f5-ecf7ce5b77d8"/>
+					<textElement verticalAlignment="Middle">
+						<paragraph leftIndent="5"/>
+					</textElement>
+					<text><![CDATA[Reçu de ]]></text>
+				</staticText>
+				<textField isBlankWhenNull="true">
+					<reportElement x="47" y="1" width="502" height="20" uuid="f6ff3b4b-503d-4435-a6dc-543c9c20abd1"/>
+					<textElement verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{membre_nom} + " " + $F{membre_prenom} + " (" + $F{mains_codemain} + ")"]]></textFieldExpression>
+				</textField>
+				<line>
+					<reportElement x="47" y="20" width="502" height="1" uuid="5a14f39f-a10e-44d7-b914-704adc04a64f"/>
+					<graphicElement>
+						<pen lineStyle="Dotted"/>
+					</graphicElement>
+				</line>
+				<line>
+					<reportElement x="5" y="40" width="544" height="1" uuid="1bcdd3d2-72e2-43e0-a0ae-24f3d9bec146"/>
+					<graphicElement>
+						<pen lineStyle="Dotted"/>
+					</graphicElement>
+				</line>
+				<staticText>
+					<reportElement x="0" y="41" width="36" height="20" uuid="2224e733-4896-4a70-be15-8e77f0fdc601"/>
+					<textElement verticalAlignment="Middle">
+						<paragraph leftIndent="5"/>
+					</textElement>
+					<text><![CDATA[Motif ]]></text>
+				</staticText>
+				<textField isBlankWhenNull="true">
+					<reportElement x="36" y="40" width="513" height="39" uuid="c278041f-b15e-48dc-9ac6-01102b5b3465"/>
+					<textElement verticalAlignment="Top">
+						<font isBold="true"/>
+						<paragraph spacingBefore="4"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Bénéficiaire de la " + $F{rencontre_nomfr}]]></textFieldExpression>
+				</textField>
+				<line>
+					<reportElement x="36" y="60" width="513" height="1" uuid="d4f90e08-ecce-46a9-aea9-6ef0e72915f1"/>
+					<graphicElement>
+						<pen lineStyle="Dotted"/>
+					</graphicElement>
+				</line>
+				<line>
+					<reportElement x="5" y="79" width="544" height="1" uuid="9ef34b89-deeb-4a4c-829b-3ba6c8296ef1"/>
+					<graphicElement>
+						<pen lineStyle="Dotted"/>
+					</graphicElement>
+				</line>
+				<staticText>
+					<reportElement x="0" y="80" width="90" height="20" uuid="342c435c-26d9-4c3e-b901-432ccff6f6c4"/>
+					<textElement verticalAlignment="Middle">
+						<paragraph leftIndent="5"/>
+					</textElement>
+					<text><![CDATA[Montant en lettre ]]></text>
+				</staticText>
+				<textField isBlankWhenNull="true">
+					<reportElement x="90" y="79" width="459" height="39" uuid="aeada418-01f5-4e43-9754-97dbfbe45aaa"/>
+					<textElement verticalAlignment="Top">
+						<font isBold="true"/>
+						<paragraph spacingBefore="4"/>
+					</textElement>
+					<textFieldExpression><![CDATA[""]]></textFieldExpression>
+				</textField>
+				<line>
+					<reportElement x="90" y="99" width="459" height="1" uuid="f0f86bfb-6616-4a94-b705-64fcae6a20cc"/>
+					<graphicElement>
+						<pen lineStyle="Dotted"/>
+					</graphicElement>
+				</line>
+				<line>
+					<reportElement x="5" y="118" width="544" height="1" uuid="949b6669-d062-40a3-b5bf-de9dfad28407"/>
+					<graphicElement>
+						<pen lineStyle="Dotted"/>
+					</graphicElement>
+				</line>
+			</frame>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<lastPageFooter>
+		<band height="50">
+			<staticText>
+				<reportElement x="360" y="30" width="64" height="20" uuid="c8b511ec-b041-48ff-84f8-469f21d51a3f"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<text><![CDATA[Le caissier]]></text>
+			</staticText>
+			<line>
+				<reportElement x="424" y="49" width="125" height="1" uuid="4b7366e4-86ad-4d2b-8941-5cb3c319d1e4"/>
+			</line>
+		</band>
+	</lastPageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

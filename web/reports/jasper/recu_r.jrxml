@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="recu_r" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="595" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="c2bddad4-3926-44ac-9ddb-f1f313ca98af">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="id_tontine" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[5]]></defaultValueExpression>
+	</parameter>
+	<parameter name="id_cycle" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[5]]></defaultValueExpression>
+	</parameter>
+	<parameter name="id_cotisation" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[1]]></defaultValueExpression>
+	</parameter>
+	<parameter name="id_rencontre" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[42]]></defaultValueExpression>
+	</parameter>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["C:\\Users\\Louis Stark\\Documents\\NetBeansProjects\\Epargn_Plus\\web\\reports\\jasper\\"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+     beneficiaire_tontine."idbeneficiaire" AS beneficiaire_tontine_idbeneficiaire,
+     beneficiaire_tontine."montant" AS beneficiaire_tontine_montant,
+     beneficiaire_tontine."reste" AS beneficiaire_tontine_reste,
+     tontiner."idtontiner" AS tontiner_idtontiner,
+     tontiner."effectue" AS tontiner_effectue,
+     mains."idmain" AS mains_idmain,
+     mains."codemain" AS mains_codemain,
+     mains."nom" AS mains_nom,
+     inscription_cotisation."idinscription" AS inscription_cotisation_idinscription,
+     inscription_cotisation."idmembre" AS inscription_cotisation_idmembre,
+     inscription_cotisation."etat" AS inscription_cotisation_etat,
+     membrecycle."idmembrecycle" AS membrecycle_idmembrecycle,
+     membre."idmembre" AS membre_idmembre,
+     membre."nom" AS membre_nom,
+     membre."prenom" AS membre_prenom,
+     membre."numcni" AS membre_numcni,
+     rencontre."idrencontre" AS rencontre_idrencontre,
+     rencontre."nomfr" AS rencontre_nomfr,
+     rencontre."daterencontre" AS rencontre_daterencontre,
+     rencontre."nomen" AS rencontre_nomen,
+     tontine."nom" AS tontine_nom,
+     tontine."slogan" AS tontine_slogan
+FROM
+     "public"."tontiner" tontiner INNER JOIN "public"."beneficiaire_tontine" beneficiaire_tontine ON tontiner."idtontiner" = beneficiaire_tontine."idtontiner"
+     INNER JOIN "public"."cotisation" cotisation ON tontiner."idcotisation" = cotisation."idcotisation"
+     INNER JOIN "public"."rencontre" rencontre ON tontiner."idrencontre" = rencontre."idrencontre"
+     INNER JOIN "public"."tontine" tontine ON cotisation."idtontine" = tontine."idtontine"
+     INNER JOIN "public"."mains" mains ON beneficiaire_tontine."idmain" = mains."idmain"
+     INNER JOIN "public"."inscription_cotisation" inscription_cotisation ON mains."idinscription" = inscription_cotisation."idinscription"
+     INNER JOIN "public"."membrecycle" membrecycle ON inscription_cotisation."idmembre" = membrecycle."idmembrecycle"
+     INNER JOIN "public"."membre" membre ON membrecycle."idmembre" = membre."idmembre"
+WHERE
+     tontine."idtontine" = $P{id_tontine}
+ AND cotisation."idcotisation" = $P{id_cotisation}
+ AND rencontre."idrencontre" = $P{id_rencontre}]]>
+	</queryString>
+	<field name="beneficiaire_tontine_idbeneficiaire" class="java.lang.Long"/>
+	<field name="beneficiaire_tontine_montant" class="java.lang.Double"/>
+	<field name="beneficiaire_tontine_reste" class="java.lang.Double"/>
+	<field name="tontiner_idtontiner" class="java.lang.Integer"/>
+	<field name="tontiner_effectue" class="java.lang.Boolean"/>
+	<field name="mains_idmain" class="java.lang.Integer"/>
+	<field name="mains_codemain" class="java.lang.String"/>
+	<field name="mains_nom" class="java.lang.String"/>
+	<field name="inscription_cotisation_idinscription" class="java.lang.Long"/>
+	<field name="inscription_cotisation_idmembre" class="java.lang.Integer"/>
+	<field name="inscription_cotisation_etat" class="java.lang.Boolean"/>
+	<field name="membrecycle_idmembrecycle" class="java.lang.Integer"/>
+	<field name="membre_idmembre" class="java.lang.Integer"/>
+	<field name="membre_nom" class="java.lang.String"/>
+	<field name="membre_prenom" class="java.lang.String"/>
+	<field name="membre_numcni" class="java.lang.String"/>
+	<field name="rencontre_idrencontre" class="java.lang.Integer"/>
+	<field name="rencontre_nomfr" class="java.lang.String"/>
+	<field name="rencontre_daterencontre" class="java.sql.Date"/>
+	<field name="rencontre_nomen" class="java.lang.String"/>
+	<field name="tontine_nom" class="java.lang.String"/>
+	<field name="tontine_slogan" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="320" splitType="Stretch">
+			<subreport>
+				<reportElement x="0" y="0" width="595" height="319" uuid="a015d2d3-2277-44b5-8f0e-30c4862dd222"/>
+				<subreportParameter name="id_tontine">
+					<subreportParameterExpression><![CDATA[$P{id_tontine}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="id_cycle">
+					<subreportParameterExpression><![CDATA[$P{id_cycle}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="id_cotisation">
+					<subreportParameterExpression><![CDATA[$P{id_cotisation}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="id_benef">
+					<subreportParameterExpression><![CDATA[$F{beneficiaire_tontine_idbeneficiaire}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "/recu.jasper"]]></subreportExpression>
+			</subreport>
+			<line>
+				<reportElement x="0" y="319" width="595" height="1" uuid="3327ff09-0c86-49f0-bc23-f21dfdd02264"/>
+				<graphicElement>
+					<pen lineStyle="Dashed"/>
+				</graphicElement>
+			</line>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

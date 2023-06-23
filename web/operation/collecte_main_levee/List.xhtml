@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+
+    <p:messages id="growl" closable="true" />
+
+    <h:form id="DepenseListForm">
+
+        <p:contextMenu id="DepenseDataTableContextMenu" for="datalist">  
+            <p:menuitem value="#{langues.Create}" onclick="document.getElementById('DepenseListForm:createButton').click();" icon="ui-icon-plus"/>                
+            <p:menuitem value="#{langues.Edit}" onclick="document.getElementById('DepenseListForm:editButton').click();" icon="ui-icon-pencil"/>
+            <p:menuitem value="#{langues.Delete}" onclick="document.getElementById('DepenseListForm:deleteButton').click();" icon="ui-icon-trash"/>
+            <p:separator/>
+        </p:contextMenu>
+
+        <p:dataTable id="datalist"
+                     value="#{collecteMainLeveeController.collecteMainLevees}"
+                     var="item"
+                     rowKey="#{item.id}"
+                     paginator="true"
+                     rows="10"
+                     style="word-wrap: break-word; margin-top:1% !important; text-align:left; margin-left:5%; margin-right: 5%; font-weight: bold; font-style: oblique;"
+                     rowIndexVar="index"
+                     rowsPerPageTemplate="10,20,30,40,50"
+                     selectionMode="single"
+                     selection="#{collecteMainLeveeController.collecteMainLevee}"
+                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}">
+
+            <p:ajax event="rowSelect"   update="@form:createButton,@form:editButton,@form:deleteButton,@form:DepenseDataTableContextMenu" listener="#{collecteMainLeveeController.activeButton()}"/>
+            <p:ajax event="rowUnselect" update="@form:createButton,@form:editButton,@form:deleteButton,@form:DepenseDataTableContextMenu"  listener="#{collecteMainLeveeController.deactiveButton()}"  />
+            <p:ajax event="contextMenu" update="@form:createButton @form:editButton @form:deleteButton"/>
+            <p:ajax event="rowDblselect" onsuccess="document.getElementById('DepenseListForm:viewButton').click();"  listener="#{collecteMainLeveeController.activeButton()}" />
+
+            <f:facet name="header"> 
+                <h:outputText value="LISTE DE COLLECTE DE FOND DE SECOURS"/>
+            </f:facet> 
+
+            <p:column  style=" width: 20%">
+                <f:facet name="header">
+                    <h:outputText value="#{langues.rencontre}"/>
+                </f:facet>
+                <h:outputText value="#{loginController.language eq 'en' ? item.idrencontre.nomen : item.idrencontre.nomfr}"/>
+            </p:column>
+
+            <p:column style="width: 15% !important;" >
+                <f:facet name="header">
+                    <h:outputText value="#{langues.date}"/>
+                </f:facet>
+                <h:outputText value="#{item.idrencontre.daterencontre}">
+                    <f:convertDateTime pattern="dd/MM/yyyy"/>
+                </h:outputText>
+            </p:column> 
+
+            <p:column style=" width: 30%">
+                <f:facet name="header">
+                    <h:outputText value="#{langues.membre}"/>
+                </f:facet>
+                <h:outputText value="#{item.idmembre.idmembre.nom} #{item.idmembre.idmembre.prenom}">
+                    <f:convertNumber/>
+                </h:outputText>
+            </p:column>
+
+            <p:column style="width: 10%">
+                <f:facet name="header">
+                    <h:outputText value="#{langues.montant}"/>
+                </f:facet>
+                <h:outputText value="#{item.montant}">
+                    <f:convertNumber/>
+                </h:outputText>
+            </p:column>
+
+        </p:dataTable>
+
+        <p:separator style="margin-left: 5%;margin-right: 5%"/>
+        <center>
+            <p:commandButton id="createButton" icon="ui-icon-plus"   value="#{langues.Create}" actionListener="#{collecteMainLeveeController.prepareCreate()}" update=":DepenseCreateForm" oncomplete="PF('DepenseCreateDialog').show()"/>
+            <p:commandButton id="editButton"   icon="ui-icon-pencil" value="#{langues.Edit}" actionListener="#{collecteMainLeveeController.prepareEdit()}" update=":DepenseCreateForm" oncomplete="PF('DepenseCreateDialog').show()" disabled="#{collecteMainLeveeController.detail}"/>
+            <p:commandButton id="deleteButton" icon="ui-icon-trash"  value="#{langues.Delete}" actionListener="#{collecteMainLeveeController.delete()}" update=":growl,datalist" disabled="#{collecteMainLeveeController.detail}">
+                <p:confirm header="#{langues.ConfirmationHeader}" message="#{langues.ConfirmDeleteMessage}" icon="ui-icon-alert"/>
+            </p:commandButton>
+        </center>
+        <p:separator style="margin-left: 5%;margin-right: 5%"/>
+
+        <center>
+            <p:commandButton id="printButton" icon="ui-icon-print" value="#{langues.imprimer}" actionListener="#{collectesecoursController.printSituation()}" ajax="false" immediate="true"/>                  
+        </center>
+
+        <p:dataTable id="datalist1"
+                     value="#{collecteMainLeveeController.membrecycles1}"
+                     var="item"
+                     rowKey="#{item.idmembrecycle}"
+                     paginator="true"
+                     rows="10"
+                     style="word-wrap: break-word; margin-top:1% !important; text-align:left; margin-left:5%; margin-right: 5%; font-weight: bold; font-style: oblique;"
+                     rowIndexVar="index"
+                     rowsPerPageTemplate="10,20,30,40,50"
+                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}">
+
+            <f:facet name="header"> 
+                <h:outputText value="SITUATION DES FONDS DE MAIN LEVEE"/>
+            </f:facet> 
+
+            <p:column style=" width: 30%">
+                <f:facet name="header">
+                    <h:outputText value="#{langues.membre}"/>
+                </f:facet>
+                <h:outputText value="#{item.idmembre.code} - #{item.idmembre.nom} #{item.idmembre.prenom}">
+                    <f:convertNumber/>
+                </h:outputText>
+            </p:column>
+
+            <p:column style=" width: 10%">
+                <f:facet name="header">
+                    <h:outputText value="Reste"/>
+                </f:facet>
+                <h:outputText value="#{item.resteMainLevee}">
+                    <f:convertNumber/>
+                </h:outputText>
+            </p:column>
+
+        </p:dataTable>
+
+        <br/>
+
+        <ui:include src="/confirmation.xhtml"/>
+    </h:form>
+
+</ui:composition>

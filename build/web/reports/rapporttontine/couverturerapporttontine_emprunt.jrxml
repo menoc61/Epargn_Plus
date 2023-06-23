@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="couverturerapporttontine_emprunt" language="groovy" pageWidth="802" pageHeight="555" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="802" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="0c2fab0d-870b-49c8-b874-eccae73f63d4">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="membrecycle" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+     Sum(emprunt."montantemp") AS emprunt_montantemp,
+     membrecycle."idmembrecycle" AS membrecycle_idmembrecycle,
+     rencontre."nomfr" AS rencontre_nomfr,
+     rencontre."daterencontre" AS rencontre_daterencontre,
+     emprunt."taux_interet" AS emprunt_taux_interet,
+     emprunt."observtaion" AS emprunt_observtaion,
+     emprunt."idrencontre" AS emprunt_idrencontre,
+     emprunt."idmembre" AS emprunt_idmembre
+FROM
+     "public"."emprunt" emprunt INNER JOIN "public"."membrecycle" membrecycle ON emprunt."idmembre" = membrecycle."idmembrecycle"
+     INNER JOIN "public"."rencontre" rencontre ON emprunt."idrencontre" = rencontre."idrencontre"
+WHERE
+     membrecycle.idmembrecycle = $P{membrecycle}
+GROUP BY
+     membrecycle."idmembrecycle",
+     rencontre."nomfr",
+     rencontre."daterencontre",
+     emprunt."taux_interet",
+     emprunt."observtaion",
+     emprunt."idrencontre",
+     emprunt."idmembre"
+ORDER BY
+     rencontre_daterencontre ASC]]>
+	</queryString>
+	<field name="emprunt_montantemp" class="java.lang.Double"/>
+	<field name="membrecycle_idmembrecycle" class="java.lang.Integer"/>
+	<field name="rencontre_nomfr" class="java.lang.String"/>
+	<field name="rencontre_daterencontre" class="java.sql.Date"/>
+	<field name="emprunt_taux_interet" class="java.lang.Double"/>
+	<field name="emprunt_observtaion" class="java.lang.String"/>
+	<field name="emprunt_idrencontre" class="java.lang.Long"/>
+	<field name="emprunt_idmembre" class="java.lang.Integer"/>
+	<variable name="TotalMontants" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{emprunt_montantemp}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="139" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="101" width="802" height="37" uuid="e3f409f4-9476-4eb2-84a3-453ee46bcd39"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="SansSerif" size="16" isBold="true" isItalic="false" isUnderline="false"/>
+				</textElement>
+				<text><![CDATA[         II.1.  DETAIL DES EMPRUNTS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="10" y="65" width="781" height="37" backcolor="#F9F3F3" uuid="cc42ee78-2256-4810-b57f-8819c4f2e35f"/>
+				<box>
+					<pen lineWidth="0.5" lineStyle="Dashed"/>
+					<topPen lineWidth="0.5" lineStyle="Dashed"/>
+					<leftPen lineWidth="0.5" lineStyle="Dashed"/>
+					<bottomPen lineWidth="0.5" lineStyle="Dashed"/>
+					<rightPen lineWidth="0.5" lineStyle="Dashed"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="SansSerif" size="18" isBold="true" isItalic="false" isUnderline="false"/>
+				</textElement>
+				<text><![CDATA[    II.  EMPRUNTS & REMBOURSEMENTS]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="30" splitType="Stretch">
+			<staticText>
+				<reportElement mode="Opaque" x="9" y="0" width="337" height="30" forecolor="#FFFFFF" backcolor="#0099FF" uuid="55700c68-ff9c-4645-8883-57749c11098c"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="15" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[Rencontre]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="346" y="0" width="125" height="30" forecolor="#FFFFFF" backcolor="#0099FF" uuid="2c78cc79-f1fe-45d8-91e7-c4840614b611"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="15" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[Montant Emprunté]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="471" y="0" width="100" height="30" forecolor="#FFFFFF" backcolor="#0099FF" uuid="c7c47a31-e165-4773-a01f-b8839339861f"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="15" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[Taux d'interet]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="571" y="0" width="220" height="30" forecolor="#FFFFFF" backcolor="#0099FF" uuid="403c58ca-b376-494d-a742-b9a24611748c"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="15" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[Observtaion]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<summary>
+		<band height="37" splitType="Stretch">
+			<staticText>
+				<reportElement x="10" y="0" width="336" height="37" uuid="9eddcea8-61cc-46f0-b759-796f3052622f"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="SansSerif" size="14" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[                       Total Global]]></text>
+			</staticText>
+			<textField pattern="#,##0">
+				<reportElement x="346" y="0" width="125" height="37" uuid="bb3fe4fc-f0de-481f-8074-1c68ec14361e"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{TotalMontants}]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

@@ -1,0 +1,187 @@
+@charset "utf-8";
+/* CSS Document */
+
+#body{
+	text-align:center;
+	background-color:#F03;
+	
+}
+
+#bloc_body{
+	width:100%;
+	height:auto;
+	margin:auto; 
+	background-color:#FFF;
+}
+
+#logominsante{
+	width:250px;
+	height:90px;
+	margin-left:35%;
+ 
+	 
+}
+#banierre{
+	width:100%;
+	background-color:#600;
+	text-shadow:#00F;
+	color:#0F0;
+	padding-top:2%;
+	padding-bottom:2%;
+	size:14px;
+	text-align:center;
+	font-size:20px;
+	font-weight:bold;
+     font-family:"Times New Roman", Times, serif;
+  
+}
+
+
+#menu_gauche{
+	width:25%;
+	height:400px;
+	background-color:#FFF;
+	float:left;
+	margin-right:1%;
+	border-radius:10px 10px 10px 10px;
+	box-shadow:2px 2px 2px 2px green;
+	color:#000;
+	font-weight:bold;
+ 
+	
+}
+
+#center{
+	width:39%;
+	height:auto;
+	background-color:#FFF;
+	float:left;
+	margin-left:2%;
+	 
+}
+
+#center_dessus{
+	width:100%;
+}
+
+#center_dessous{
+	width:100%;
+	margin-top:60px;
+}
+
+#menu_droit{
+	width:33%;
+	height:400px;
+	float:left;
+	background-color:#FFF;
+	border-radius:10px 10px 10px 10px;
+	box-shadow:2px 2px 2px 2px green;
+	color:#000;
+	font-weight:bold;
+	
+}
+
+#menu_gauche_cdmt{
+	width:33%;
+	height:200px;
+	background-color:#FFF;
+	border-radius:10px 10px 10px 10px;
+	box-shadow:1.5px 1.5px 1.5px green;
+	color:#000;
+	margin-right:33%;
+	 
+	display:none;
+	 
+}
+
+.div_img1{
+	float:left; 
+	border-radius:10px 10px 10px 10px;
+	margin-left:auto;
+	
+	
+	 
+	
+}
+.div_img3{
+	float:right;
+	border-radius:10px 10px 10px 10px;
+	margin-top:25%;
+	margin-right:55%;		   		
+}
+
+.div_img2{
+	float:left; 
+	margin-left:auto;
+	border-radius:10px 10px 10px 10px;
+	margin-left:45%;
+	 
+	 
+		 
+	
+}
+
+.div_img4{
+	float:left; 
+	border-radius:10px 10px 10px 10px;
+	margin-top:25%;
+	 
+	
+	 
+	 
+ 
+	
+}
+
+
+.img_logo{
+	width:200px;
+	height:219px;
+}
+
+
+
+.div_img2 img:hover {
+			width:250px;
+			height:270px;
+			z-index:2000;
+			margin-top:-25px;
+			margin-left:-25px;
+			 
+		}
+
+
+.div_img1 img:hover {
+			width:250px;
+			height:270px;
+			z-index:2000;
+			margin-top:-25px;
+			margin-left:-25px;
+			
+			 
+		}
+.div_img3 img:hover {
+			width:250px;
+			height:270px;
+			z-index:2000;
+			margin-top:-25px;
+			margin-left:-25px;
+			
+		}
+.div_img4 img:hover {
+			width:250px;
+			height:270px;
+			position:absolute;
+			z-index:2000; 
+			margin-top:-25px;
+			margin-left:-25px;
+		}
+
+li {
+    list-style-type: none; /* on annule la puce par défaut */
+    background-image:url(../cdmt/imagecdmt/ajouterfin.png); /* on affiche l'image souhaitée */
+    background-repeat: no-repeat; /* on annule la répétition par défaut */
+    background-position: left center; /* on positionne où l'on veut */
+    padding-left: 20px; /* pour éviter la superposition du contenu */
+}
+

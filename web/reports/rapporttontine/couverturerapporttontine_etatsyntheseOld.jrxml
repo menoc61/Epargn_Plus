@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="couverturerapporttontine_etatsynthese" language="groovy" pageWidth="802" pageHeight="555" orientation="Landscape" columnWidth="802" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="6bf9406a-6667-4ee6-90e7-6d7e4801145d">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="Crosstab Data Text" hAlign="Center"/>
+	<parameter name="membrecycle" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+     Sum(caisse.montant) AS montants,
+     rencontre."nomfr" AS rencontre_nomfr,
+     membrecycle."idmembrecycle" AS idmembrecycle,
+     rubriquecaisse."nomfr" AS nomfr,
+     rencontre."daterencontre" AS rencontre_daterencontre
+FROM
+     "public"."rencontre" rencontre INNER JOIN "public"."caisse" caisse ON rencontre."idrencontre" = caisse."idrencontre"
+     INNER JOIN "public"."rubriquecaisse" rubriquecaisse ON caisse."idrubriquecaisse" = rubriquecaisse."idrubriquecaisse"
+     INNER JOIN "public"."membrecycle" membrecycle ON caisse."idmembrecycle" = membrecycle."idmembrecycle"
+WHERE
+     membrecycle.idmembrecycle = $P{membrecycle}
+GROUP BY
+     rencontre.nomfr,
+     membrecycle.idmembrecycle,
+     rubriquecaisse.nomfr,
+     rencontre.daterencontre
+ORDER BY
+     rencontre_daterencontre ASC]]>
+	</queryString>
+	<field name="montants" class="java.lang.Double"/>
+	<field name="rencontre_nomfr" class="java.lang.String"/>
+	<field name="idmembrecycle" class="java.lang.Integer"/>
+	<field name="nomfr" class="java.lang.String"/>
+	<field name="rencontre_daterencontre" class="java.sql.Date"/>
+	<variable name="caisse_montant_1" class="java.lang.Double" resetType="Group" resetGroup="rencontregroup" calculation="Sum">
+		<variableExpression><![CDATA[]]></variableExpression>
+	</variable>
+	<variable name="caisse_montant_2" class="java.lang.Double" resetType="Page" calculation="Sum">
+		<variableExpression><![CDATA[]]></variableExpression>
+	</variable>
+	<variable name="caisse_montant_3" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[]]></variableExpression>
+	</variable>
+	<variable name="montants_1" class="java.lang.Double" resetType="Group" resetGroup="rencontregroup" calculation="Sum">
+		<variableExpression><![CDATA[$F{montants}]]></variableExpression>
+	</variable>
+	<variable name="montants_2" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{montants}]]></variableExpression>
+	</variable>
+	<variable name="rencontre_nomfr_1" class="java.lang.Integer" resetType="Group" resetGroup="rencontregroup" calculation="Count">
+		<variableExpression><![CDATA[$F{rencontre_nomfr}]]></variableExpression>
+	</variable>
+	<group name="rencontregroup">
+		<groupExpression><![CDATA[$F{rencontre_nomfr}]]></groupExpression>
+		<groupHeader>
+			<band height="34"/>
+		</groupHeader>
+		<groupFooter>
+			<band height="31"/>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="88" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="802" height="42" uuid="aa07d0b3-829b-44ef-b0f3-1b23f586e948"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="SansSerif" size="20" isBold="true" isItalic="false" isUnderline="false"/>
+				</textElement>
+				<text><![CDATA[   I.  ETAT DE SYNTHESE]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="30" splitType="Stretch"/>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="137" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="545" height="37" uuid="7b9eb909-4557-4f52-9deb-ae6a300bec25"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="SansSerif" size="16" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[                       Total Global]]></text>
+			</staticText>
+			<textField pattern="#,##0;-#,##0">
+				<reportElement mode="Opaque" x="545" y="0" width="257" height="38" forecolor="#FFFFFF" backcolor="#3399FF" uuid="c902e301-f724-498a-8762-cd734fa2cb47"/>
+				<box>
+					<pen lineWidth="1.0" lineColor="#000000"/>
+					<topPen lineWidth="1.0" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="16" isBold="true" isItalic="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{montants_2}]]></textFieldExpression>
+			</textField>
+			<crosstab>
+				<reportElement x="0" y="0" width="802" height="137" uuid="9060ef56-21c7-44b4-9002-5378d1f05874"/>
+				<rowGroup name="rencontre_nomfr" width="70" totalPosition="End">
+					<bucket class="java.lang.String">
+						<bucketExpression><![CDATA[$F{rencontre_nomfr}]]></bucketExpression>
+					</bucket>
+					<crosstabRowHeader>
+						<cellContents backcolor="#F0F8FF" mode="Opaque">
+							<box>
+								<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+							</box>
+							<textField>
+								<reportElement style="Crosstab Data Text" x="0" y="0" width="70" height="25" uuid="de5e7078-6466-4a47-9b62-5071e49c4b1d"/>
+								<textFieldExpression><![CDATA[$V{rencontre_nomfr}]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabRowHeader>
+					<crosstabTotalRowHeader>
+						<cellContents backcolor="#BFE1FF" mode="Opaque">
+							<box>
+								<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+							</box>
+							<staticText>
+								<reportElement x="0" y="0" width="70" height="25" uuid="55a0d03b-b20a-4884-993d-bc889aeeed35"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle"/>
+								<text><![CDATA[Total rencontre_nomfr]]></text>
+							</staticText>
+						</cellContents>
+					</crosstabTotalRowHeader>
+				</rowGroup>
+				<columnGroup name="nomfr" height="30" totalPosition="End">
+					<bucket class="java.lang.String">
+						<bucketExpression><![CDATA[$F{nomfr}]]></bucketExpression>
+					</bucket>
+					<crosstabColumnHeader>
+						<cellContents backcolor="#F0F8FF" mode="Opaque">
+							<box>
+								<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+							</box>
+							<textField>
+								<reportElement style="Crosstab Data Text" x="0" y="0" width="50" height="30" uuid="852184a1-b87b-4dab-9a02-ed2ae801052c"/>
+								<textFieldExpression><![CDATA[$V{nomfr}]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabColumnHeader>
+					<crosstabTotalColumnHeader>
+						<cellContents backcolor="#BFE1FF" mode="Opaque">
+							<box>
+								<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+							</box>
+							<staticText>
+								<reportElement x="0" y="0" width="50" height="30" uuid="92b2e2a5-9767-4e71-bd23-a3e582705e33"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle"/>
+								<text><![CDATA[Total nomfr]]></text>
+							</staticText>
+						</cellContents>
+					</crosstabTotalColumnHeader>
+				</columnGroup>
+				<measure name="montantsMeasure" class="java.lang.Double" calculation="Sum">
+					<measureExpression><![CDATA[$F{montants}]]></measureExpression>
+				</measure>
+				<crosstabCell width="50" height="25">
+					<cellContents>
+						<box>
+							<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						</box>
+						<textField>
+							<reportElement style="Crosstab Data Text" x="0" y="0" width="50" height="25" uuid="7a3461a1-5362-44dd-bbb4-09f51a4a59b5"/>
+							<textFieldExpression><![CDATA[$V{montantsMeasure}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell height="25" rowTotalGroup="rencontre_nomfr">
+					<cellContents backcolor="#BFE1FF" mode="Opaque">
+						<box>
+							<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						</box>
+						<textField>
+							<reportElement style="Crosstab Data Text" x="0" y="0" width="50" height="25" uuid="3f0662bf-dd06-4a57-b866-e8d889f4fe78"/>
+							<textFieldExpression><![CDATA[$V{montantsMeasure}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell width="50" columnTotalGroup="nomfr">
+					<cellContents backcolor="#BFE1FF" mode="Opaque">
+						<box>
+							<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						</box>
+						<textField>
+							<reportElement style="Crosstab Data Text" x="0" y="0" width="50" height="25" uuid="0857cdc8-b51e-4f39-b8d3-e9bb35be65fa"/>
+							<textFieldExpression><![CDATA[$V{montantsMeasure}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell rowTotalGroup="rencontre_nomfr" columnTotalGroup="nomfr">
+					<cellContents backcolor="#BFE1FF" mode="Opaque">
+						<box>
+							<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						</box>
+						<textField>
+							<reportElement style="Crosstab Data Text" x="0" y="0" width="50" height="25" uuid="a850a69c-a4b8-4fe8-9cee-d6bcbd68c3f7"/>
+							<textFieldExpression><![CDATA[$V{montantsMeasure}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+			</crosstab>
+		</band>
+	</summary>
+</jasperReport>

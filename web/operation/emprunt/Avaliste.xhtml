@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition>
+
+        <p:dialog showEffect="scale" hideEffect="scale" id="EmpruntSelectAvalisteDlg" width="600px" height="300px" style="overflow: auto" widgetVar="EmpruntSelectAvalisteDialog" modal="true" resizable="false" appendTo="@(body)" header="SELECTION DES AVALISTE DE L'EMPRUNT" closeOnEscape="true">
+
+            <h:form id="EmpruntSelectAvalisteCreateForm">
+
+                <h:panelGroup id="display">
+
+                    <h:panelGrid columns="1">
+
+                        <p:selectManyMenu id="advanced" value="#{empruntController.selectedMembrecycles}" converter="membrecycleConverter"
+                                          filter="true" filterMatchMode="contains" showCheckbox="true">
+                            <f:selectItems value="#{empruntController.membrecycles}" var="mc" itemLabel=" #{mc.idmembre.nom} #{mc.idmembre.prenom}" itemValue="#{mc}"/>
+                            <p:ajax update="message" listener="#{empruntController.updateAvalise()}"/>
+                        </p:selectManyMenu>
+
+                        <p:outputLabel style="color: #{empruntController.color}" id="message" value="#{empruntController.messageAvalise}"/>
+                        
+                    </h:panelGrid>
+
+                    <p:commandButton actionListener="#{empruntController.validateAvalise()}" value="#{langues.Save}" update="display,:EmpruntListForm:datalist,:growl" oncomplete="PF('EmpruntSelectAvalisteDialog').hide()">
+                        <p:confirm header="#{langues.ConfirmationHeader}" message="#{langues.ConfirmCreateMessage}" icon="ui-icon-alert"/>
+                    </p:commandButton>
+
+                    <p:commandButton value="#{langues.Cancel}" onclick="PF('EmpruntSelectAvalisteDialog').hide()"/>
+
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

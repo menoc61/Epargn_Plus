@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+
+    <p:messages id="growl" closable="true" />
+
+    <h:form id="AideListForm">
+
+        <p:contextMenu id="AideDataTableContextMenu" for="datalist">  
+            <p:menuitem value="#{langues.Create}" onclick="document.getElementById('AideListForm:createButton').click();" icon="ui-icon-plus"/>                
+            <p:menuitem value="#{langues.Edit}" onclick="document.getElementById('AideListForm:editButton').click();" icon="ui-icon-pencil"/>
+            <p:menuitem value="#{langues.Delete}" onclick="document.getElementById('AideListForm:deleteButton').click();" icon="ui-icon-trash"/>
+            <p:separator/>
+        </p:contextMenu>
+        
+        <p:dataTable id="datalist"
+                     value="#{aideController.aides}"
+                     var="item"
+                     rowKey="#{item.idaide}"
+                     paginator="true"
+                     rows="10"
+                     style="word-wrap: break-word; margin-top:1% !important; text-align:left; margin-left:5%; margin-right: 5%; font-weight: bold; font-style: oblique;"
+                     rowIndexVar="index"
+                     rowsPerPageTemplate="10,20,30,40,50"
+                     selectionMode="single"
+                     selection="#{aideController.aide}"
+                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}">
+
+            <p:ajax event="rowSelect"   update="@form:createButton,@form:editButton,@form:deleteButton,@form:AideDataTableContextMenu" listener="#{aideController.activeButton()}"/>
+            <p:ajax event="rowUnselect" update="@form:createButton,@form:editButton,@form:deleteButton,@form:AideDataTableContextMenu"  listener="#{aideController.deactiveButton()}"  />
+            <p:ajax event="contextMenu" update="@form:createButton @form:editButton @form:deleteButton"/>
+            <p:ajax event="rowDblselect" onsuccess="document.getElementById('AideListForm:viewButton').click();"  listener="#{aideController.activeButton()}" />
+
+            <f:facet name="header"> 
+                <h:outputText value="#{langues.ListAideTitle}"/>
+            </f:facet> 
+
+
+            <p:column  style=" width: 20%" filterBy="#{item.idrencontre}">
+                <f:facet name="header">
+                    <h:outputText value="#{langues.rencontre}"/>
+                </f:facet>
+                <h:outputText value="#{loginController.language eq 'en' ? item.idrencontre.nomen : item.idrencontre.nomfr}"/>
+            </p:column>
+                       
+            <p:column style="width: 15% !important;" >
+                <f:facet name="header">
+                    <h:outputText value="#{langues.date}"/>
+                </f:facet>
+                <h:outputText value="#{item.dateaide}">
+                    <f:convertDateTime pattern="dd/MM/yyyy"/>
+                </h:outputText>
+            </p:column>
+            
+            <p:column  style=" width: 25%" filterBy="#{item.idmembre}">
+                <f:facet name="header">
+                    <h:outputText value="#{langues.beneficiaire}"/>
+                </f:facet>
+                <h:outputText value="#{item.idmembre.idmembre.nom} #{item.idmembre.idmembre.prenom}"/>
+            </p:column>           
+
+            <p:column  style=" width: 25%">
+                <f:facet name="header">
+                    <h:outputText value="#{langues.motifaide}"/>
+                </f:facet>
+                <h:outputText value="#{loginController.language eq 'en' ? item.idmotifaide.nomen : item.idmotifaide.nomfr}"/>
+            </p:column>
+
+            <p:column style=" width: 10%">
+                <f:facet name="header">
+                    <h:outputText value="#{langues.montant}"/>
+                </f:facet>
+                <h:outputText value="#{item.montantaide}">
+                     <f:convertNumber/>
+                </h:outputText>
+            </p:column>
+            
+            <p:column style=" width: 10%">
+                <f:facet name="header">
+                    <h:outputText value="Main lévée"/>
+                </f:facet>
+                <h:outputText value="#{item.montantMaintLevee}">
+                     <f:convertNumber/>
+                </h:outputText>
+            </p:column>
+              
+        </p:dataTable>
+        
+        <br/>        
+        <center>
+            <p:commandButton id="createButton" icon="ui-icon-plus" value="#{langues.Create}" actionListener="#{aideController.prepareCreate()}" update=":AideCreateForm" oncomplete="PF('AideCreateDialog').show()"/>
+            <p:commandButton id="editButton" icon="ui-icon-pencil" value="#{langues.Edit}" actionListener="#{aideController.prepareEdit()}" update=":AideCreateForm" oncomplete="PF('AideCreateDialog').show()" disabled="#{aideController.detail}"/>
+            <p:commandButton id="deleteButton" icon="ui-icon-trash" value="#{langues.Delete}" actionListener="#{aideController.delete()}" update=":growl,datalist" disabled="#{aideController.detail}">
+                <p:confirm header="#{langues.ConfirmationHeader}" message="#{langues.ConfirmDeleteMessage}" icon="ui-icon-alert"/>
+            </p:commandButton>
+        </center>
+
+        <ui:include src="/confirmation.xhtml"/>
+    </h:form>
+
+</ui:composition>

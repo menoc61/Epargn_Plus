@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+        <p:dialog id="UtilisateurCreateDlg" widgetVar="UtilisateurCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="#{langues.frequence_tontine}">
+            <h:form id="UtilisateurCreateForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid style="width: 600px; height:150px " columns="2">
+
+
+                        <p:outputLabel value="#{langues.nom_francais}" for="nom" />
+                        <p:inputText style=" width: 400px"  id="nom" value="#{frequenceTontineController.frequencetontine.nomFr}"  size="254" maxlength="254" required="true" requiredMessage="#{langues.nom}: #{langues.requis}"/>
+
+                        <p:outputLabel value="#{langues.nom_anglais}" for="nom1" />
+                        <p:inputText style=" width: 400px"  id="nom1" value="#{frequenceTontineController.frequencetontine.nomEn}" size="254" maxlength="254" required="true" requiredMessage="#{langues.nom}: #{langues.requis}"/>
+
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{frequenceTontineController.save()}" style="float: right;" icon="ui-icon-check" value="#{langues.Valider}" update="display,:UtilisateurListForm:datalist,:UtilisateurListForm:msgErreur" oncomplete="handleSubmit(args,'UtilisateurCreateDialog');"/>
+                    <p:commandButton style="float: right; color: red;" icon="ui-icon-close" value="#{langues.Cancel}" onclick="PF('UtilisateurCreateDialog').hide()"/>
+
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

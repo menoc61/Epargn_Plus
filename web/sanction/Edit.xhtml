@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+        <p:dialog showEffect="slide" hideEffect="slide" id="ArrondissementEditDlg" widgetVar="ArrondissementEditDialog" modal="true" resizable="false"  appendTo="@(body)" header="MODIFIER UNE SANCTION" closeOnEscape="true">
+
+            <h:form id="ArrondissementEditForm">
+
+                <h:panelGroup id="display">
+                    <p:panelGrid  columns="2" style=" width: 650px; height: 150px"  columnClasses="column" rendered="#{sanctionController.selected != null}">
+
+                        <p:outputLabel value="#{langues.nom_francais}" for="nom" />
+                        <p:inputText style=" width: 400px"  id="nom" value="#{sanctionController.selected.nomFr}"  size="254" maxlength="254"/>
+                         
+                        <p:outputLabel value="#{langues.nom_anglais}" for="nom1" />
+                        <p:inputText style=" width: 400px"  id="nom1" value="#{sanctionController.selected.nomEn}"  size="254" maxlength="254"/>
+                        
+                        <p:outputLabel value="#{langues.montant}" for="montant" />
+                        <p:inputText style=" width: 400px"  id="montant" value="#{sanctionController.selected.montant}" size="254" maxlength="254"/>
+   
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{sanctionController.edit()}" value="#{langues.Save}" update="display,:ArrondissementListForm:datalist,:growl" oncomplete="handleSubmit(xhr,status,args,PF('ArrondissementEditDialog'));">
+                        <p:confirm header="#{langues.ConfirmationHeader}" message="#{langues.ConfirmEditMessage}" icon="ui-icon-alert"/>
+                    </p:commandButton>
+                    <p:commandButton value="#{langues.Cancel}" onclick="PF('ArrondissementEditDialog').hide()"/>
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition template="/SystemTemplate/EpargneTemplate.xhtml">
+
+        <ui:define name="title">
+            <h:outputText value="Cloture session"></h:outputText>
+        </ui:define>
+
+        <ui:define name="content">
+
+            <h:form id="PrivilegeListForm">
+
+                <p:messages id="msgErreur" closable="true"/>
+                <p:growl id="growl" showDetail="true"/>
+
+                <br/>
+
+                <center>
+                    <p:panelGrid columns="2">
+
+                        <p:outputLabel value="Unité d'épargne"/>
+                        <p:outputLabel value="#{cloturesessionController.cycletontine.uniteEmprunt} FCFA">
+                            <f:convertNumber/>
+                        </p:outputLabel>
+
+                        <p:outputLabel value="Pas de calcul d'interet"/>
+                        <p:outputLabel value="#{cloturesessionController.cycletontine.idPasEmprunt.nom} (#{cloturesessionController.cycletontine.idPasEmprunt.valeur})"/>
+
+                        <p:outputLabel value="Date de calcul"/>
+                        <p:calendar value="#{cloturesessionController.dateFin}">
+                            <p:ajax event="dateSelect"/>
+                        </p:calendar>
+
+                    </p:panelGrid>
+                </center>
+
+                <br/>
+
+                <center>
+                    <p:commandButton disabled="true" actionListener="#{cloturesessionController.calculCloture()}" id="calcul_interet" value="Cloturer" update="datalist1 , growl , datalist , delete_calcul,calcul_interet , affiche_total"/>
+                    <p:commandButton disabled="true" actionListener="#{cloturesessionController.delete_calcul()}" id="delete_calcul" value="Effacer" update="datalist1 , growl , datalist , calcul_interet,delete_calcul , affiche_total"/>
+                    <h:commandButton  value="#{langues.imprimer}"  actionListener="#{printEtatfiController.printSituationCassation()}"/>
+                </center>
+
+                <h:outputText id="affiche_total" style="font-family: cambria ; font-style: italic ; font-size: 30px;margin-left: 65%;color: red" value="Interet géneré : #{cloturesessionController.resteIntret.intValue()} FCFA">
+                    <f:convertNumber/>
+                </h:outputText>
+
+                <p:dataTable id="datalist1" value="#{cloturesessionController.cassations}" var="item"
+                             editable="true"
+                             editMode="cell"
+                             paginator="true"
+                             rowKey="#{item.id}"
+                             rows="10"
+                             rowsPerPageTemplate="10,20,30,40,50"
+                             style="margin-top:1% !important; text-align:left; margin-left:2.5%; margin-right: 2.5%; font-weight: bold; font-style: oblique;"
+                             rowIndexVar="index"
+                             widgetVar="fonctionTable"
+                             draggableColumns="true"
+                             resizableColumns="true">
+
+                    <f:facet name="header"> 
+                        <h:outputText value="Etat de cloture du cycle"/>
+                    </f:facet> 
+
+                    <p:column style="width: 18%" filterBy="#{item.idmembre.idmembre.nom} #{item.idmembre.idmembre.prenom}">
+                        <f:facet name="header">
+                            <h:outputText value="#{langues.membre}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.idmembre.idmembre.nom} #{item.idmembre.idmembre.prenom}"/>
+                    </p:column>
+
+                    <p:column style="width: 11%" filterBy="#{item.montantEpargne}">
+                        <f:facet name="header">
+                            <h:outputText value="Somme des epargnes" class="hardBreak"/>
+                        </f:facet>
+                        <h:outputText value="#{item.montantEpargne}">
+                            <f:convertNumber/>
+                        </h:outputText>
+                    </p:column>
+
+                    <p:column style="width: 11%" filterBy="#{item.montantEmprunte}">
+                        <f:facet name="header">
+                            <h:outputText value="Somme des emprunts"/>
+                        </f:facet>
+                        <h:outputText value="#{item.montantEmprunte}">
+                            <f:convertNumber/>
+                        </h:outputText>
+                    </p:column>
+
+                    <p:column style="width: 11%" filterBy="#{item.montantRembourse}">
+                        <f:facet name="header">
+                            <h:outputText value="Capital remboursé / reste" class="hardBreak"/>
+                        </f:facet>
+                        <h:outputText value="#{item.montantRembourse} / #{item.resteCapital}">
+                            <f:convertNumber/>
+                        </h:outputText>
+                    </p:column>  
+
+                    <p:column style="width: 10%" filterBy="#{item.montantInteret}">
+                        <f:facet name="header">
+                            <h:outputText value="Interet payé / Interet genéré" class="hardBreak"/>
+                        </f:facet>
+                        <h:outputText value="#{item.montantInteret} / #{item.resteInteret}">
+                            <f:convertNumber/>
+                        </h:outputText>
+                    </p:column> 
+
+                    <p:column style="width: 7%">
+                        <f:facet name="header">
+                            <h:outputText value="Nbre pts"/>
+                        </f:facet>
+                        <h:outputText value="#{item.nombrePoint}">
+                            <f:convertNumber/>
+                        </h:outputText>
+                    </p:column> 
+
+                    <p:column style="width: 5%">
+                        <f:facet name="header">
+                            <h:outputText value="%"/>
+                        </f:facet>
+                        <h:outputText value="#{item.pourcentageGain.intValue()}">
+                            <f:convertNumber/>
+                        </h:outputText>
+                    </p:column>
+
+                    <p:column  style="width: 7%" filterBy="#{item.montantGain}">
+                        <f:facet name="header">
+                            <h:outputText value="Gain"/>
+                        </f:facet>
+                        <h:outputText value="#{item.montantGain.intValue()}">
+                            <f:convertNumber/>
+                        </h:outputText>
+                    </p:column>  
+
+                    <p:columnGroup type="footer">
+                        <p:row>
+                            <p:column style="text-align:right" footerText="Totaux" />               
+                            <p:column style="text-align: left" footerText="#{cloturesessionController.totalEpargne}"/>
+                            <p:column style="text-align: left" footerText="#{cloturesessionController.totalEmprunt}"/>
+                            <p:column style="text-align: left" footerText="#{cloturesessionController.totalRembourse} / #{cloturesessionController.resteCapital}"/>
+                            <p:column style="text-align: left" footerText="#{cloturesessionController.totalInteretPaye} / #{cloturesessionController.resteIntret}"/>
+                            <p:column style="text-align: left" footerText="#{cloturesessionController.totalPoint}"/>
+                            <p:column style="text-align: left" footerText="#{cloturesessionController.totalPourcentage}"/>
+                            <p:column style="text-align: left" footerText="#{cloturesessionController.totalGain}"/>
+                        </p:row>
+                    </p:columnGroup>
+
+                </p:dataTable>
+
+                <p:dataTable id="datalist" value="#{cloturesessionController.cassationDetails}" var="item1"
+                             editable="true"
+                             editMode="cell"
+                             paginator="true"
+                             rowKey="#{item1.id}"
+                             rows="10"
+                             rowsPerPageTemplate="10,20,30,40,50"
+                             style="margin-top:1% !important; text-align:left; margin-left:2.5%; margin-right: 2.5%; font-weight: bold; font-style: oblique;"
+                             rowIndexVar="index"
+                             widgetVar="fonctionTable"
+                             draggableColumns="true"
+                             resizableColumns="true">
+
+                    <f:facet name="header"> 
+                        <h:outputText value="Detail de l'état de la cloture"/>
+                    </f:facet> 
+
+                    <p:column style="width: 25%" filterBy="#{item1.idmembre.idmembre.nom} #{item.idmembre.idmembre.prenom}">
+                        <f:facet name="header">
+                            <h:outputText value="#{langues.membre}"/>
+                        </f:facet>
+                        <h:outputText value="#{item1.idmembre.idmembre.nom} #{item.idmembre.idmembre.prenom}"/>
+                    </p:column>
+
+                    <p:column style="width: 10%">
+                        <f:facet name="header">
+                            <h:outputText value="Date épargne"/>
+                        </f:facet>
+                        <h:outputText value="#{item1.dateEpargne}">
+                            <f:convertDateTime pattern="dd/MM/yyyy"/>
+                        </h:outputText>
+                    </p:column>
+
+                    <p:column style="" filterBy="#{item1.montant}">
+                        <f:facet name="header">
+                            <h:outputText value="Epargnes"/>
+                        </f:facet>
+                        <h:outputText value="#{item1.montant}">
+                            <f:convertNumber/>
+                        </h:outputText>
+                    </p:column>
+
+                    <p:column style="width: 10%">
+                        <f:facet name="header">
+                            <h:outputText value="Coef épargne"/>
+                        </f:facet>
+                        <h:outputText value="#{item1.coefEpargne}">
+                            <f:convertNumber/>
+                        </h:outputText>
+                    </p:column> 
+
+                    <p:column style="width: 10%">
+                        <f:facet name="header">
+                            <h:outputText value="Durée"/>
+                        </f:facet>
+                        <h:outputText value="#{item1.duree}">
+                            <f:convertNumber/>
+                        </h:outputText>
+                    </p:column> 
+
+                    <p:column style="width: 10%">
+                        <f:facet name="header">
+                            <h:outputText value="Nbre pts"/>
+                        </f:facet>
+                        <h:outputText value="#{item1.nombrePoint}">
+                            <f:convertNumber/>
+                        </h:outputText>
+                    </p:column> 
+
+                </p:dataTable>
+
+                <br/>
+
+            </h:form>
+
+        </ui:define>
+
+        <ui:define name="scriptCollapse">
+            <script>
+                var el = document.getElementById("epargne_");
+                el.setAttribute("class", "sub-menu active");
+            </script>
+        </ui:define>
+
+    </ui:composition>
+
+</html>

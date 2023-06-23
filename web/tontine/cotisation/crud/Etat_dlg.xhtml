@@ -1,0 +1,113 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+                    
+    <p:dialog id="EtatDlg"
+              widgetVar="EtatDialog"
+              showEffect="scale" 
+              hideEffect="scale"
+              modal="true"
+              width="720"
+              resizable="true" 
+              appendTo="@(body)" 
+              header="#{langues.etat}" 
+              closeOnEscape="true">
+    
+        <h:form id="EtatDlgForm">
+            <h:panelGrid columns="1"
+                style="width: 100%; box-sizing: border-box;">
+                <h:panelGroup>
+                    <h:outputLabel value="#{langues.membre}" for="membre"/>
+                    <p:selectOneMenu id="membre"
+                                     value="#{cotisationController.inscriptionCotisation.idinscription}"
+                                     style="width: 95%">
+                        <p:ajax update=":EtatDlgForm" />
+                        <f:selectItem itemLabel="#{langues.choisir}" itemValue="0" />
+                        <f:selectItems value="#{cotisationController.list_inscriptionCotisations}"
+                                       var="mem_el"
+                                       itemLabel="#{mem_el.idmembre.idmembre.nom} #{mem_el.idmembre.idmembre.nom}"
+                                       itemValue="#{mem_el.idinscription}" />
+                    </p:selectOneMenu>
+                </h:panelGroup>
+                <hr />
+                <h:panelGroup>
+                    <table style="width: 100%">
+                        <tr>
+                            <td style="width: 60%;">
+                                <h:outputLabel value="#{langues.main}" for="main" />
+                                <p:selectOneMenu id="main"
+                                                 value="#{cotisationController.main.idmain}"
+                                                 style="width: 95%;">
+                                    <p:ajax update=":EtatDlgForm" />
+                                    <f:selectItem itemLabel="#{langues.choisir}" itemValue="0" />
+                                    <f:selectItems value="#{cotisationController.list_mains}"
+                                                   var="main_el"
+                                                   itemLabel="#{main_el.nom}"
+                                                   itemValue="#{main_el.idmain}" />
+                                </p:selectOneMenu>
+                            </td>
+                            <td>
+                                
+                            </td>
+                        </tr>
+                    </table>
+                </h:panelGroup>
+                <hr />
+                <h:panelGroup>
+                    <p:dataTable value="#{cotisationController.list_cotisationTontine}"
+                                 var="item"
+                                 paginator="true"
+                                 rows="5">
+                        
+                        <p:column headerText="#{langues.rencontre}"
+                                  filterBy="#{item.idtontiner.idrencontre.nomfr}"
+                                  filterMatchMode="contains"
+                                  style="width: 40%;">
+                            <h:outputText value="#{item.idtontiner.idrencontre.nomfr}" />
+                        </p:column>
+                        
+                        <p:column headerText="#{langues.doit_cotiser}"
+                                  style="width: 20%;">
+                            <h:outputText value="#{item.doitCotiser}" >
+                                <f:convertNumber maxFractionDigits="0" />
+                            </h:outputText>
+                        </p:column>
+                        
+                        <p:column headerText="#{langues.a_cotise}"
+                                  style="width: 20%;">
+                            <h:outputText value="#{item.ACotise}" >
+                                <f:convertNumber maxFractionDigits="0" />
+                            </h:outputText>
+                        </p:column>
+                        
+                        <p:column headerText="#{langues.Aides}"
+                                  style="width: 20%;">
+                            <h:outputText value="0" >
+                                <f:convertNumber maxFractionDigits="0" />
+                            </h:outputText>
+                        </p:column>
+                        
+                    </p:dataTable>
+                </h:panelGroup>
+                
+                <p:separator />
+                
+                <h:panelGroup>
+                    <center>
+                        <p:commandButton value="#{langues.fermer}"
+                                         icon="ui-icon-close"
+                                         onclick="PF('EtatDialog').hide()"/>
+                    </center>
+                </h:panelGroup>
+                
+            </h:panelGrid>
+        </h:form>
+        
+    </p:dialog>
+    
+</ui:composition>
+

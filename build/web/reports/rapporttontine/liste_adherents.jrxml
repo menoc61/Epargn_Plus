@@ -1,0 +1,298 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="liste_adherents" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="29eafdeb-3b04-47d8-b86e-752cd1384fa5">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="idcycle" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+     COALESCE(membrecycle."reste_main_levee",0) AS membrecycle_reste_main_levee,
+     (cycletontine.montant_secours-membrecycle.montant_secours) AS reste_secours,
+     membrecycle."montant_secours" AS membrecycle_montant_secours,
+     membre."code" AS membre_code,
+     membre."nom" AS membre_nom,
+     membre."prenom" AS membre_prenom,
+     cycletontine."montant_secours" AS cycletontine_montant_secours,
+     cycletontine."nomfr" AS cycletontine_nomfr,
+     tontine."nom" AS tontine_nom,
+     tontine."slogan" AS tontine_slogan,
+     membrecycle."fraisadhesion" AS membrecycle_fraisadhesion
+FROM
+     "public"."membre" membre INNER JOIN "public"."membrecycle" membrecycle ON membre."idmembre" = membrecycle."idmembre"
+     INNER JOIN "public"."cycletontine" cycletontine ON membrecycle."idcycle" = cycletontine."idcycle"
+     INNER JOIN "public"."tontine" tontine ON cycletontine."idtontine" = tontine."idtontine"
+WHERE
+     membrecycle.etat = true
+ AND cycletontine.idcycle = $P{idcycle}
+ORDER BY
+     membre.code ASC]]>
+	</queryString>
+	<field name="membrecycle_reste_main_levee" class="java.lang.Double"/>
+	<field name="reste_secours" class="java.lang.Double"/>
+	<field name="membrecycle_montant_secours" class="java.lang.Double"/>
+	<field name="membre_code" class="java.lang.String"/>
+	<field name="membre_nom" class="java.lang.String"/>
+	<field name="membre_prenom" class="java.lang.String"/>
+	<field name="cycletontine_montant_secours" class="java.lang.Double"/>
+	<field name="cycletontine_nomfr" class="java.lang.String"/>
+	<field name="tontine_nom" class="java.lang.String"/>
+	<field name="tontine_slogan" class="java.lang.String"/>
+	<field name="membrecycle_fraisadhesion" class="java.lang.Double"/>
+	<variable name="membrecycle_montant_secours_1" class="java.lang.Double" resetType="Column" calculation="Sum">
+		<variableExpression><![CDATA[$F{membrecycle_montant_secours}]]></variableExpression>
+	</variable>
+	<variable name="membrecycle_montant_secours_2" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{membrecycle_montant_secours}]]></variableExpression>
+	</variable>
+	<variable name="reste_secours_1" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{reste_secours}]]></variableExpression>
+	</variable>
+	<variable name="membrecycle_reste_main_levee_1" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{membrecycle_reste_main_levee}]]></variableExpression>
+	</variable>
+	<variable name="membrecycle_fraisadhesion_1" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{membrecycle_fraisadhesion}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="103" splitType="Stretch">
+			<textField>
+				<reportElement mode="Opaque" x="11" y="2" width="544" height="20" backcolor="#66CCFF" uuid="528d7bd5-a06b-49ec-8093-c9afac9dca39"/>
+				<box>
+					<pen lineStyle="Dotted"/>
+					<topPen lineWidth="0.5" lineStyle="Dotted"/>
+					<leftPen lineWidth="0.5" lineStyle="Dotted"/>
+					<bottomPen lineWidth="0.5" lineStyle="Dotted"/>
+					<rightPen lineWidth="0.5" lineStyle="Dotted"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{tontine_nom}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="109" y="22" width="351" height="15" uuid="5855d462-993c-47d3-90e6-a033c0477308"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{tontine_slogan}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement mode="Transparent" x="11" y="45" width="98" height="15" backcolor="#FFFFFF" uuid="9e4b87ad-018d-4ebb-b4e7-bd6810dc4642"/>
+				<box leftPadding="2" rightPadding="0">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<text><![CDATA[Cycle]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Transparent" x="11" y="60" width="98" height="15" backcolor="#FFFFFF" uuid="ee627093-617d-4ad8-8d7a-89f5d083ac2e"/>
+				<box leftPadding="2" rightPadding="0">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<text><![CDATA[Plafond de sécours]]></text>
+			</staticText>
+			<textField pattern="#,##0;(#,##0)">
+				<reportElement x="109" y="60" width="120" height="15" uuid="c84fbe5c-64ab-4be5-8d2a-959e40d6f82b"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{cycletontine_montant_secours}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="109" y="45" width="120" height="15" uuid="32185d5d-cc08-412b-bbeb-94d2324a4765"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{cycletontine_nomfr}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement mode="Transparent" x="11" y="81" width="544" height="20" backcolor="#FFFFFF" uuid="2fe7aebd-3b0b-4a26-bf9a-162a04cd13fe"/>
+				<box leftPadding="2" rightPadding="0">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<text><![CDATA[LISTE DES INSCRIPTIONS]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="5" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="31" splitType="Stretch">
+			<staticText>
+				<reportElement mode="Opaque" x="11" y="0" width="63" height="31" backcolor="#66CCFF" uuid="745cac93-0d42-4d1c-8dce-d11f9523bb2b"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<text><![CDATA[Code]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="74" y="0" width="155" height="31" backcolor="#66CCFF" uuid="b2b05baf-da6e-48b4-8faf-e56e7888a21d"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<text><![CDATA[Nom]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="229" y="0" width="155" height="31" backcolor="#66CCFF" uuid="7051eed7-23d2-456c-bae5-f62d1e1334f0"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<text><![CDATA[Prénom]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="384" y="0" width="105" height="31" backcolor="#66CCFF" uuid="c37646dc-90a4-4815-807a-e0476c472497"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<text><![CDATA[Frais d'ahesion]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="28" splitType="Stretch">
+			<textField>
+				<reportElement x="11" y="0" width="63" height="28" uuid="eb381826-0326-499f-babf-191ced6c8e38"/>
+				<box leftPadding="2" rightPadding="0">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{membre_code}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="74" y="0" width="155" height="28" uuid="8280f7a8-fd8b-4deb-a566-c3b61f180172"/>
+				<box leftPadding="2" rightPadding="0">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{membre_nom}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="229" y="0" width="155" height="28" uuid="c7200335-0f00-4de0-9b35-3291065c43f0"/>
+				<box leftPadding="2" rightPadding="0">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{membre_prenom}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0;(#,##0)">
+				<reportElement x="384" y="0" width="105" height="28" uuid="76d3c2e0-c3a9-45c7-94d1-dbe63d98fbfb"/>
+				<box rightPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{membrecycle_fraisadhesion}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="29" splitType="Stretch">
+			<staticText>
+				<reportElement mode="Opaque" x="11" y="0" width="373" height="29" backcolor="#66CCFF" uuid="a345c4f9-4fa6-4961-873c-10f6e19c1473"/>
+				<box leftPadding="2" rightPadding="0">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<text><![CDATA[TOTAUX]]></text>
+			</staticText>
+			<textField pattern="#,##0;(#,##0)">
+				<reportElement mode="Opaque" x="384" y="0" width="105" height="29" backcolor="#66CCFF" uuid="f8078e89-3c20-4312-be41-8f074a04720d"/>
+				<box rightPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{membrecycle_fraisadhesion_1}]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

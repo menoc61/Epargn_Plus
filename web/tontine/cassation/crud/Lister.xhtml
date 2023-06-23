@@ -1,0 +1,120 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <h:form id="ListerForm"
+            style="padding-top: 170px;">
+
+        <h:panelGrid columns="1" style="width: 100%" >
+
+            <p:panel style="width: 100%">
+                <f:facet name="header">
+                    <center>
+                        <h:outputText value="#{langues.details}" style="float: left;" />
+                        
+                    </center>
+                </f:facet>
+
+                <h:panelGrid columns="2" width="100%">
+                    <h:panelGroup>
+                        <h:outputLabel value="#{langues.etat}"/>
+                        <div style="border: 1px solid grey; padding: 6px; background-color: #eee;">
+                            <h:outputText value="#{cassationTontineController.cotisation.estTermine == true ? langues.termine : langues.en_cours}" />
+                        </div>
+                    </h:panelGroup>
+                    <h:panelGroup>
+                        <h:outputLabel value="#{langues.nbre_mains}"/>
+                        <div style="border: 1px solid grey; padding: 6px; background-color: #eee;">
+                            <h:outputText value="#{cassationTontineController.list_mains.size()}" />
+                        </div>
+                    </h:panelGroup>
+                    <h:panelGroup>
+                        <h:outputLabel value="#{langues.relicat}"/>
+                        <div style="border: 1px solid grey; padding: 6px; background-color: #eee; text-align: right;">
+                            <h:outputText value="#{cassationTontineController.cotisation.reliquat}" >
+                                <f:convertNumber maxFractionDigits="0" />
+                            </h:outputText>
+                        </div>
+                    </h:panelGroup>
+                    <h:panelGroup>
+                        <h:outputLabel value="#{langues.gains}"/>
+                        <div style="border: 1px solid grey; padding: 6px; background-color: #eee; text-align: right;">
+                            <h:outputText value="#{cassationTontineController.cotisation.idcotisation == null || cassationTontineController.cotisation.idcotisation == 0 ? 0 : cassationTontineController.calcul_gains_membre()}">
+                                <f:convertNumber maxFractionDigits="0" />
+                            </h:outputText>
+                        </div>
+                    </h:panelGroup>
+                    
+                </h:panelGrid>
+
+            </p:panel>
+
+            <hr />
+
+            <p:dataTable value="#{cassationTontineController.list_beneficiaireCassation}"
+                         var="item"
+                         paginator="true"
+                         paginatorPosition="bottom">
+                <f:facet name="header">
+                    <h:outputText value="#{langues.repartition_gains}" />
+                </f:facet>
+
+                <!-- Definir les colones en  divisant la colone a cotise avec les sous colones lui-meme et appui -->
+                <p:columnGroup type="header">
+                    <p:row>
+                        <p:column headerText="#{langues.nom}" style="width: 50%" ></p:column>
+                        <p:column headerText="#{langues.nbre_mains}" style="width: 20%" ></p:column>
+                        <p:column headerText="#{langues.montant}"  style="width: 30%" ></p:column>
+                    </p:row>
+                </p:columnGroup>
+
+
+                <p:column>
+                    <h:outputText value="#{item.ic.idmembre.idmembre.nom} #{item.ic.idmembre.idmembre.prenom}" />
+                </p:column>
+                <p:column >
+                    <h:outputText value="#{(cassationTontineController.get_list_mains(item.ic)).size()}" >
+                        <f:convertNumber maxFractionDigits="0" />
+                    </h:outputText>
+                </p:column>
+                <p:column>
+                    <h:outputText value="#{item.montantTotalBeneficie()}" >
+                        <f:convertNumber maxFractionDigits="0" />
+                    </h:outputText>
+                </p:column>
+                
+                <p:columnGroup type="footer">
+                    <p:row>
+                        <p:column footerText="#{langues.totaux}" />
+                        <p:column style="text-align: right;">
+                            <f:facet name="footer">
+                                <h:outputText value="#{cassationTontineController.calcul_total_main()}">
+                                    <f:convertNumber maxFractionDigits="0" />
+                                </h:outputText>
+                            </f:facet>
+                        </p:column>
+                        <p:column style="text-align: right;">
+                            <f:facet name="footer">
+                                <h:outputText value="#{cassationTontineController.calcul_total_gains()}">
+                                    <f:convertNumber maxFractionDigits="0" />
+                                </h:outputText>
+                            </f:facet>
+                        </p:column>
+                    </p:row>
+                </p:columnGroup>
+
+            </p:dataTable>
+
+
+
+
+        </h:panelGrid>
+
+    </h:form>
+
+</ui:composition>
+

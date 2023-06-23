@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition>
+
+        <p:dialog showEffect="scale" hideEffect="scale" id="DepenseCreateDlg" 
+                  widgetVar="DepenseCreateDialog" modal="true" resizable="false" appendTo="@(body)" 
+                  header="INTERFACE DE TRANSFERT DE FOND SECOURS" closeOnEscape="true">
+
+            <h:form id="DepenseCreateForm">
+
+                <h:panelGroup id="display">
+
+                    <h:panelGrid columns="5" columnClasses="column">
+
+                        <p:outputLabel value="Cycle de début" for="cycle_debut" />
+                        <p:selectOneMenu style=" width: 200px"  id="cycle_debut" value="#{transfertfondsecoursController.cycletontine.idcycle}" required="true"  filter="true">
+                            <f:selectItem itemLabel="#{langues.SelectOneMessage}"/>
+                            <f:selectItems value="#{transfertfondsecoursController.cycletontines}"
+                                           var="cycle"
+                                           itemValue="#{cycle.idcycle}"
+                                           itemLabel="#{loginController.language eq 'en' ? cycle.nomen : cycle.nomfr}"/>   
+                            <p:ajax update="access" listener="#{transfertfondsecoursController.updateMembre()}" />
+                        </p:selectOneMenu> 
+
+                        <p:outputLabel value=" | "/>
+
+                        <p:outputLabel value="Cycle de fin" for="cycle_fin" />
+                        <p:selectOneMenu style=" width: 200px"  id="cycle_fin" value="#{transfertfondsecoursController.cycletontine1.idcycle}" required="true"  filter="true">
+                            <f:selectItem itemLabel="#{langues.SelectOneMessage}"/>
+                            <f:selectItems value="#{transfertfondsecoursController.cycletontines1}"
+                                           var="cycle"
+                                           itemValue="#{cycle.idcycle}"
+                                           itemLabel="#{loginController.language eq 'en' ? cycle.nomen : cycle.nomfr}"/>                                                
+                        </p:selectOneMenu>   
+
+                    </h:panelGrid>
+
+                    <p:separator/>
+
+                    <center>
+                        <p:pickList id="access" value="#{transfertfondsecoursController.membrecycles}" var="menu" effect="bounce"
+                                    itemValue="#{menu}" itemLabel="#{menu.idmembre.nom} #{menu.idmembre.prenom} [#{menu.montantSecours}]" showSourceControls="true" showTargetControls="true" showCheckbox="false"
+                                    showSourceFilter="true" showTargetFilter="true" filterMatchMode="contains" converter="membrecycleConverter" required="true">
+
+                            <f:facet name="sourceCaption">#{langues.disponibles}</f:facet>
+                            <f:facet name="targetCaption">#{langues.selectionnes}</f:facet>                            
+                        </p:pickList>
+                    </center>
+
+                    <p:separator/>
+
+                    <center>
+                        <p:commandButton value="#{langues.Cancel}" onclick="PF('DepenseCreateDialog').hide()"/>
+                        <p:commandButton actionListener="#{transfertfondsecoursController.save()}" value="#{langues.Save}" update="display,:DepenseListForm:datalist,:growl" oncomplete="PF('DepenseCreateDialog').hide()">
+                            <p:confirm header="#{langues.ConfirmationHeader}" message="#{langues.ConfirmCreateMessage}" icon="ui-icon-alert"/>
+                        </p:commandButton>
+                    </center>
+
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

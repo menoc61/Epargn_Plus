@@ -1,0 +1,71 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <h:form id="ListerForm"
+            style="padding-top: 170px;">
+
+        <p:dataTable id="datatable"
+                     value="#{cotisationProgrammationController.list_beneficiaires}"
+                     var="item"
+                     rowIndexVar="index"
+                     >
+            <f:facet name="header">
+                <h:outputText value="#{langues.programme}" />
+            </f:facet>
+            <p:columnGroup type="header">
+                <p:row>
+                    <p:column headerText="#{langues.Numero}" style="width: 8%" />
+                    <!--<p:column headerText="#{langues.code}" style="width: 10%" />-->
+                    <p:column headerText="#{langues.nom}" style="width: 20%" />
+                    <p:column headerText="#{langues.membre}" style="width: 38%" />
+                    <p:column headerText="#{langues.doit_bouffer}" style="width: 12%" />
+                    <p:column headerText="#{langues.a_bouffer}" style="width: 12%" />
+                </p:row>
+            </p:columnGroup>
+
+            <p:subTable value="#{item.listbenef}"
+                        var="itemBenef" >
+                <f:facet name="header">
+                    <div style="width: 99%; padding: 5px; background: rgb(190,190,230);">
+                        <h:outputText value="#{item.t.idrencontre.nomfr}" />
+                        <div style="float: right;">
+                            <h:outputText value="#{langues.nbre_beneficiaire} : #{cotisationProgrammationController.get_nbre_beneficiaire_programme(item.t)}" />
+                            <h:outputText value=" | " />
+                            <h:outputText value=" #{langues.relicat} : #{cotisationProgrammationController.calcul_relicat(item.t)}" />
+                        </div>
+                    </div>
+                </f:facet>
+
+                <p:column>
+                    <h:outputText value="#{index + 1}" />
+                </p:column>
+                <!--<p:column>
+                    <h:outputText value="#{itemBenef.idmain.codemain}" />
+                </p:column>-->
+                <p:column>
+                    <h:outputText value="#{itemBenef.idmain.nom}" />
+                </p:column>
+                <p:column>
+                    <h:outputText value="#{itemBenef.idmain.idinscription.idmembre.idmembre.nom} #{itemBenef.idmain.idinscription.idmembre.idmembre.prenom}" />
+                </p:column>
+                <p:column>
+                    <h:outputText value="#{cotisationProgrammationController.doit_bouffer(itemBenef.idmain)}" >
+                        <f:convertNumber maxFractionDigits="0" />
+                    </h:outputText>
+                </p:column>
+                <p:column>
+                    <h:outputText value="#{itemBenef.montant}" />
+                </p:column>
+            </p:subTable>
+
+        </p:dataTable>
+
+    </h:form>
+
+</ui:composition>
+

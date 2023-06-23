@@ -1,0 +1,53 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <f:metadata>
+        <f:event type="preRenderView" listener="#{loginController.watcher()}" />
+    </f:metadata> 
+
+    <!-- BEGIN SIDEBAR -->
+    <div class="sidebar-scroll">
+        <div id="sidebar" class="nav-collapse collapse">
+
+            <!-- BEGIN RESPONSIVE QUICK SEARCH FORM -->
+            <div class="navbar-inverse">
+                <form class="navbar-search visible-phone">
+                    <input type="text" class="search-query" placeholder="Search" />
+                </form>
+            </div>
+            <!-- END RESPONSIVE QUICK SEARCH FORM -->
+            <!-- BEGIN SIDEBAR MENU -->
+            <ul class="sidebar-menu">
+
+                <!--Accueil-->
+                <li class="sub-menu" id="menuIndex">
+                    <a class="" href="#{request.contextPath}/acceuil.html">
+                        <i class="icon-home"></i>
+                        <span>#{langues.accueil}</span>
+                    </a>
+                </li>
+
+                <!--Securité-->
+                <li class="sub-menu" id="secours_">
+                    <a href="javascript:;" class="">
+                        <i class="icon-legal"></i>
+                        <span>#{langues.assistance_secours}</span>
+                        <span class="arrow"></span>
+                    </a>
+                    <ul class="sub">                        
+                        <li><a class="" href="#{request.contextPath}/operation/collecte_main_levee/index.html">#{langues.collecte_main_levee}</a></li>
+                        <li><a class="" href="#{request.contextPath}/operation/collecte_secours/index.html">#{langues.collecte_fond_secours}</a></li>
+                        <li><a class="" href="#{request.contextPath}/operation/transfert_fond_secours/index.html">#{langues.transfert_fond_secours}</a></li>
+                        <li><a class="" href="#{request.contextPath}/operation/aide/index.html">#{langues.assistance_a_membre}</a></li>
+                        <li><a class="" href="#{request.contextPath}/operation/encours_secours/List.html">Situation des fonds</a></li>  
+                    </ul>
+                </li>
+
+            </ul>
+            <!-- END SIDEBAR MENU -->
+        </div>
+    </div>
+    <!-- END SIDEBAR -->
+
+</ui:composition>

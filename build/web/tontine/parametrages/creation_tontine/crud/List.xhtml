@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+
+    <h:form id="CotisationListForm"
+            style="padding-top: 140px;">
+
+        <p:contextMenu id="CotisationDataTableContextMenu" for="datalist">  
+            <p:menuitem value="#{langues.Create}" onclick="document.getElementById('CotisationListForm:createButton').click();" icon="ui-icon-plus"/>                
+            <p:menuitem value="#{langues.Edit}" onclick="document.getElementById('CotisationListForm:editButton').click();" icon="ui-icon-pencil"/>
+            <p:menuitem value="#{langues.Delete}" onclick="document.getElementById('CotisationListForm:deleteButton').click();" icon="ui-icon-trash"/>
+            <p:separator/>
+        </p:contextMenu>
+        
+        <p:dataTable id="datalist"
+                     value="#{creationTontineController.list_cotisations}"
+                     var="item"
+                     rowKey="#{item.idcotisation}"
+                     paginator="true"
+                     rows="10"
+                     style="word-wrap: break-word; margin-top:1% !important; text-align:left; margin-left:5%; margin-right: 5%; font-weight: bold; font-style: oblique;"
+                     rowIndexVar="index"
+                     rowsPerPageTemplate="10,20,30,40,50"
+                     selectionMode="single"
+                     selection="#{creationTontineController.cotisation}"
+                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}">
+
+            <p:ajax event="rowSelect"   update=":actionForm,@form:CotisationDataTableContextMenu" />
+            <p:ajax event="rowUnselect" update=":actionForm,@form:CotisationDataTableContextMenu"  />
+            <p:ajax event="contextMenu" update=":actionForm"/>
+            <p:ajax event="rowDblselect" onsuccess="document.getElementById('CotisationListForm:viewButton').click();" />
+
+            <f:facet name="header"> 
+                <h:outputText value="#{langues.liste_cotisation}"/>
+            </f:facet> 
+
+            <p:column style="width: 5% !important;">
+                <f:facet name="header">
+                    <h:outputText value="#{langues.Numero}"/>
+                </f:facet>
+                <h:outputText value="#{index+1}"/>
+            </p:column>
+
+            <p:column  style=" width: 20%" filterBy="#{item.nom}">
+                <f:facet name="header">
+                    <h:outputText value="#{langues.rencontre}"/>
+                </f:facet>
+                <h:outputText value="#{loginController.language eq 'en' ? item.nom : item.nom}"/>
+            </p:column>
+
+            <p:column style="width: 10% !important;" >
+                <f:facet name="header">
+                    <h:outputText value="#{langues.montant}"/>
+                </f:facet>
+                <h:outputText value="#{item.montant}">
+                    <f:convertNumber />
+                </h:outputText>
+            </p:column>
+            
+            <p:column style="width: 10% !important;" >
+                <f:facet name="header">
+                    <h:outputText value="#{langues.relicat}"/>
+                </f:facet>
+                <h:outputText value="#{item.reliquat}">
+                    <f:convertNumber />
+                </h:outputText>
+            </p:column>
+            
+            <p:column style="width: 15% !important;" >
+                <f:facet name="header">
+                    <h:outputText value="#{langues.etat}"/>
+                </f:facet>
+                <h:outputText value="#{item.estTermine == true ? langues.terminer : langues.en_cours}">
+                    <f:convertNumber />
+                </h:outputText>
+            </p:column>
+            
+            <p:column style="width: 15% !important;" >
+                <f:facet name="header">
+                    <h:outputText value="#{langues.OperationHeading}"/>
+                </f:facet>
+                <p:commandButton value="#{langues.bilan}"
+                                 icon="ui-icon-print"
+                                 actionListener="#{creationTontineController.print_bilan(item)}"
+                                 ajax="false"
+                                 rendered="#{item.estTermine == true}"/>
+                                 
+            </p:column>
+            
+
+        </p:dataTable>
+
+        
+        <ui:include src="/confirmation.xhtml"/>
+    </h:form>
+
+</ui:composition>

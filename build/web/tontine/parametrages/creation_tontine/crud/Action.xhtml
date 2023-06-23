@@ -1,0 +1,26 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+
+    <h:form id="actionForm"
+            style="position: fixed; width: calc(100% - 240px); z-index: 2; height: 60px; background-color: white; padding-top: 10px; border-bottom: 2px solid dimgrey; margin-top: 60px;">
+        <h:panelGrid columns="1"  style="width: 100%">
+            <h:panelGroup style="width: 100%">
+
+                <p:commandButton id="createButton" icon="ui-icon-plus"   value="#{langues.Create}" 
+                                 actionListener="#{creationTontineController.prepareCreate()}" update=":CotisationCreateForm"/>
+                <p:commandButton id="editButton"   icon="ui-icon-pencil" value="#{langues.Edit}" 
+                                 actionListener="#{creationTontineController.prepareEdit()}" update=":CotisationCreateForm" disabled="#{!creationTontineController.modifier}"/>
+                <p:commandButton id="deleteButton" icon="ui-icon-trash"  value="#{langues.Delete}" actionListener="#{creationTontineController.delete()}" update=":growl,:CotisationListForm" disabled="#{!creationTontineController.supprimer}">
+                    <p:confirm header="#{langues.ConfirmationHeader}" message="#{langues.ConfirmDeleteMessage}" icon="ui-icon-alert"/>
+                </p:commandButton>
+
+            </h:panelGroup>
+        </h:panelGrid>
+    </h:form>
+
+</ui:composition>
+

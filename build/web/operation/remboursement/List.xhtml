@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+
+    <p:messages id="growl" closable="true"/>
+
+    <h:form id="EmpruntListForm">
+
+        <p:contextMenu id="EmpruntDataTableContextMenu" for="datalist">  
+            <p:menuitem value="#{langues.Create}" onclick="document.getElementById('EmpruntListForm:createButton').click();" icon="ui-icon-plus"/>                
+            <p:menuitem value="#{langues.Edit}" onclick="document.getElementById('EmpruntListForm:editButton').click();" icon="ui-icon-pencil"/>
+            <p:menuitem value="#{langues.Delete}" onclick="document.getElementById('EmpruntListForm:deleteButton').click();" icon="ui-icon-trash"/>
+            <p:separator/>
+        </p:contextMenu>
+              
+        <p:dataTable id="datalist"
+                     value="#{remboursementController.remboursements}"
+                     var="item"
+                     rowKey="#{item.idremboursement}"
+                     paginator="true"
+                     rows="10"
+                     style="word-wrap: break-word; margin-top:1% !important; text-align:left; margin-left:5%; margin-right: 5%; font-weight: bold; font-style: oblique;"
+                     rowIndexVar="index"
+                     rowsPerPageTemplate="10,20,30,40,50"
+                     selectionMode="single"
+                     selection="#{remboursementController.remboursement}"
+                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}">
+
+            <p:ajax event="rowSelect"   update="@form:createButton,@form:editButton,@form:deleteButton,@form:EmpruntDataTableContextMenu" listener="#{remboursementController.activeButton()}"/>
+            <p:ajax event="rowUnselect" update="@form:createButton,@form:editButton,@form:deleteButton,@form:EmpruntDataTableContextMenu"  listener="#{remboursementController.deactiveButton()}"  />
+            <p:ajax event="contextMenu" update="@form:createButton @form:editButton @form:deleteButton"/>
+            <p:ajax event="rowDblselect" onsuccess="document.getElementById('EmpruntListForm:viewButton').click();"  listener="#{remboursementController.activeButton()}" />
+
+            <f:facet name="header"> 
+                <h:outputText value="LISTE DES REMBOURSEMENTS"/>
+            </f:facet> 
+            
+            <p:column style="width: 17% !important;" >
+                <f:facet name="header">
+                    <h:outputText value="#{langues.rencontre}"/>
+                </f:facet>
+                <h:outputText value="#{item.idrencontre.nomfr}"/>                    
+            </p:column>
+            
+            <p:column style="width: 11% !important;text-align: center" >
+                <f:facet name="header">
+                    <h:outputText value="Date de remboursement"/>
+                </f:facet>
+                <h:outputText value="#{item.daterembour}">
+                    <f:convertDateTime pattern="dd/MM/yyyy"/>
+                </h:outputText>
+            </p:column>
+           
+            <p:column  style="width: 25%" filterBy="#{item.idemprunt.idmembre.idmembre.nom}">
+                <f:facet name="header">
+                    <h:outputText value="#{langues.membre}"/>
+                </f:facet>
+                <h:outputText value="#{item.idemprunt.idmembre.idmembre.code} #{item.idemprunt.idmembre.idmembre.nom} #{item.idemprunt.idmembre.idmembre.prenom}"/>
+            </p:column>
+           
+            <p:column style="width: 10%">
+                <f:facet name="header">
+                    <h:outputText value="Montant remboursé"/>
+                </f:facet>
+                <h:outputText value="#{item.montantRembourse}">
+                    <f:convertNumber/>
+                </h:outputText>
+            </p:column>
+            
+            <p:column style="width: 10%">
+                <f:facet name="header">
+                    <h:outputText value="Type remboursement"/>
+                </f:facet>
+                <h:outputText value="#{item.idtyperemboursement.nom}">
+                    <f:convertNumber/>
+                </h:outputText>
+            </p:column>
+            
+        </p:dataTable>
+        
+        <br/>
+        
+        <center>
+            <p:commandButton id="createButton" icon="ui-icon-plus"   value="Saisir un remboursement" actionListener="#{remboursementController.prepareCreate()}" update=":EmpruntCreateForm" oncomplete="PF('EmpruntCreateDialog').show()"/>
+            <p:commandButton id="editButton"   icon="ui-icon-pencil" value="#{langues.Edit}" actionListener="#{remboursementController.prepareEdit()}" update=":EmpruntCreateForm" oncomplete="PF('EmpruntCreateDialog').show()" disabled="true"/>
+            <p:commandButton id="deleteButton" icon="ui-icon-trash"  value="Annuler un remboursement" actionListener="#{remboursementController.delete()}" update=":growl,datalist" disabled="#{remboursementController.detail}">
+                <p:confirm header="#{langues.ConfirmationHeader}" message="#{langues.ConfirmDeleteMessage}" icon="ui-icon-alert"/>
+            </p:commandButton>
+        </center>
+
+        <ui:include src="/confirmation.xhtml"/>
+    </h:form>
+
+</ui:composition>

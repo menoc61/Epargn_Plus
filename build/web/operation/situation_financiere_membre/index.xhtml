@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/SystemTemplate/MembreTemplate.xhtml">
+
+        <ui:define name="title">
+            <h:outputText value="SITUATION FI / MEMBRE"></h:outputText>
+        </ui:define>
+
+        <ui:define name="content">
+
+            <h:form id="UtilisateurListForm">
+
+                <p:growl id="growl" showDetail="true"/>
+                <center>
+
+                    <h2>#{langues.impressionfinal}</h2>
+                    <br/> <br/>
+                    <center>
+                        <p:panelGrid columns="2">
+
+                            <p:outputLabel value="#{langues.membrecycle}" for="membrecycle" />
+                            <p:selectOneMenu style=" width: 100px"  id="membrecycle" value="#{printEtatfiController.membrecycle.idmembrecycle}" required="true" requiredMessage="#{langues.periode} #{langues.requis}"  filter="true">
+                                <f:selectItem itemLabel="#{langues.SelectOneMessage}"/>
+                                <f:selectItems value="#{printEtatfiController.membrecycles}"
+                                               var="membrecycle"
+                                               itemValue="#{membrecycle.idmembrecycle}"
+                                               itemLabel="#{membrecycle.idmembre.nom} #{membrecycle.idmembre.prenom}"/>
+                            </p:selectOneMenu>   
+                        </p:panelGrid>
+
+                        <p:separator/>
+
+                        <p:panelGrid>
+                            <h:commandButton style="width:150px;height: 50px;border-radius: 10%; color: #0089ec"  value="#{langues.imprimer}"  actionListener="#{printEtatfiController.print()}"/>
+                        </p:panelGrid>
+
+                    </center>
+                </center>
+            </h:form>
+
+        </ui:define>
+
+        <ui:define name="scriptCollapse">
+            <script>
+                var el = document.getElementById("membre_");
+                el.setAttribute("class", "sub-menu active");
+            </script>
+        </ui:define>
+
+    </ui:composition>
+
+</html>

@@ -1,0 +1,147 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <p:dialog id="CotiserDlg"
+              widgetVar="CotiserDialog"
+              showEffect="scale" 
+              hideEffect="scale"
+              modal="true"
+              width="900"
+              resizable="true" 
+              appendTo="@(body)" 
+              header="#{langues.cotisations}" 
+              style="max-height: 90%;"
+              closeOnEscape="true" >
+
+        <h:form id="CotiserDlgForm">
+
+            <h:panelGrid columns="1">
+                <h:panelGroup>
+                    <h:panelGrid columns="3" style="width: 100%;">
+                        <h:panelGroup>
+                            <h:outputLabel value="#{langues.membre}" for="membre"/>
+                            <p:selectOneMenu id="membre"
+                                             value="#{cotisationController.inscriptionCotisation.idinscription}"
+                                             style="width: 95%">
+                                <p:ajax update=":CotiserDlgForm"
+                                        listener="#{cotisationController.update_mains_membre()}"/>
+                                <f:selectItem itemLabel="#{langues.choisir}" itemValue="0" />
+                                <f:selectItems value="#{cotisationController.list_inscriptionCotisations}"
+                                               var="mem_el"
+                                               itemLabel="#{mem_el.idmembre.idmembre.nom} #{mem_el.idmembre.idmembre.nom}"
+                                               itemValue="#{mem_el.idinscription}" />
+                            </p:selectOneMenu>
+                        </h:panelGroup>
+
+                        <h:panelGroup>
+
+                        </h:panelGroup>
+                    </h:panelGrid>
+                </h:panelGroup>
+
+                <p:separator />
+
+                <p:dataTable value="#{cotisationController.list_cotisationMembre}"
+                             var="item"
+                             paginator="true"
+                             paginatorPosition="bottom"
+                             editable="true"
+                             editMode="cell">
+                    <f:facet name="header">
+                        <h:outputText value="#{langues.list_mains}" />
+                    </f:facet>
+
+                    <!-- Definir les colones en  divisant la colone a cotise avec les sous colones lui-meme et appui -->
+                    <p:columnGroup type="header">
+                        <p:row>
+                            <p:column headerText="#{langues.nom}" rowspan="2" style="width: 25%" ></p:column>
+                            <p:column headerText="#{langues.doit_cotiser}" rowspan="2" style="width: 20%" ></p:column>
+                            <p:column headerText="#{langues.a_cotiser}" colspan="2" style="width: 40%" ></p:column>
+                            <p:column headerText="#{langues.OperationHeading}" rowspan="2" style="width: 15%"></p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column headerText="#{langues.lui_meme}" style="width: 50%"></p:column>
+                            <p:column headerText="#{langues.Assistance}" style="width: 50%"></p:column>
+                        </p:row>
+                    </p:columnGroup>
+
+                    <p:column filterBy="#{item.idmain.nom}">
+                        <h:outputText value="#{item.idmain.nom}" />
+                    </p:column>
+
+                    <p:column style="text-align: right;">
+                        <h:outputText value="#{item.doitCotiser}" >
+                            <f:convertNumber maxFractionDigits="0" />
+                        </h:outputText>
+                    </p:column>
+
+                    <p:column style="text-align: right;">
+                        <p:cellEditor>
+                            <f:facet name="output">
+                                <h:outputText value="#{item.ACotise}" >
+                                    <f:convertNumber maxFractionDigits="0" />
+                                </h:outputText>
+                            </f:facet>
+                            <f:facet name="input">
+                                <p:inputText value="#{item.ACotise}" />
+                            </f:facet>
+                        </p:cellEditor>
+                    </p:column>
+
+                    <p:column>
+                        <h:outputText value="#{cotisationController.calcul_montant_aide_local(item.idmain)}">
+                            <f:convertNumber maxFractionDigits="0" />
+                        </h:outputText>
+                    </p:column>
+
+                    <p:column style="text-align: right;">
+                        <p:commandButton value="#{langues.details}"
+                                         actionListener="#{cotisationController.prepareDetailsMain(item)}"
+                                         update=":CotiserMainDlgForm,:growl"
+                                         rendered="#{!cotisationController.tontiner_is_termine()}"
+                                         style="float: right;"/>
+                    </p:column>
+
+                    <p:columnGroup type="footer">
+                        <p:row>
+                            <p:column footerText="#{langues.totaux}" />
+                            <p:column footerText="" />
+                            <p:column footerText="" />
+                            <p:column footerText="" />
+                        </p:row>
+                    </p:columnGroup>
+
+                </p:dataTable>
+
+                <p:separator />
+
+                <h:panelGroup>
+                    <center>
+                        <p:commandButton value="#{langues.fermer}"
+                                         onclick="PF('CotiserDialog').hide()"
+                                         style="float: left;"
+                                         update=":ListerForm,:actionForm" />
+                        
+                        <p:commandButton value="#{langues.enregistrer}"
+                                         style="float: right;"
+                                         styleClass="ui-button"
+                                         actionListener="#{cotisationController.save()}"
+                                         update=":ListerForm,:actionForm,:growl"
+                                         disabled="#{cotisationController.tontiner.effectue == true}"/>
+
+                    </center>
+                </h:panelGroup>
+
+            </h:panelGrid>
+
+        </h:form>
+
+    </p:dialog>
+
+</ui:composition>
+

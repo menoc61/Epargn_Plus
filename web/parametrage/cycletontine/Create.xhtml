@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition>
+
+        <p:dialog showEffect="scale" hideEffect="scale" id="CycleTontineCreateDlg" widgetVar="CycleTontineCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="#{langues.cycle}" closeOnEscape="true">
+
+            <h:form id="CycleTontineCreateForm">
+                <h:panelGroup id="display">
+                    <p:tabView>
+
+                        <p:tab id="tab1"
+                               title="#{langues.infos_base}">
+
+                            <h:panelGrid columns="2" style=" width: 700px; height: 300px"  columnClasses="column">
+
+                                <p:outputLabel value="#{langues.tontine}" for="secteur" />
+                                <p:selectOneMenu style=" width: 500px"  id="secteur" 
+                                                 value="#{cycleTontineController.cycletontine.idtontine}" 
+                                                 required="true" requiredMessage="#{langues.tontine}" converter="tontineConverter" filter="true">
+                                    <f:selectItem itemLabel="#{langues.SelectOneMessage}" itemValue="#{null}"/>
+                                    <f:selectItems value="#{cycleTontineController.list_tontines}"
+                                                   var="ton"
+                                                   itemValue="#{ton}"
+                                                   itemLabel="#{loginController.language eq 'en' ? ton.nom:  ton.nom}"/>                                           
+                                </p:selectOneMenu>
+
+                                <p:outputLabel value="Pas de calcul d'emprunt" for="pas" />
+                                <p:selectOneMenu style=" width: 500px"  id="pas" value="#{cycleTontineController.pasEmprunt}" 
+                                                 required="true" requiredMessage="Pas emprunt" 
+                                                 converter="pasempruntConverter" filter="true">
+                                    <f:selectItem itemLabel="#{langues.SelectOneMessage}" itemValue="#{null}"/>
+                                    <f:selectItems value="#{cycleTontineController.list_pasemprunt}"
+                                                   var="pas"
+                                                   itemValue="#{pas}"
+                                                   itemLabel="#{loginController.language eq 'en' ? pas.nom : pas.nom}"/>                                           
+                                </p:selectOneMenu>
+
+                                <p:outputLabel value="#{langues.nom_francais}" for="nom_fr" />
+                                <p:inputText style=" width: 500px" id="nom_fr" value="#{cycleTontineController.cycletontine.nomfr}"/>
+
+                                <p:outputLabel value="#{langues.nom_anglais}" for="nom_en" />
+                                <p:inputText style=" width: 500px" id="nom_en" value="#{cycleTontineController.cycletontine.nomen}"/>                        
+
+                                <p:outputLabel value="Taux d'avalise" for="taux" />
+                                <p:inputText id="taux" value="#{cycleTontineController.cycletontine.tauxavaliste}"/>
+
+                                <p:outputLabel value="Frais d'adhesion" for="frais" />
+                                <p:inputText id="frais" value="#{cycleTontineController.cycletontine.fraisadhesion}"/>
+
+                                <p:outputLabel value="Taux d'interet" for="int" />
+                                <p:inputText id="int" value="#{cycleTontineController.cycletontine.tauxInteretDefault}"/>
+
+                                <p:outputLabel value="Unité d'épargne" for="unite" />
+                                <p:inputText id="unite" value="#{cycleTontineController.cycletontine.uniteEmprunt}"/>
+
+                                <p:outputLabel value="Prix de minute de retard" for="prix_m" />
+                                <p:inputText id="prix_m" value="#{cycleTontineController.cycletontine.montantMinRetard}"/>
+
+                                <p:outputLabel value="Prix de l'absence non justifiée" for="abs_n" />
+                                <p:inputText id="abs_n" value="#{cycleTontineController.cycletontine.montantAbsNonJust}"/>                           
+
+                                <p:outputLabel value="Montant fond de secours" for="fs" />
+                                <p:inputText id="fs" value="#{cycleTontineController.cycletontine.montantSecours}"/> 
+
+                                <p:outputLabel value="Plafond de gain (%)" for="pg" />
+                                <p:inputText id="pg" value="#{cycleTontineController.cycletontine.proportionGain}"/>   
+
+
+                            </h:panelGrid>
+
+                        </p:tab>
+
+<!-- 
+                        <p:tab id="tab2"
+                               title="{langues['rencontres']}">
+
+                            <h:panelGrid columns="2" style=" width: 700px;"  columnClasses="column">
+
+
+                                <p:outputLabel value="{langues.frequence_rencontres}" for="freq" />
+                                <p:selectOneMenu id="freq"
+                                                 style="width: 500px;"
+                                                 value="{cycleTontineController.frequencecotisation.idfrequence}">
+                                    <p:ajax />
+                                    <f:selectItem itemLabel="{langues.choisir}"
+                                                  itemValue="0" />
+                                    <f:selectItems value="{cycleTontineController.list_frequenceCotisations}"
+                                                   var="frequence"
+                                                   itemLabel="{frequence.denomination} ({frequence.valeur} {langues.jours})"
+                                                   itemValue="{frequence.idfrequence}"/>
+                                </p:selectOneMenu>
+
+                                <p:outputLabel value="{langues.nbre_seances}" for="seance" />
+                                <p:inputNumber id="seance"
+                                               style="width: 500px;"
+                                               value="{cycleTontineController.cycletontine.nbretours}" >
+                                    <f:convertNumber maxFractionDigits="0" />
+                                </p:inputNumber>
+
+                                <p:outputLabel value="{langues.premier_jour}" for="datep" />
+                                <p:calendar id="datep"
+                                            value="{cycleTontineController.cycletontine.premierjour}"
+                                            rendered="true"
+                                            style="width: 500px;"
+                                            requiredMessage="la date dois être choisi" />
+
+                            </h:panelGrid>
+
+                        </p:tab>
+-->
+                        
+
+                    </p:tabView>
+
+
+
+                    <p:separator/>
+
+                    <p:commandButton style="float: right" actionListener="#{cycleTontineController.save()}" value="#{langues.Save}" 
+                                     update="display,:CycleTontineListForm,:growl" oncomplete="PF('CycleTontineCreateDialog').hide()">
+                        <p:confirm header="#{langues.ConfirmationHeader}" message="#{langues.ConfirmCreateMessage}" icon="ui-icon-alert"/>
+                    </p:commandButton>
+
+                    <p:commandButton style="float: left" value="#{langues.Cancel}" onclick="PF('CycleTontineCreateDialog').hide()"/>
+                </h:panelGroup>
+
+            </h:form>
+            <a href="List.xhtml"></a>
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

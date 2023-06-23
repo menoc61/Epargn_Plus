@@ -1,0 +1,352 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="couverturerapporttontine_encours_emprunt" language="groovy" pageWidth="802" pageHeight="555" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="802" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="6963144d-5e2e-4dff-9a76-616526a7a8cf">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="membrecycle" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+     Sum(encours_emprunt."solde_capital") AS encours_emprunt_solde_capital,
+     Sum(encours_emprunt."solde_interet") AS encours_emprunt_solde_interet,
+     Sum(encours_emprunt."capital_rembourse") AS encours_emprunt_capital_rembourse,
+     Sum(encours_emprunt."interet_rembourse") AS encours_emprunt_interet_rembourse,
+     Sum(encours_emprunt."total") AS encours_emprunt_total,
+     membrecycle."idmembrecycle" AS membrecycle_idmembrecycle,
+     rencontre."nomfr" AS rencontre_nomfr,
+     rencontre."daterencontre" AS rencontre_daterencontre,
+     calcul_interet."idmembre" AS calcul_interet_idmembre
+FROM
+     "public"."calcul_interet" calcul_interet INNER JOIN "public"."encours_emprunt" encours_emprunt ON calcul_interet."id" = encours_emprunt."id_calcul_interet"
+     INNER JOIN "public"."membrecycle" membrecycle ON calcul_interet."idmembre" = membrecycle."idmembrecycle"
+     INNER JOIN "public"."rencontre" rencontre ON calcul_interet."idrencontre" = rencontre."idrencontre"
+WHERE
+     membrecycle.idmembrecycle = $P{membrecycle}
+GROUP BY
+     membrecycle."idmembrecycle",
+     rencontre."nomfr",
+     rencontre."daterencontre",
+     calcul_interet."idmembre"
+ORDER BY
+     rencontre_daterencontre ASC]]>
+	</queryString>
+	<field name="encours_emprunt_solde_capital" class="java.lang.Double"/>
+	<field name="encours_emprunt_solde_interet" class="java.lang.Double"/>
+	<field name="encours_emprunt_capital_rembourse" class="java.lang.Double"/>
+	<field name="encours_emprunt_interet_rembourse" class="java.lang.Double"/>
+	<field name="encours_emprunt_total" class="java.lang.Double"/>
+	<field name="membrecycle_idmembrecycle" class="java.lang.Integer"/>
+	<field name="rencontre_nomfr" class="java.lang.String"/>
+	<field name="rencontre_daterencontre" class="java.sql.Date"/>
+	<field name="calcul_interet_idmembre" class="java.lang.Long"/>
+	<variable name="encours_emprunt_solde_capital_1" class="java.lang.Double" resetType="Group" resetGroup="remboursement" calculation="Sum">
+		<variableExpression><![CDATA[$F{encours_emprunt_solde_capital}]]></variableExpression>
+	</variable>
+	<variable name="encours_emprunt_solde_capital_2" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{encours_emprunt_solde_capital}]]></variableExpression>
+	</variable>
+	<variable name="encours_emprunt_solde_interet_1" class="java.lang.Double" resetType="Group" resetGroup="remboursement" calculation="Sum">
+		<variableExpression><![CDATA[$F{encours_emprunt_solde_interet}]]></variableExpression>
+	</variable>
+	<variable name="encours_emprunt_solde_interet_2" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{encours_emprunt_solde_interet}]]></variableExpression>
+	</variable>
+	<variable name="encours_emprunt_capital_rembourse_1" class="java.lang.Double" resetType="Group" resetGroup="remboursement" calculation="Sum">
+		<variableExpression><![CDATA[$F{encours_emprunt_capital_rembourse}]]></variableExpression>
+	</variable>
+	<variable name="encours_emprunt_capital_rembourse_2" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{encours_emprunt_capital_rembourse}]]></variableExpression>
+	</variable>
+	<variable name="encours_emprunt_interet_rembourse_1" class="java.lang.Double" resetType="Group" resetGroup="remboursement" calculation="Sum">
+		<variableExpression><![CDATA[$F{encours_emprunt_interet_rembourse}]]></variableExpression>
+	</variable>
+	<variable name="encours_emprunt_interet_rembourse_2" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{encours_emprunt_interet_rembourse}]]></variableExpression>
+	</variable>
+	<variable name="encours_emprunt_total_1" class="java.lang.Double" resetType="Group" resetGroup="remboursement" calculation="Sum">
+		<variableExpression><![CDATA[$F{encours_emprunt_total}]]></variableExpression>
+	</variable>
+	<variable name="encours_emprunt_total_2" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{encours_emprunt_total}]]></variableExpression>
+	</variable>
+	<group name="remboursement">
+		<groupExpression><![CDATA[]]></groupExpression>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="74" splitType="Stretch">
+			<staticText>
+				<reportElement mode="Opaque" x="11" y="33" width="782" height="37" backcolor="#F9F3F3" uuid="f70bf39c-1075-4027-8ca3-084f43a539ba"/>
+				<box>
+					<pen lineWidth="0.5" lineStyle="Dashed"/>
+					<topPen lineWidth="0.5" lineStyle="Dashed"/>
+					<leftPen lineWidth="0.5" lineStyle="Dashed"/>
+					<bottomPen lineWidth="0.5" lineStyle="Dashed"/>
+					<rightPen lineWidth="0.5" lineStyle="Dashed"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial Narrow" size="18" isBold="true" isUnderline="false"/>
+				</textElement>
+				<text><![CDATA[         II.3.  DETAILS DES REMBOURSEMENT]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="30" splitType="Stretch">
+			<staticText>
+				<reportElement mode="Opaque" x="456" y="0" width="100" height="30" forecolor="#FFFFFF" backcolor="#0099FF" uuid="2661a5c0-0999-40a6-8235-793296e1e19d"/>
+				<box>
+					<pen lineWidth="0.5" lineColor="#000000"/>
+					<topPen lineWidth="0.5" lineColor="#000000"/>
+					<leftPen lineWidth="0.5" lineColor="#000000"/>
+					<bottomPen lineWidth="0.5" lineColor="#000000"/>
+					<rightPen lineWidth="0.5" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="12" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[Capital Remboursé]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="356" y="0" width="100" height="30" forecolor="#FFFFFF" backcolor="#0099FF" uuid="01b8207f-c0d6-453c-a078-63b3be2d1635"/>
+				<box>
+					<pen lineWidth="0.5" lineColor="#000000"/>
+					<topPen lineWidth="0.5" lineColor="#000000"/>
+					<leftPen lineWidth="0.5" lineColor="#000000"/>
+					<bottomPen lineWidth="0.5" lineColor="#000000"/>
+					<rightPen lineWidth="0.5" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="12" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[Solde de l'intérêt]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="656" y="0" width="135" height="30" forecolor="#FFFFFF" backcolor="#0099FF" uuid="7f8ce85b-e8fe-4a22-be74-3cd6443fff44"/>
+				<box>
+					<pen lineWidth="0.5" lineColor="#000000"/>
+					<topPen lineWidth="0.5" lineColor="#000000"/>
+					<leftPen lineWidth="0.5" lineColor="#000000"/>
+					<bottomPen lineWidth="0.5" lineColor="#000000"/>
+					<rightPen lineWidth="0.5" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="12" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[Total Remboursement]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="256" y="0" width="100" height="30" forecolor="#FFFFFF" backcolor="#0099FF" uuid="d0c61a60-657f-4650-9f9d-ba162834dfcb"/>
+				<box>
+					<pen lineWidth="0.5" lineColor="#000000"/>
+					<topPen lineWidth="0.5" lineColor="#000000"/>
+					<leftPen lineWidth="0.5" lineColor="#000000"/>
+					<bottomPen lineWidth="0.5" lineColor="#000000"/>
+					<rightPen lineWidth="0.5" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="12" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[Solde du Capital]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="556" y="0" width="100" height="30" forecolor="#FFFFFF" backcolor="#0099FF" uuid="44038068-ac09-4954-892c-82d72212b91c"/>
+				<box>
+					<pen lineWidth="0.5" lineColor="#000000"/>
+					<topPen lineWidth="0.5" lineColor="#000000"/>
+					<leftPen lineWidth="0.5" lineColor="#000000"/>
+					<bottomPen lineWidth="0.5" lineColor="#000000"/>
+					<rightPen lineWidth="0.5" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="12" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[Interet Remboursé]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="10" y="0" width="246" height="30" forecolor="#FFFFFF" backcolor="#0099FF" uuid="d051f75c-eceb-4959-86e5-d8781c2e4b75"/>
+				<box>
+					<pen lineWidth="0.5" lineColor="#000000"/>
+					<topPen lineWidth="0.5" lineColor="#000000"/>
+					<leftPen lineWidth="0.5" lineColor="#000000"/>
+					<bottomPen lineWidth="0.5" lineColor="#000000"/>
+					<rightPen lineWidth="0.5" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="12" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[Rencontre]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="30" splitType="Stretch">
+			<textField pattern="#,##0;-#,##0">
+				<reportElement x="256" y="0" width="100" height="30" uuid="732213c8-b0eb-428b-9c47-128982cab292"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="12" isItalic="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{encours_emprunt_solde_capital}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0;-#,##0">
+				<reportElement x="356" y="0" width="100" height="30" uuid="854186cd-85b9-47b1-8115-d74d8bba0c0c"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="12" isItalic="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{encours_emprunt_solde_interet}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0;-#,##0">
+				<reportElement x="456" y="0" width="100" height="30" uuid="a460c5e0-923f-4dbe-aaba-41c94284abc7"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="12" isItalic="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{encours_emprunt_capital_rembourse}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0;-#,##0">
+				<reportElement x="556" y="0" width="100" height="30" uuid="a68e2180-4553-4f0a-92cb-084ab120b545"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="12" isItalic="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{encours_emprunt_interet_rembourse}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0;-#,##0">
+				<reportElement x="656" y="0" width="135" height="30" uuid="bd7a7725-ec69-4336-99e8-e86137acfac2"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="12" isItalic="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{encours_emprunt_total}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="10" y="0" width="246" height="30" uuid="68a66887-bd77-4be7-a142-185586ce257b"/>
+				<box>
+					<leftPen lineWidth="1.0"/>
+				</box>
+				<textElement>
+					<font fontName="SansSerif" size="8" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="10" y="0" width="246" height="30" uuid="7b4fec50-23c8-408f-9d07-b01ece19169f"/>
+				<box leftPadding="3" rightPadding="0">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Justified" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="10" isBold="true" isItalic="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{rencontre_nomfr}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="30" splitType="Stretch">
+			<staticText>
+				<reportElement x="10" y="0" width="446" height="30" uuid="4bd83569-1553-413e-a0c2-b1ab6868feb3"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="14" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[TOTAL]]></text>
+			</staticText>
+			<textField pattern="#,##0;-#,##0">
+				<reportElement mode="Opaque" x="456" y="0" width="100" height="30" forecolor="#FFFFFF" backcolor="#3399FF" uuid="d8d971f1-6ab5-4d86-9ef0-5cbea5f88c49"/>
+				<box>
+					<pen lineWidth="0.5" lineColor="#000000"/>
+					<topPen lineWidth="0.5" lineColor="#000000"/>
+					<leftPen lineWidth="0.5" lineColor="#000000"/>
+					<bottomPen lineWidth="0.5" lineColor="#000000"/>
+					<rightPen lineWidth="0.5" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="12" isBold="true" isItalic="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{encours_emprunt_capital_rembourse_2}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0;-#,##0">
+				<reportElement mode="Opaque" x="556" y="0" width="100" height="30" forecolor="#FFFFFF" backcolor="#3399FF" uuid="fc85569a-16b9-43ee-abf6-019ced13f303"/>
+				<box>
+					<pen lineWidth="0.5" lineColor="#000000"/>
+					<topPen lineWidth="0.5" lineColor="#000000"/>
+					<leftPen lineWidth="0.5" lineColor="#000000"/>
+					<bottomPen lineWidth="0.5" lineColor="#000000"/>
+					<rightPen lineWidth="0.5" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="12" isBold="true" isItalic="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{encours_emprunt_interet_rembourse_2}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0;-#,##0">
+				<reportElement mode="Opaque" x="656" y="0" width="135" height="30" forecolor="#FFFFFF" backcolor="#3399FF" uuid="a2dc0902-f1f5-449d-932c-954339d0ec51"/>
+				<box>
+					<pen lineWidth="0.5" lineColor="#000000"/>
+					<topPen lineWidth="0.5" lineColor="#000000"/>
+					<leftPen lineWidth="0.5" lineColor="#000000"/>
+					<bottomPen lineWidth="0.5" lineColor="#000000"/>
+					<rightPen lineWidth="0.5" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="12" isBold="true" isItalic="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{encours_emprunt_total_2}]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

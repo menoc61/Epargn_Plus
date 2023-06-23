@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition template="/SystemTemplate/RencontreTemplate.xhtml">
+
+        <ui:define name="title">
+            <h:outputText value="#{langues.ouverture_fiche_presence}"></h:outputText>
+        </ui:define>
+
+        <ui:define name="content">
+
+            <h:form id="PrivilegeListForm">
+                <p:messages id="msgErreur" closable="true"/>
+                <p:growl id="growl" showDetail="true"/>
+
+                <center>
+
+                    <br/>
+
+                    <p:panelGrid columns="2" columnClasses="column">
+
+                        <p:outputLabel value="Rencontre"/>
+                        <p:selectOneMenu filter="true" value="#{ouverturerencontreController.rencontre}" required="true" converter="rencontreConverter">
+                            <f:selectItem itemLabel="#{langues.choisir}"/>
+                            <f:selectItems value="#{ouverturerencontreController.rencontres1}" var="item" itemLabel="#{item.nomfr}" itemValue="#{item}"/>
+                            <p:ajax update="datalist,daterencontre,heure_debut,heure_fin,initialise,createButton,re-initialise" listener="#{ouverturerencontreController.updateData()}"/>
+                        </p:selectOneMenu>
+
+                        <p:outputLabel for="daterencontre" value="Date de rencontre"/>
+                        <p:calendar id="daterencontre" value="#{ouverturerencontreController.rencontre.daterencontre}">
+                            <p:ajax/>
+                        </p:calendar>
+
+                        <p:outputLabel for="heure_debut" value="Heure de début"/>
+                        <p:calendar disabled="true" required="true" id="heure_debut" value="#{ouverturerencontreController.rencontre.heuredebut}" pattern="HH:mm" timeOnly="true">
+                            <p:ajax/>
+                        </p:calendar>
+
+                        <p:outputLabel for="heure_fin" value="Heure de fin"/>
+                        <p:calendar  disabled="true" required="true" id="heure_fin" value="#{ouverturerencontreController.rencontre.heurefin}" pattern="HH:mm" timeOnly="true">
+                            <p:ajax/>
+                        </p:calendar>
+
+                    </p:panelGrid>
+
+                </center>
+
+                <br/>
+
+                <center>
+                    <p:commandButton disabled="#{ouverturerencontreController.showInitButton}" actionListener="#{ouverturerencontreController.initializePresence()}" id="initialise" value="Initiliaser" update="datalist,growl,createButton,re-initialise,initialise"/>
+                    <p:commandButton disabled="#{ouverturerencontreController.showReinitialise}" actionListener="#{ouverturerencontreController.reinitializePresence()}" id="re-initialise" value="Ré-initiliaser" update="datalist,growl,createButton,initialise,re-initialise"/>
+                </center>
+
+                <p:dataTable id="datalist" value="#{ouverturerencontreController.fichePresences}" var="item"
+                             editable="true"
+                             editMode="cell"
+                             paginator="true"
+                             rowKey="#{item.id}"
+                             rows="#{ouverturerencontreController.fichePresences.size()}"
+                             rowsPerPageTemplate="10,20,30,40,50"
+                             style="margin-top:1% !important; text-align:left; margin-left:5%; margin-right: 5%; font-weight: bold; font-style: oblique;"
+                             rowIndexVar="index"
+                             widgetVar="fonctionTable"
+                             draggableColumns="true"
+                             resizableColumns="true">
+
+                    <f:facet name="header"> 
+                        <h:outputText value="Liste des membres du cycle (#{ouverturerencontreController.cycletontine.idtontine.nom} - #{ouverturerencontreController.cycletontine.nomfr})"/>
+                    </f:facet> 
+
+                    <p:column style="width: 32%" filterBy="#{item.idmembre.idmembre.nom} #{item.idmembre.idmembre.prenom}">
+                        <f:facet name="header">
+                            <h:outputText value="#{langues.membre}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.idmembre.idmembre.code} #{item.idmembre.idmembre.nom} #{item.idmembre.idmembre.prenom}"/>
+                    </p:column>
+
+                    <p:column  style="width: 8%">
+                        <f:facet name="header">
+                            <h:outputText value="Fond sécours" class="hardBreak"/>
+                        </f:facet>
+                        <h:outputText style="color: #{item.idmembre.montantSecours eq ouverturerencontreController.cycletontine.montantSecours ? red : blue}" value="#{item.idmembre.montantSecours}"/>
+                    </p:column>
+
+                    <p:column class="hardBreak" headerText="Heure d'arrivée">
+                        <p:cellEditor>
+                            <f:facet name="output">
+                                <h:outputText value="#{item.heureDebut}">
+                                    <f:convertDateTime pattern="HH:mm" />
+                                </h:outputText> 
+                            </f:facet>
+                            <f:facet name="input">
+                                <p:calendar required="true" id="heure_arrivee" value="#{item.heureDebut}" pattern="HH:mm" timeOnly="true"/>
+                            </f:facet>                                
+                        </p:cellEditor>
+                    </p:column>
+
+                    <p:column headerText="Present ?" style="text-align:center">
+                        <p:cellEditor>
+                            <f:facet name="output">
+                                <h:selectBooleanCheckbox id="present_label" disabled="true" value="#{item.present}"/>
+                            </f:facet>
+                            <f:facet name="input">
+                                <h:selectBooleanCheckbox value="#{item.present}">
+                                    <p:ajax update="present_label"/>
+                                </h:selectBooleanCheckbox>
+                            </f:facet>                                
+                        </p:cellEditor>
+                    </p:column>
+
+                    <p:column style="width: 8%">
+                        <f:facet name="header">
+                            <h:outputText value="Retard"/>
+                        </f:facet>
+                        <h:outputText value="#{item.retard}"/>
+                    </p:column>
+
+                    <p:column style="width: 8%">
+                        <f:facet name="header">
+                            <h:outputText class="hardBreak" value="Modifier"/>
+                        </f:facet>
+                        <p:commandButton update=":PresenceCreateForm" oncomplete="PF('PresenceCreateDialog').show()" icon="ui-icon-pencil">
+                            <p:ajax listener="#{ouverturerencontreController.setPresence(item)}"/>
+                        </p:commandButton>
+                    </p:column>
+
+                    <p:column style="width: 7% ; text-align: center">
+                        <f:facet name="header">
+                            <h:outputText class="hardBreak" value="Absence \njustifié ?"/>
+                        </f:facet>
+                        <h:selectBooleanCheckbox disabled="true" rendered="#{item.present.equals(false)}" value="#{item.justifie}"/>
+                    </p:column>
+
+                    <p:column style="width: 7%">
+                        <f:facet name="header">
+                            <h:outputText class="hardBreak" value="Montant pénalité"/>
+                        </f:facet>
+                        <h:outputText value="#{item.montantPenalite}">
+                            <f:convertNumber/>
+                        </h:outputText>
+                    </p:column>
+
+                    <p:column style="width: 7% ; text-align: center">
+                        <f:facet name="header">
+                            <h:outputText value="payé"/>
+                        </f:facet>
+                        <h:selectBooleanCheckbox disabled="true" value="#{item.regle}" rendered="#{item.present.equals(false) and item.justifie.equals(false) or item.retard!=0}"/>
+                    </p:column>
+
+                </p:dataTable>
+
+                <p:separator />
+                <center>
+                    <p:commandButton disabled="#{ouverturerencontreController.showCreateBtn}" id="createButton" icon="ui-icon-save" value="#{langues.Valider}" actionListener="#{ouverturerencontreController.validateProcess()}" update="datalist,growl"/>                                                                                                                                                                                      
+                    <p:commandButton id="printButton" icon="ui-icon-print" value="#{langues.imprimer}" actionListener="#{ouverturerencontreController.printFiche()}" ajax="false" immediate="true"/>                  
+                </center>
+
+            </h:form>
+
+            <ui:include src="Presence.xhtml"/>
+
+        </ui:define>
+
+        <ui:define name="scriptCollapse">
+            <script>
+                var el = document.getElementById("rencontre_");
+                el.setAttribute("class", "sub-menu active");
+            </script>
+        </ui:define>
+
+    </ui:composition>
+
+</html>

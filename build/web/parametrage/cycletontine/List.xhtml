@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+
+    <p:messages id="growl" closable="true" />
+
+    <h:form id="CycleTontineListForm">
+
+        <center>
+            <p:commandButton id="createButton" icon="ui-icon-plus"   value="#{langues.Create}" 
+                             actionListener="#{cycleTontineController.prepareCreate()}" 
+                             update=":CycleTontineCreateForm" />
+            <p:commandButton id="editButton"   icon="ui-icon-pencil" value="#{langues.Edit}" actionListener="#{cycleTontineController.prepareEdit()}" update=":CycleTontineCreateForm" disabled="#{!cycleTontineController.modifier}"/>
+            <p:commandButton id="deleteButton" icon="ui-icon-trash"  value="#{langues.Delete}" actionListener="#{cycleTontineController.delete()}" update=":growl,datalist" disabled="#{!cycleTontineController.supprimer}">
+                <p:confirm header="#{langues.ConfirmationHeader}" message="#{langues.ConfirmDeleteMessage}" icon="ui-icon-alert"/>
+            </p:commandButton>
+        </center>
+
+        <p:separator/>
+
+        <p:contextMenu id="CycleTontineDataTableContextMenu" for="datalist">  
+            <p:menuitem value="#{langues.Create}" onclick="document.getElementById('CycleTontineListForm:createButton').click();" icon="ui-icon-plus"/>                
+            <p:menuitem value="#{langues.Edit}" onclick="document.getElementById('CycleTontineListForm:editButton').click();" icon="ui-icon-pencil"/>
+            <p:menuitem value="#{langues.Delete}" onclick="document.getElementById('CycleTontineListForm:deleteButton').click();" icon="ui-icon-trash"/>
+            <p:separator/>
+            <p:menuitem value="" icon="ui-icon-search"   ajax="false"/>  
+        </p:contextMenu>
+        <p:dataTable id="datalist"
+                     value="#{cycleTontineController.list_cyclestontine}"
+                     var="item"
+                     rowKey="#{item.idcycle}"
+                     paginator="true"
+                     rows="10"
+                     rowIndexVar="index"
+                     rowsPerPageTemplate="10,20,30,40,50"
+                     selectionMode="single"
+                     selection="#{cycleTontineController.cycletontine}"
+                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}">
+
+            <p:ajax event="rowSelect"   update="@form:createButton,@form:editButton,@form:deleteButton,@form:CycleTontineDataTableContextMenu" />
+            <p:ajax event="rowUnselect" update="@form:createButton,@form:editButton,@form:deleteButton,@form:CycleTontineDataTableContextMenu" />
+            <p:ajax event="contextMenu" update="@form:createButton @form:editButton @form:deleteButton"/>
+            <p:ajax event="rowDblselect" onsuccess="document.getElementById('CycleTontineListForm:viewButton').click();" />
+
+            <f:facet name="header"> 
+                <h:outputText value="#{langues.cycle}"/>
+            </f:facet> 
+
+            <p:column style="width: 20px">
+                <f:facet name="header">
+                    <h:outputText value="#{langues.Numero}"/>
+                </f:facet>
+                <h:outputText value="#{index+1}"/>
+            </p:column>
+
+            <p:column  style=" width: 20%" filterBy="#{loginController.language eq 'en' ? item.idtontine.nom : item.idtontine.nom}">
+                <f:facet name="header">
+                    <h:outputText value="#{langues.tontine}"/>
+                </f:facet>
+                <h:outputText value="#{loginController.language eq 'en' ? item.idtontine.nom : item.idtontine.nom}"/>
+            </p:column>
+
+            <p:column  style=" width: 20%" filterBy="#{loginController.language eq 'en' ? item.idPasEmprunt.nom : item.idPasEmprunt.nom}">
+                <f:facet name="header">
+                    <h:outputText value="Pas emprunt"/>
+                </f:facet>
+                <h:outputText value="#{loginController.language eq 'en' ? item.idPasEmprunt.nom: item.idPasEmprunt.nom}"/>
+            </p:column>
+
+            <p:column style=" width: 20%" filterBy="#{item.nomfr}">
+                <f:facet name="header">
+                    <h:outputText value="#{langues.nom_francais}"/>
+                </f:facet>
+                <h:outputText value="#{item.nomfr}"/>
+            </p:column>
+
+            <p:column style=" width: 20%"  filterBy="#{item.nomen}">
+                <f:facet name="header">
+                    <h:outputText value="#{langues.nom_anglais}"/>
+                </f:facet>
+                <h:outputText value="#{item.nomen}"/>
+            </p:column>
+
+            <p:column style=" width: 10%">
+                <f:facet name="header">
+                    <h:outputText value="Taux d'avalise" class="hardBreak"/>
+                </f:facet>
+                <h:outputText value="#{item.tauxavaliste}"/>
+            </p:column>
+
+            <p:column style=" width: 10%">
+                <f:facet name="header">
+                    <h:outputText value="Frais d'adhesion" class="hardBreak"/>
+                </f:facet>
+                <h:outputText value="#{item.fraisadhesion}"/>
+            </p:column>
+
+            <p:column style=" width: 10%">
+                <f:facet name="header">
+                    <h:outputText value="Taux d'interet" class="hardBreak"/>
+                </f:facet>
+                <h:outputText value="#{item.tauxInteretDefault}"/>
+            </p:column>
+
+            <p:column style=" width: 10%">
+                <f:facet name="header">
+                    <h:outputText value="Unité d'épargne" class="hardBreak"/>
+                </f:facet>
+                <h:outputText value="#{item.uniteEmprunt}">
+                    <f:convertNumber/>
+                </h:outputText>
+            </p:column>
+
+        </p:dataTable>
+
+
+        <ui:include src="/confirmation.xhtml"/>
+    </h:form>
+
+</ui:composition>

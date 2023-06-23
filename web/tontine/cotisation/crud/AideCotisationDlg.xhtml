@@ -1,0 +1,63 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+    
+    <p:dialog id="AideCotisationDlg"
+              widgetVar="AideCotisationDialog"
+              showEffect="scale" 
+              hideEffect="scale"
+              modal="true"
+              width="520"
+              resizable="true" 
+              appendTo="@(body)" 
+              header="#{langues.ajout_appui_financier}" 
+              closeOnEscape="true" >
+    
+        <h:form id="AideCotisationDlgForm">
+            
+            <h:panelGrid columns="1" style="width: 93%;">
+                
+                <h:panelGroup>
+                    <h:outputLabel value="#{langues.membre_offrant}" for="membre" />
+                    <p:selectOneMenu id="membre"
+                                     value="#{cotisationController.membrecycle.idmembrecycle}"
+                                     style="width: 100%">
+                        <f:selectItem itemLabel="#{langues.caisse}" itemValue="0" />
+                        <f:selectItems value="#{cotisationController.list_membrecycle}"
+                                       var="membre_el"
+                                       itemLabel="#{membre_el.idmembre.nom} #{membre_el.idmembre.prenom}"
+                                       itemValue="#{membre_el.idmembrecycle}" />
+                    </p:selectOneMenu>
+                </h:panelGroup>
+                
+                <hr />
+                
+                <h:panelGrid>
+                    <h:outputLabel value="#{langues.montant}" for="mtn" />
+                    <h:inputText id="mtn"
+                                 value="#{cotisationController.aidecotisation.montant}">
+                        <f:convertNumber maxFractionDigits="0" />
+                    </h:inputText>
+                </h:panelGrid>
+                
+                <p:separator />
+                
+                <center>
+                    <p:commandButton value="#{langues.Valider}"
+                                     actionListener="#{cotisationController.saveAide()}"
+                                     update=":growl,:CotiserMainDlgForm" />
+                </center>
+                
+            </h:panelGrid>
+            
+        </h:form>
+        
+    </p:dialog>
+              
+    
+</ui:composition>
+

@@ -1,0 +1,745 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="etat-redevance" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="6c3cae74-ae1e-4607-864c-78edc1413cc3">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="idcycle" class="java.lang.Integer"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["D:\\epargn_plus_report\\"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+     (cassation.reste_interet - cassation.montant_interet) AS r_interet,
+     cassation."montant_epargne" AS cassation_montant_epargne,
+     cassation."nombre_point" AS cassation_nombre_point,
+     cassation."montant_gain" AS cassation_montant_gain,
+     cassation."montant_rembourse" AS cassation_montant_rembourse,
+     cassation."montant_interet" AS cassation_montant_interet,
+     cassation."montant_emprunte" AS cassation_montant_emprunte,
+     cassation."duree" AS cassation_duree,
+     cassation."coef_epargne" AS cassation_coef_epargne,
+     cassation."pourcentage_gain" AS cassation_pourcentage_gain,
+     cassation."reste_capital" AS cassation_reste_capital,
+     cassation."reste_interet" AS cassation_reste_interet,
+     membre."nom" AS membre_nom,
+     membre."prenom" AS membre_prenom,
+     membre."code" AS membre_code,
+     cycletontine."nomfr" AS cycletontine_nomfr,
+     cycletontine."unite_emprunt" AS cycletontine_unite_emprunt,
+     cycletontine."id_pas_emprunt" AS cycletontine_id_pas_emprunt,
+     cycletontine."montant_secours" AS cycletontine_montant_secours,
+     tontine."nom" AS tontine_nom,
+     pas_emprunt."nom" AS pas_emprunt_nom,
+     pas_emprunt."valeur" AS pas_emprunt_valeur,
+     tontine."slogan" AS tontine_slogan,
+     cassation."gain_tontine" AS cassation_gain_tontine,
+     cassation."redevance_cotisation" AS cassation_redevance_cotisation,
+     cassation."redevance_main_laivee" AS cassation_redevance_main_laivee,
+     cassation."redevance_secours" AS cassation_redevance_secours,
+     cassation."net_a_percevoir" AS cassation_net_a_percevoir,
+     cassation."redevance_absence" AS cassation_redevance_absence
+FROM
+     "public"."membrecycle" membrecycle INNER JOIN "public"."cassation" cassation ON membrecycle."idmembrecycle" = cassation."idmembre"
+     INNER JOIN "public"."membre" membre ON membrecycle."idmembre" = membre."idmembre"
+     INNER JOIN "public"."cycletontine" cycletontine ON membrecycle."idcycle" = cycletontine."idcycle"
+     AND cycletontine."idcycle" = cassation."idcycle"
+     INNER JOIN "public"."tontine" tontine ON cycletontine."idtontine" = tontine."idtontine"
+     INNER JOIN "public"."pas_emprunt" pas_emprunt ON cycletontine."id_pas_emprunt" = pas_emprunt."idpas"
+WHERE
+     cycletontine.idcycle = $P{idcycle}
+ORDER BY
+     membre_nom ASC,
+     membre_prenom ASC]]>
+	</queryString>
+	<field name="r_interet" class="java.lang.Double"/>
+	<field name="cassation_montant_epargne" class="java.lang.Double"/>
+	<field name="cassation_nombre_point" class="java.lang.Double"/>
+	<field name="cassation_montant_gain" class="java.lang.Double"/>
+	<field name="cassation_montant_rembourse" class="java.lang.Double"/>
+	<field name="cassation_montant_interet" class="java.lang.Double"/>
+	<field name="cassation_montant_emprunte" class="java.lang.Double"/>
+	<field name="cassation_duree" class="java.lang.Double"/>
+	<field name="cassation_coef_epargne" class="java.lang.Double"/>
+	<field name="cassation_pourcentage_gain" class="java.lang.Double"/>
+	<field name="cassation_reste_capital" class="java.lang.Double"/>
+	<field name="cassation_reste_interet" class="java.lang.Double"/>
+	<field name="membre_nom" class="java.lang.String"/>
+	<field name="membre_prenom" class="java.lang.String"/>
+	<field name="membre_code" class="java.lang.String"/>
+	<field name="cycletontine_nomfr" class="java.lang.String"/>
+	<field name="cycletontine_unite_emprunt" class="java.lang.Double"/>
+	<field name="cycletontine_id_pas_emprunt" class="java.lang.Integer"/>
+	<field name="cycletontine_montant_secours" class="java.lang.Double"/>
+	<field name="tontine_nom" class="java.lang.String"/>
+	<field name="pas_emprunt_nom" class="java.lang.String"/>
+	<field name="pas_emprunt_valeur" class="java.lang.Integer"/>
+	<field name="tontine_slogan" class="java.lang.String"/>
+	<field name="cassation_gain_tontine" class="java.lang.Double"/>
+	<field name="cassation_redevance_cotisation" class="java.lang.Double"/>
+	<field name="cassation_redevance_main_laivee" class="java.lang.Double"/>
+	<field name="cassation_redevance_secours" class="java.lang.Double"/>
+	<field name="cassation_net_a_percevoir" class="java.lang.Double"/>
+	<field name="cassation_redevance_absence" class="java.lang.Double"/>
+	<variable name="cassation_montant_epargne_1" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{cassation_montant_epargne}]]></variableExpression>
+	</variable>
+	<variable name="cassation_montant_emprunte_1" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{cassation_montant_emprunte}]]></variableExpression>
+	</variable>
+	<variable name="cassation_montant_rembourse_1" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{cassation_montant_rembourse}]]></variableExpression>
+	</variable>
+	<variable name="cassation_montant_interet_1" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{cassation_montant_interet}]]></variableExpression>
+	</variable>
+	<variable name="cassation_reste_interet_1" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{cassation_reste_interet}]]></variableExpression>
+	</variable>
+	<variable name="cassation_nombre_point_1" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{cassation_nombre_point}]]></variableExpression>
+	</variable>
+	<variable name="cassation_pourcentage_gain_1" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{cassation_pourcentage_gain}]]></variableExpression>
+	</variable>
+	<variable name="cassation_montant_gain_1" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{cassation_montant_gain}]]></variableExpression>
+	</variable>
+	<variable name="cassation_gain_tontine_1" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{cassation_gain_tontine}]]></variableExpression>
+	</variable>
+	<variable name="cassation_reste_capital_1" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{cassation_reste_capital}]]></variableExpression>
+	</variable>
+	<variable name="r_interet_1" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{r_interet}]]></variableExpression>
+	</variable>
+	<variable name="cassation_redevance_cotisation_1" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{cassation_redevance_cotisation}]]></variableExpression>
+	</variable>
+	<variable name="cassation_redevance_secours_1" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{cassation_redevance_secours}]]></variableExpression>
+	</variable>
+	<variable name="cassation_redevance_main_laivee_1" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{cassation_redevance_main_laivee}]]></variableExpression>
+	</variable>
+	<variable name="cassation_redevance_absence_1" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{cassation_redevance_absence}]]></variableExpression>
+	</variable>
+	<variable name="cassation_net_a_percevoir_1" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{cassation_net_a_percevoir}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="82" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="10" width="327" height="32" forecolor="#00CCFF" uuid="36dacb2f-a9b7-4e56-8476-b0cac18e25a7"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.5" lineStyle="Dotted"/>
+					<leftPen lineWidth="0.5" lineStyle="Dotted"/>
+					<bottomPen lineWidth="0.5" lineStyle="Dotted"/>
+					<rightPen lineWidth="0.5" lineStyle="Dotted"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="20" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ETAT DES REDEVANCES]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="61" width="780" height="1" uuid="567249dd-996c-4697-814a-24fbffd0a9bc"/>
+			</line>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="51" splitType="Stretch">
+			<staticText>
+				<reportElement mode="Opaque" x="0" y="0" width="162" height="51" forecolor="#000000" backcolor="#66CCFF" uuid="2c4bf2a1-e381-4a38-9b78-d20dc861b571"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="10"/>
+				</textElement>
+				<text><![CDATA[Membre]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="162" y="0" width="54" height="51" forecolor="#000000" backcolor="#66CCFF" uuid="d1f0f351-7039-449a-92d6-d2824690a483"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="10"/>
+				</textElement>
+				<text><![CDATA[Epargnes]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="216" y="21" width="50" height="30" forecolor="#000000" backcolor="#66CCFF" uuid="3832e490-067d-46a4-ae77-63c35fa3fc21"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="10"/>
+				</textElement>
+				<text><![CDATA[C - Emprunté]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="266" y="21" width="50" height="30" forecolor="#000000" backcolor="#66CCFF" uuid="4f625a5a-b62e-4d30-a616-2a9e774350b4"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="10"/>
+				</textElement>
+				<text><![CDATA[C - Remboursé]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="413" y="21" width="47" height="30" forecolor="#000000" backcolor="#66CCFF" uuid="c8440c49-756b-47bb-b19c-4573f5853923"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="10"/>
+				</textElement>
+				<text><![CDATA[I - Remboursé]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="366" y="21" width="47" height="30" forecolor="#000000" backcolor="#66CCFF" uuid="ba34f4f8-b450-4770-8a64-30cb0d4004fb"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="10"/>
+				</textElement>
+				<text><![CDATA[I - Géneré]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="663" y="0" width="53" height="51" forecolor="#000000" backcolor="#66CCFF" uuid="6d00f166-6789-4c6f-a413-fa8ce234e8f2"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="11"/>
+				</textElement>
+				<text><![CDATA[N A P]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="216" y="0" width="150" height="21" backcolor="#66CCFF" uuid="a8671347-791c-4f81-8732-077ee150233d"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Redevances Capital]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="316" y="21" width="50" height="30" forecolor="#000000" backcolor="#66CCFF" uuid="180a27e6-6ce2-4303-880f-ebf07e2e169c"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="10"/>
+				</textElement>
+				<text><![CDATA[Reste]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="366" y="0" width="140" height="21" backcolor="#66CCFF" uuid="88d0d24d-db50-40c9-af95-b8c548b84adf"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Redevances interet]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="460" y="21" width="46" height="30" forecolor="#000000" backcolor="#66CCFF" uuid="278da87f-bc62-4188-888e-5107fc6ee6c8"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="10"/>
+				</textElement>
+				<text><![CDATA[Reste]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="506" y="0" width="157" height="21" backcolor="#66CCFF" uuid="52d1b9fd-369d-42ca-8c28-45db75b46d4b"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Autres redevances]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="506" y="21" width="40" height="30" forecolor="#000000" backcolor="#66CCFF" uuid="a67e9aa8-b990-4286-a1c1-c94a11265694"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="10"/>
+				</textElement>
+				<text><![CDATA[Cotisation]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="546" y="21" width="40" height="30" forecolor="#000000" backcolor="#66CCFF" uuid="c31eec0b-5453-4d5d-91ff-f385ac285877"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="10"/>
+				</textElement>
+				<text><![CDATA[Secours]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="586" y="21" width="40" height="30" forecolor="#000000" backcolor="#66CCFF" uuid="378e33bd-8334-496b-a12d-a6067c63daca"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="10"/>
+				</textElement>
+				<text><![CDATA[Main levee]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="623" y="21" width="40" height="30" forecolor="#000000" backcolor="#66CCFF" uuid="bd91ca45-44e7-4cad-a67f-ab4b3a9ce917"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="10"/>
+				</textElement>
+				<text><![CDATA[Pénalité retard]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="716" y="0" width="80" height="51" forecolor="#000000" backcolor="#66CCFF" uuid="65e47f6e-30fc-4caf-933a-64b757390fdf"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="11"/>
+				</textElement>
+				<text><![CDATA[Signature]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="25" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="162" height="25" uuid="f7ebfd54-48c4-4e13-be14-52eacf22481d"/>
+				<box leftPadding="1">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{membre_code}+" - "+$F{membre_nom}+" "+$F{membre_prenom}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0;-#,##0">
+				<reportElement x="162" y="0" width="54" height="25" uuid="a4d9e521-443e-436f-b5f6-74f6c7e596f7"/>
+				<box rightPadding="1">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cassation_montant_epargne}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0;#,##0-">
+				<reportElement x="216" y="0" width="50" height="25" uuid="54a59c75-897b-47a6-ac2e-2422fe4d938e"/>
+				<box rightPadding="1">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cassation_montant_emprunte}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0;#,##0-">
+				<reportElement x="266" y="0" width="50" height="25" uuid="177c29fb-60c1-4337-9f84-26425bc42eb8"/>
+				<box rightPadding="1">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cassation_montant_rembourse}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0;(#,##0)">
+				<reportElement x="366" y="0" width="47" height="25" uuid="843f742e-2cf7-4536-9e3b-ba54d2a5dcb7"/>
+				<box rightPadding="1">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cassation_reste_interet}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0;(#,##0)">
+				<reportElement x="316" y="0" width="50" height="25" uuid="651e606b-bc81-444b-bfeb-e3f1a104ef03"/>
+				<box rightPadding="1">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cassation_reste_capital}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0;-#,##0">
+				<reportElement x="460" y="0" width="46" height="25" uuid="9fd82712-bffa-4a24-b1b5-5cd285a65e8c"/>
+				<box rightPadding="1">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{r_interet}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0;(-#,##0)">
+				<reportElement x="413" y="0" width="47" height="25" uuid="62513a2b-2644-4308-a1a5-d953014c2420"/>
+				<box rightPadding="1">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cassation_montant_interet}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0">
+				<reportElement x="506" y="0" width="40" height="25" uuid="3fbf2dce-edaa-4f6e-aded-ad369f6a1b6c"/>
+				<box rightPadding="1">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cassation_redevance_cotisation}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0">
+				<reportElement x="546" y="0" width="40" height="25" uuid="d80853cb-1fe3-4241-9377-f92d44565511"/>
+				<box rightPadding="1">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cassation_redevance_secours}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0">
+				<reportElement x="586" y="0" width="37" height="25" uuid="8175b472-b2e0-4533-b002-800c1b9f6330"/>
+				<box rightPadding="1">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cassation_redevance_main_laivee}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0">
+				<reportElement x="623" y="0" width="40" height="25" uuid="90232ffe-6072-4f3f-8767-9d6bf46705d3"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cassation_redevance_absence}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0;-#,##0">
+				<reportElement x="663" y="0" width="53" height="25" uuid="16e03532-c3d0-453a-843f-580358a12f19"/>
+				<box rightPadding="1">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cassation_net_a_percevoir}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="716" y="0" width="80" height="25" uuid="25babc5e-7ea8-4068-807f-a44b8787826d"/>
+				<box rightPadding="1">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<text><![CDATA[]]></text>
+			</staticText>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="57" splitType="Stretch">
+			<staticText>
+				<reportElement mode="Opaque" x="0" y="0" width="162" height="29" forecolor="#000000" backcolor="#66CCFF" uuid="866a56db-79bb-4694-8536-a07939f5ce92"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<text><![CDATA[Totaux]]></text>
+			</staticText>
+			<textField pattern="#,##0;(#,##0)">
+				<reportElement mode="Opaque" x="162" y="0" width="54" height="29" backcolor="#66CCFF" uuid="e322cdf3-c67f-48ae-a55a-195a5dc99a88"/>
+				<box rightPadding="1">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{cassation_montant_epargne_1}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0;(#,##0)">
+				<reportElement mode="Opaque" x="216" y="0" width="50" height="29" backcolor="#66CCFF" uuid="7b8fd2ad-c8ca-4568-98ac-55ac77b42c57"/>
+				<box rightPadding="1">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{cassation_montant_emprunte_1}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0;(#,##0)">
+				<reportElement mode="Opaque" x="266" y="0" width="50" height="29" backcolor="#66CCFF" uuid="064f7bf5-2d19-45f4-8360-f4f804dc96c9"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{cassation_montant_rembourse_1}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0;(#,##0)">
+				<reportElement mode="Opaque" x="413" y="0" width="47" height="29" backcolor="#66CCFF" uuid="28a9d415-48a5-4b60-83de-86bc6969f55d"/>
+				<box rightPadding="1">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$V{cassation_montant_interet_1}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0;(#,##0)">
+				<reportElement mode="Opaque" x="366" y="0" width="47" height="29" backcolor="#66CCFF" uuid="6ceb9be2-bbfc-4cac-b8b6-c7ed1ae91385"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$V{cassation_reste_interet_1}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0">
+				<reportElement mode="Opaque" x="316" y="0" width="50" height="29" backcolor="#66CCFF" uuid="d656525d-5cfb-4dd9-94f8-31cc5360a6a2"/>
+				<box rightPadding="1">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{cassation_reste_capital_1}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0;-#,##0">
+				<reportElement mode="Opaque" x="460" y="0" width="46" height="29" backcolor="#66CCFF" uuid="ac166cb7-e0b4-409f-bcab-d720ce1ac986"/>
+				<box rightPadding="1">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{r_interet_1}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0">
+				<reportElement mode="Opaque" x="506" y="0" width="40" height="29" backcolor="#66CCFF" uuid="ba04361b-733e-4549-9c83-dcb265a5b2c3"/>
+				<box rightPadding="1">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{cassation_redevance_cotisation_1}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0">
+				<reportElement mode="Opaque" x="546" y="0" width="40" height="29" backcolor="#66CCFF" uuid="d2d53a46-f18a-4255-972b-eead5bf4d3c5"/>
+				<box rightPadding="1">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{cassation_redevance_secours_1}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0">
+				<reportElement mode="Opaque" x="586" y="0" width="37" height="29" backcolor="#66CCFF" uuid="443b43c2-74f4-4b2b-bcc4-e48cf07f1c06"/>
+				<box rightPadding="1">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{cassation_redevance_main_laivee_1}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement mode="Opaque" x="623" y="0" width="40" height="29" backcolor="#66CCFF" uuid="3dc7ad6a-3cfa-4f1c-abb9-e34ec234ccc8"/>
+				<box rightPadding="1">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{cassation_redevance_absence_1}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0">
+				<reportElement mode="Opaque" x="663" y="0" width="53" height="29" backcolor="#66CCFF" uuid="04693224-196c-4016-b244-7acdca2be9f9"/>
+				<box rightPadding="1">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{cassation_net_a_percevoir_1}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement mode="Opaque" x="716" y="0" width="80" height="29" backcolor="#66CCFF" uuid="2ae9b29c-6cd9-4c60-acbf-0466eef13ce3"/>
+				<box rightPadding="1">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<text><![CDATA[]]></text>
+			</staticText>
+		</band>
+	</summary>
+</jasperReport>

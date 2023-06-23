@@ -1,0 +1,104 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+
+    <h:form id="ListerForm"
+            style="padding-top: 160px;" >
+
+        <p:contextMenu id="CotisationDataTableContextMenu" for="datalist">  
+            <p:menuitem value="#{langues.Create}" onclick="document.getElementById('actionForm:createButton').click();" icon="ui-icon-plus"/>                
+            <p:menuitem value="#{langues.Edit}" onclick="document.getElementById('actionForm:editButton').click();" icon="ui-icon-pencil"/>
+        </p:contextMenu>
+
+        <h:panelGrid columns="1" style="width: 100%;">
+            <h:panelGroup style="width: 100%;">
+                <h:panelGrid columns="2"
+                             style="width: 100%;">
+                    <h:panelGroup>
+                        <h:outputLabel value="#{langues.nom_tontine}" />
+                        <h:inputText value="#{cotisationInscriptionController.cotisation.nom}"
+                                     disabled="true"
+                                     style="width: 90%;"/>
+                    </h:panelGroup>
+                    <h:panelGroup>
+                        <h:outputLabel value="#{langues.plafond}" />
+                        <h:inputText value="#{cotisationInscriptionController.cotisation.montant}"
+                                     disabled="true"
+                                     style="text-align: right; width: 90%;"> 
+                            <f:convertNumber maxFractionDigits="0" />
+                        </h:inputText>
+                    </h:panelGroup>
+                </h:panelGrid>
+            </h:panelGroup>
+        </h:panelGrid>
+
+        <hr />
+
+        <p:dataTable id="datalist"
+                     value="#{cotisationInscriptionController.list_inscriptionCotisations}"
+                     var="item"
+                     rowKey="#{item.idinscription}"
+                     paginator="true"
+                     rows="10"
+                     style="word-wrap: break-word; margin-top:1% !important; text-align:left; margin-left:5%; margin-right: 5%; font-weight: bold; font-style: oblique;"
+                     rowIndexVar="index"
+                     rowsPerPageTemplate="10,20,30,40,50"
+                     selectionMode="single"
+                     selection="#{cotisationInscriptionController.inscriptionCotisation}"
+                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}">
+
+            <p:ajax event="rowSelect"   update=":actionForm,@form:CotisationDataTableContextMenu" />
+            <p:ajax event="rowUnselect" update=":actionForm,@form:CotisationDataTableContextMenu"  />
+            <p:ajax event="contextMenu" update=":actionForm"/>
+            <p:ajax event="rowDblselect" onsuccess="document.getElementById('CotisationListForm:viewButton').click();" />
+
+            <f:facet name="header"> 
+                <h:outputText value="#{langues.list_inscriptions_cotisation}"/>
+            </f:facet> 
+
+            <p:column style="width: 10% !important;">
+                <f:facet name="header">
+                    <h:outputText value="#{langues.Numero}"/>
+                </f:facet>
+                <h:outputText value="#{index+1}"/>
+            </p:column>
+
+            <p:column  style=" width: 50%" filterBy="#{item.idmembre.idmembre.nom} #{item.idmembre.idmembre.prenom}">
+                <f:facet name="header">
+                    <h:outputText value="#{langues.nom}"/>
+                </f:facet>
+                <h:outputText value="#{item.idmembre.idmembre.nom} #{item.idmembre.idmembre.prenom}"/>
+            </p:column>
+
+            <p:column headerText="#{langues.nbre_mains}"
+                      style="width: 20%;">
+                <h:outputText value="#{cotisationInscriptionController.calcul_nbre_mains(item)}" />
+            </p:column>
+
+            <p:columnGroup type="footer">
+                <p:row>
+                    <p:column colspan="2">
+                        <f:facet name="footer">
+                            <h:outputText value="#{langues.nbre_total_participation}" />
+                        </f:facet>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="footer">
+                            <h:outputText value="#{cotisationInscriptionController.calcul_nbre_total_mains()}">
+                                <f:convertNumber maxFractionDigits="0" />
+                            </h:outputText>
+                        </f:facet>
+                    </p:column>
+                </p:row>
+            </p:columnGroup>
+
+        </p:dataTable>
+
+    </h:form>
+
+</ui:composition>
+

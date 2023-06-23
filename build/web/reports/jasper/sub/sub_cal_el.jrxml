@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="sub_cal_el" pageWidth="555" pageHeight="842" columnWidth="555" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="3b4ab17e-e646-4395-b66c-5cd1ea879eaf">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="table">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 2">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 2_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 2_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 2_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 3">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 3_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 3_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 3_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<subDataset name="Table Dataset 1" uuid="5e87848d-051c-40db-a1ba-e9443c9c66aa">
+		<parameter name="id_tontiner" class="java.lang.Integer">
+			<defaultValueExpression><![CDATA[1]]></defaultValueExpression>
+		</parameter>
+		<queryString>
+			<![CDATA[SELECT
+     tontiner."idtontiner" AS tontiner_idtontiner,
+     beneficiaire_tontine."idbeneficiaire" AS beneficiaire_tontine_idbeneficiaire,
+     beneficiaire_tontine."montant" AS beneficiaire_tontine_montant,
+     beneficiaire_tontine."numero_ordre" AS beneficiaire_tontine_numero_ordre,
+     beneficiaire_tontine."idmain" AS beneficiaire_tontine_idmain,
+     beneficiaire_tontine."reste" AS beneficiaire_tontine_reste,
+     mains."idmain" AS mains_idmain,
+     mains."codemain" AS mains_codemain,
+     mains."nom" AS mains_nom,
+     mains."numeroordre" AS mains_numeroordre,
+     mains."montantsouscrit" AS mains_montantsouscrit,
+     rencontre."idrencontre" AS rencontre_idrencontre,
+     rencontre."nomfr" AS rencontre_nomfr,
+     rencontre."daterencontre" AS rencontre_daterencontre
+FROM
+     "public"."tontiner" tontiner INNER JOIN "public"."beneficiaire_tontine" beneficiaire_tontine ON tontiner."idtontiner" = beneficiaire_tontine."idtontiner"
+     INNER JOIN "public"."mains" mains ON beneficiaire_tontine."idmain" = mains."idmain"
+     INNER JOIN "public"."rencontre" rencontre ON tontiner."idrencontre" = rencontre."idrencontre"
+WHERE
+     tontiner."idtontiner" = $P{id_tontiner}
+ORDER BY
+     mains."numeroordre" ASC]]>
+		</queryString>
+		<field name="tontiner_idtontiner" class="java.lang.Integer"/>
+		<field name="beneficiaire_tontine_idbeneficiaire" class="java.lang.Long"/>
+		<field name="beneficiaire_tontine_montant" class="java.lang.Double"/>
+		<field name="beneficiaire_tontine_numero_ordre" class="java.lang.Integer"/>
+		<field name="beneficiaire_tontine_idmain" class="java.lang.Integer"/>
+		<field name="beneficiaire_tontine_reste" class="java.lang.Double"/>
+		<field name="mains_idmain" class="java.lang.Integer"/>
+		<field name="mains_codemain" class="java.lang.String"/>
+		<field name="mains_nom" class="java.lang.String"/>
+		<field name="mains_numeroordre" class="java.lang.Integer"/>
+		<field name="mains_montantsouscrit" class="java.lang.Double"/>
+		<field name="rencontre_idrencontre" class="java.lang.Integer"/>
+		<field name="rencontre_nomfr" class="java.lang.String"/>
+		<field name="rencontre_daterencontre" class="java.sql.Date"/>
+		<variable name="Bouffe" class="java.lang.Double">
+			<variableExpression><![CDATA[$F{mains_montantsouscrit} * 1]]></variableExpression>
+		</variable>
+		<group name="group1">
+			<groupExpression><![CDATA[$F{rencontre_nomfr}]]></groupExpression>
+		</group>
+	</subDataset>
+	<subDataset name="Table Dataset 2" uuid="ab4b5972-3845-42f0-9040-6590758c50e3"/>
+	<parameter name="id_tontiner" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[1]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+     tontiner."idtontiner" AS tontiner_idtontiner,
+     beneficiaire_tontine."idbeneficiaire" AS beneficiaire_tontine_idbeneficiaire,
+     beneficiaire_tontine."montant" AS beneficiaire_tontine_montant,
+     beneficiaire_tontine."numero_ordre" AS beneficiaire_tontine_numero_ordre,
+     beneficiaire_tontine."idmain" AS beneficiaire_tontine_idmain,
+     beneficiaire_tontine."reste" AS beneficiaire_tontine_reste,
+     mains."idmain" AS mains_idmain,
+     mains."codemain" AS mains_codemain,
+     mains."nom" AS mains_nom,
+     mains."numeroordre" AS mains_numeroordre,
+     mains."montantsouscrit" AS mains_montantsouscrit,
+     rencontre."idrencontre" AS rencontre_idrencontre,
+     rencontre."nomfr" AS rencontre_nomfr,
+     rencontre."daterencontre" AS rencontre_daterencontre
+FROM
+     "public"."tontiner" tontiner INNER JOIN "public"."beneficiaire_tontine" beneficiaire_tontine ON tontiner."idtontiner" = beneficiaire_tontine."idtontiner"
+     INNER JOIN "public"."mains" mains ON beneficiaire_tontine."idmain" = mains."idmain"
+     INNER JOIN "public"."rencontre" rencontre ON tontiner."idrencontre" = rencontre."idrencontre"
+WHERE
+     tontiner."idtontiner" = $P{id_tontiner}
+ORDER BY
+     mains."numeroordre" ASC]]>
+	</queryString>
+	<field name="tontiner_idtontiner" class="java.lang.Integer"/>
+	<field name="beneficiaire_tontine_idbeneficiaire" class="java.lang.Long"/>
+	<field name="beneficiaire_tontine_montant" class="java.lang.Double"/>
+	<field name="beneficiaire_tontine_numero_ordre" class="java.lang.Integer"/>
+	<field name="beneficiaire_tontine_idmain" class="java.lang.Integer"/>
+	<field name="beneficiaire_tontine_reste" class="java.lang.Double"/>
+	<field name="mains_idmain" class="java.lang.Integer"/>
+	<field name="mains_codemain" class="java.lang.String"/>
+	<field name="mains_nom" class="java.lang.String"/>
+	<field name="mains_numeroordre" class="java.lang.Integer"/>
+	<field name="mains_montantsouscrit" class="java.lang.Double"/>
+	<field name="rencontre_idrencontre" class="java.lang.Integer"/>
+	<field name="rencontre_nomfr" class="java.lang.String"/>
+	<field name="rencontre_daterencontre" class="java.sql.Date"/>
+	<variable name="MONTANT" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="230" splitType="Stretch">
+			<componentElement>
+				<reportElement key="table 3" style="table 3" x="188" y="150" width="360" height="80" uuid="58c137d0-db3b-4ae6-813f-de3f973fbe19"/>
+				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+					<datasetRun subDataset="Table Dataset 1" uuid="e45286a4-f5d6-42ee-b14c-d9638122b057">
+						<datasetParameter name="id_tontiner">
+							<datasetParameterExpression><![CDATA[$P{id_tontiner}]]></datasetParameterExpression>
+						</datasetParameter>
+						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.JREmptyDataSource(1)]]></dataSourceExpression>
+					</datasetRun>
+					<jr:column width="90" uuid="59584fe2-e3a3-4369-9a19-87c20fdffbe6">
+						<jr:tableHeader style="table 3_TH" height="30">
+							<staticText>
+								<reportElement x="0" y="0" width="90" height="30" uuid="0cb4efba-5e72-4fa7-a495-79a719e75bff"/>
+								<text><![CDATA[Numéro]]></text>
+							</staticText>
+						</jr:tableHeader>
+						<jr:tableFooter style="table 3_TH" height="30"/>
+						<jr:detailCell style="table 3_TD" height="20"/>
+					</jr:column>
+					<jr:column width="90" uuid="c5f6ddef-3c24-4148-b2f4-9948a23d1a70">
+						<jr:tableHeader style="table 3_TH" height="30"/>
+						<jr:tableFooter style="table 3_TH" height="30"/>
+						<jr:detailCell style="table 3_TD" height="20"/>
+					</jr:column>
+					<jr:column width="90" uuid="f5763f29-5768-4af8-8968-67f6422a49f0">
+						<jr:tableHeader style="table 3_TH" height="30"/>
+						<jr:tableFooter style="table 3_TH" height="30"/>
+						<jr:detailCell style="table 3_TD" height="20"/>
+					</jr:column>
+					<jr:column width="90" uuid="e4ebab83-d87e-415b-999a-d2ffddf01fb7">
+						<jr:tableHeader style="table 3_TH" height="30"/>
+						<jr:tableFooter style="table 3_TH" height="30"/>
+						<jr:detailCell style="table 3_TD" height="20"/>
+					</jr:column>
+				</jr:table>
+			</componentElement>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

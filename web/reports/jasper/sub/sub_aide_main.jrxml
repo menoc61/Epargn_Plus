@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="sub_aide_main" pageWidth="65" pageHeight="17" whenNoDataType="AllSectionsNoDetail" columnWidth="65" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="ea92d5b2-a1c6-467c-9184-5a638424fd35">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="table">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<subDataset name="Table Dataset 1" uuid="b70f7bfc-5c4d-4a8a-bcec-d01a5a546370"/>
+	<parameter name="id_main" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[11]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+     aidecotisation."idaidecotisation" AS aidecotisation_idaidecotisation,
+     cotisation_tontine."idcotisationtontine" AS cotisation_tontine_idcotisationtontine,
+     mains."idmain" AS mains_idmain,
+     mains."nom" AS mains_nom,
+     aidecotisation."montant" AS aidecotisation_montant
+FROM
+     "public"."cotisation_tontine" cotisation_tontine INNER JOIN "public"."aidecotisation" aidecotisation ON cotisation_tontine."idcotisationtontine" = aidecotisation."idcotisationtontine"
+     INNER JOIN "public"."mains" mains ON cotisation_tontine."idmain" = mains."idmain"
+WHERE mains."idmain" = $P{id_main}]]>
+	</queryString>
+	<field name="aidecotisation_idaidecotisation" class="java.lang.Integer"/>
+	<field name="cotisation_tontine_idcotisationtontine" class="java.lang.Long"/>
+	<field name="mains_idmain" class="java.lang.Integer"/>
+	<field name="mains_nom" class="java.lang.String"/>
+	<field name="aidecotisation_montant" class="java.lang.Double"/>
+	<variable name="RETURN_TOTAL_AIDE" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{aidecotisation_montant}]]></variableExpression>
+		<initialValueExpression><![CDATA[0d]]></initialValueExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band splitType="Stretch"/>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="17" splitType="Stretch">
+			<textField pattern="###0" isBlankWhenNull="true">
+				<reportElement style="table_TD" x="0" y="0" width="65" height="17" uuid="a71b561d-bbf2-481f-9e4d-f4fff4126f97"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<paragraph rightIndent="3"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{RETURN_TOTAL_AIDE}]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

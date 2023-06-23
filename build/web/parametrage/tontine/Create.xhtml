@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition>
+
+        <p:dialog showEffect="scale" hideEffect="scale" id="TontineCreateDlg" 
+                  footer="*indique que le champs est obligatoire." widgetVar="TontineCreateDialog" modal="true" 
+                  resizable="false" appendTo="@(body)" header="#{langues.creer_une_association}" closeOnEscape="true">
+
+            <h:form id="TontineCreateForm">
+
+                <h:panelGrid columns="2"  columnClasses="column">
+                    <h:panelGroup style="float: left; font-weight: bold; font-style: oblique; width: 100%">
+                        <p:panelGrid id="display" columns="2" rendered="true">
+                           
+                            <p:outputLabel  value="#{langues.nom}" for="nom_fr" />
+                            <p:inputTextarea required="true" rows="4" style=" width: 500px" id="nom_fr" value="#{tontineController.tontine.nom}"/>
+
+                            <p:outputLabel style="width: 300px" value="#{langues.frequence}" for="frequence" />
+                            <p:selectOneMenu style=" width: 200px"  id="frequence" value="#{tontineController.frequencetontine.idfreqtontine}" required="true" requiredMessage="#{langues.frequence} #{langues.requis}" filter="true">
+                                <f:selectItem itemLabel="#{langues.SelectOneMessage}"/>
+                                <f:selectItems value="#{tontineController.frequencetontines}"
+                                               var="frequence"
+                                               itemValue="#{frequence.idfreqtontine}"
+                                               itemLabel="#{loginController.language eq 'en' ? frequence.nomEn : frequence.nomFr}"/>                                               
+                            </p:selectOneMenu>                        
+                         
+                            <p:outputLabel value="#{langues.modepaiement}" for="modepaiement" />
+                            <p:selectOneMenu style=" width: 200px"  id="modepaiement" value="#{tontineController.modepaiement.idmdepaiement}" required="true" requiredMessage="#{langues.modepaiement} #{langues.requis}"  filter="true">
+                                <f:selectItem itemLabel="#{langues.SelectOneMessage}"/>
+                                <f:selectItems value="#{tontineController.modepaiements}"
+                                               var="modepaiement"
+                                               itemValue="#{modepaiement.idmdepaiement}"
+                                               itemLabel="#{loginController.language eq 'en' ? modepaiement.nomEn : modepaiement.nomFr}"/>                                               
+                            </p:selectOneMenu>                        
+
+                            <p:outputLabel value="#{langues.devise}" for="devise" />
+                            <p:selectOneMenu style=" width: 200px"  id="devise" value="#{tontineController.devise.iddevices}" required="true" requiredMessage="#{langues.devise} #{langues.requis}"  filter="true">
+                                <f:selectItem itemLabel="#{langues.SelectOneMessage}"/>
+                                <f:selectItems value="#{tontineController.devises}"
+                                               var="devise"
+                                               itemValue="#{devise.iddevices}"
+                                               itemLabel="#{loginController.language eq 'en' ? devise.nomEn : devise.nomFr}"/>                                          
+                            </p:selectOneMenu> 
+                            
+                             <p:outputLabel value="#{langues.slogan}" for="slogan" />
+                             <p:inputTextarea required="true" rows="4" style=" width:600px"   id="slogan" value="#{tontineController.tontine.slogan}" title="#{langues.slogan}" maxlength="254"/>
+
+                            <p:outputLabel value="#{langues.numtransfer}" for="num" />
+                            <p:inputText style=" width:150px"   id="num" value="#{tontineController.tontine.numerodetransfert}" title="#{langues.numtransfer}" maxlength="254"/>
+                           
+                        </p:panelGrid>
+                    </h:panelGroup>
+                                       
+                </h:panelGrid>
+                
+                <p:commandButton actionListener="#{tontineController.save()}" value="#{langues.Save}" update="display,:TontineListForm:datalist,:growl" oncomplete="PF('TontineCreateDialog').hide()">
+                    <p:confirm header="#{langues.ConfirmationHeader}" message="#{langues.ConfirmCreateMessage}" icon="ui-icon-alert"/>
+                </p:commandButton>
+
+                <p:commandButton value="#{langues.Cancel}" onclick="PF('TontineCreateDialog').hide()"/>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

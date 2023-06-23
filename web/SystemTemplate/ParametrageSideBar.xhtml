@@ -1,0 +1,55 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <f:metadata>
+        <f:event type="preRenderView" listener="#{loginController.watcher()}" />
+    </f:metadata> 
+
+    <!-- BEGIN SIDEBAR -->
+    <div class="sidebar-scroll">
+        <div id="sidebar" class="nav-collapse collapse">
+
+            <!-- BEGIN RESPONSIVE QUICK SEARCH FORM -->
+            <div class="navbar-inverse">
+                <form class="navbar-search visible-phone">
+                    <input type="text" class="search-query" placeholder="Search" />
+                </form>
+            </div>
+            <!-- END RESPONSIVE QUICK SEARCH FORM -->
+            <!-- BEGIN SIDEBAR MENU -->
+            <ul class="sidebar-menu">
+
+                <!--Accueil-->
+                <li class="sub-menu" id="menuIndex">
+                    <a class="" href="#{request.contextPath}/acceuil.html">
+                        <i class="icon-home"></i>
+                        <span>#{langues.accueil}</span>
+                    </a>
+                </li>
+
+                <!--Securité-->
+                <li class="sub-menu" id="parametrage">
+                    <a href="javascript:;" class="">
+                        <i class="icon-legal"></i>
+                        <span>#{langues.parametrages}</span>
+                        <span class="arrow"></span>
+                    </a>
+                    <ul class="sub">
+                        <li><a class="" href="#{request.contextPath}/parametrage/pays/index.html">#{langues.pays}</a></li>
+                        <li><a class="" href="#{request.contextPath}/parametrage/rubrique_caisse/rubrique_caisse.html">#{langues.rubriquecaisse}</a></li>              
+                        <li><a class="" href="#{request.contextPath}/parametrage/cycletontine/index.html">#{langues.cycle}</a></li>
+                        <li><a class="" href="#{request.contextPath}/parametrage/frequencetontine/List.html">#{langues.frequence_tontine}</a></li>
+                        <li><a class="" href="#{request.contextPath}/parametrage/motifaide/index.html">#{langues.motif_aide}</a></li>
+                        <li><a class="" href="#{request.contextPath}/parametrage/tontine/index.html">#{langues.association}</a></li>
+                        <li><a class="" href="#{request.contextPath}/parametrage/device/List.html">#{langues.devise}</a></li>  
+                    </ul>
+                </li>
+
+            </ul>
+            <!-- END SIDEBAR MENU -->
+        </div>
+    </div>
+    <!-- END SIDEBAR -->
+
+</ui:composition>
