@@ -20,6 +20,9 @@ Epargn_Plus is a Java application for managing financial contributions. The appl
 3. Import the database schema from the `database` directory.
 4. Edit the `application.properties` file in the `src/main/resources` directory to configure your database connection.
 5. Run the application using your preferred Java development environment (e.g., Eclipse, IntelliJ IDEA).
+6. if you are running the application on netbean you will build the .war file.
+7. Configure (create) the jdbc driver for this app by going to JDBC, then JDBC resources and then new (this is in the glassfish server admin console). You can now enter the name for the new jdbc (eg jdbc/[choosen name]).
+8. Deploy the.war file in the GlassFish server and view it.
 
 ## Usage
 
